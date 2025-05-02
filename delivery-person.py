@@ -1,7 +1,10 @@
 from typing import List
-from person import Person
+
 from order import Order
 from vehicle import Vehicle
+
+from person import Person
+
 
 class DeliveryPerson(Person):
     def __init__(self, name, cpf, address, birth_date, cnh: None, available: bool, vehicle: List[Vehicle], accepted_orders: List[Order]):
@@ -47,5 +50,6 @@ class DeliveryPerson(Person):
             else:
                 return f"{self.name} precisa entregar o pedido aceito."
 
+
 class DeliveryCustomer:
-    pass # crud
+    pass  # crud

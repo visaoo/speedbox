@@ -1,16 +1,18 @@
-import datetime
+from datetime import datetime
 from typing import List
-from address import Address 
+
+from address import Address
+
 
 class Person:
-    def __init__(self, name: str, cpf: str, address: List[Address], birth_date: datetime.date):
+    def __init__(self, name: str, cpf: str, address: List[Address], birth_date: datetime):
         self._name = name
         self._cpf = cpf
         self._address = address
         self._birth_date = birth_date
 
     @property
-    def name(self): 
+    def name(self):
         return self._name
 
     @name.setter
