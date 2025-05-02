@@ -1,5 +1,6 @@
 from typing import List
 
+from user import User
 from order import Order
 from vehicle import Vehicle
 
@@ -7,12 +8,13 @@ from person import Person
 
 
 class DeliveryPerson(Person):
-    def __init__(self, name, cpf, address, birth_date, cnh: None, available: bool, vehicle: List[Vehicle], accepted_orders: List[Order]):
+    def __init__(self, name, cpf, address, birth_date, cnh: None, available: bool, vehicle: List[Vehicle], accepted_orders: List[Order], user: User):
         super().__init__(name, cpf, address, birth_date)
         self._cnh = cnh
-        self._available = available
+        self._available = True
         self._vehicle = vehicle
-        self._accepted_orders = accepted_orders
+        self._accepted_orders = []
+        self.user = user
 
         @property
         def cnh(self):
@@ -24,6 +26,8 @@ class DeliveryPerson(Person):
 
         @available.setter
         def available(self, value):
+            if not isinstance(value, bool):
+                raise ValueError("O valor de 'available' deve ser um boleano.")
             self._available = value
 
         @property
@@ -41,6 +45,15 @@ class DeliveryPerson(Person):
         @accepted_orders.setter
         def accepted_orders(self, value):
             self._accepted_orders = value
+            
+        @property
+        def user(self):
+            return self._user
+
+        @user.setter
+        def user(self, value: User):
+            self._user = value
+
 
         def accept_order(self, order: Order):
             if self.available:
