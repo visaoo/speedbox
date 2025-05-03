@@ -11,4 +11,4 @@ poetry add
 poetry add --group dev 
 
 # entrar no venv (talvez irao ter que install o shell, mas aí é mais pra frente)
-poetry shell
+poetry env activate
