@@ -7,7 +7,7 @@ authors = [
 ]
 license = {text = "LICENSE"}
 readme = "README.md"
-requires-python = ">=3.13,<4.0"
+requires-python = ">=3.12,<4.0"
 dependencies = [
     "openrouteservice (>=2.3.3,<3.0.0)",
     "python-dotenv (>=1.1.0,<2.0.0)",
@@ -26,6 +26,7 @@ pytest = "^8.3.5"
 pytest-cov = "^6.1.1"
 ruff = "^0.11.8"
 taskipy = "^1.14.1"
+uvicorn = "^0.34.2"
 
 [tool.ruff]
 line-length = 79
@@ -44,3 +45,4 @@ quote-style = 'single'
 
 lint = 'ruff check . && ruff check . --diff'
 format = 'ruff check . --fix && ruff format .'
+build-tailwind = "npx tailwindcss -i ./api/static/tailwind.css -o ./api/static/tailwind.css --minify"
