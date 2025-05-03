@@ -1,0 +1,21 @@
+{
+  "name": "speedbox",
+  "version": "1.0.0",
+  "description": "# comandos: task lint task format",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tailwindcss -i ./src/styles.css -o ./dist/styles.css --minify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/visaoo/speedbox.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/visaoo/speedbox/issues"
+  },
+  "homepage": "https://github.com/visaoo/speedbox#readme"
+}
