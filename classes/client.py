@@ -1,10 +1,9 @@
 from typing import List
 
-from user import User
 from item import Item
 from order import Order
-
 from person import Person
+from user import User
 
 
 class Client(Person):
@@ -12,7 +11,7 @@ class Client(Person):
         super().__init__(name, cpf, address, birth_date)
 
         self._order_history = order_history
-        self._cart = cart 
+        self._cart = cart
         self._user = user
 
     @property
@@ -26,7 +25,7 @@ class Client(Person):
     @cart.setter
     def cart(self, value):
         self._cart = value
-        
+
     @property
     def user(self):
         return self._user

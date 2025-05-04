@@ -17,7 +17,7 @@ class Vehicle:
         self._model = model
         self._mark = mark
         self._plate = plate
-        self._maximum_load = []
+        self._maximum_load = 0
         self._type_vehicle = type
 
     @property
@@ -100,12 +100,3 @@ class Vehicle:
         except Exception as e:
             print(f'[Erro ao calcular rota] {e}')
             return
-
-
-# carro = Vehicle('palio', 'a', Vehicle_type.CARRO)
-
-
-# # # Exemplo
-# #         origem = geocodificar("Avenida Sapopemba, 1000, São Paulo, SP")
-# #         destino = geocodificar("Praça da Sé, 111,São Paulo, SP")
-# carro.calculate_distance('Av. Sapopemba, 1000, São Paulo, SP', 'Rua Olivio Segatto, 1017, Tupi Paulista, SP')

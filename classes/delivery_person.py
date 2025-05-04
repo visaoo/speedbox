@@ -1,10 +1,9 @@
 from typing import List
 
-from user import User
 from order import Order
-from vehicle import Vehicle
-
 from person import Person
+from user import User
+from Veihcle import Vehicle
 
 
 class DeliveryPerson(Person):
@@ -45,7 +44,7 @@ class DeliveryPerson(Person):
         @accepted_orders.setter
         def accepted_orders(self, value):
             self._accepted_orders = value
-            
+
         @property
         def user(self):
             return self._user
@@ -53,7 +52,6 @@ class DeliveryPerson(Person):
         @user.setter
         def user(self, value: User):
             self._user = value
-
 
         def accept_order(self, order: Order):
             if self.available:
