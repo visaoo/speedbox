@@ -15,7 +15,7 @@ templates = Jinja2Templates(directory=os.path.join(os.path.dirname(__file__), "t
 app.mount("/static", StaticFiles(directory=os.path.join(os.path.dirname(__file__), "static")), name="static")
 
 # Rota que renderiza o HTML
-@app.get("/index", response_class=HTMLResponse)
+@app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 

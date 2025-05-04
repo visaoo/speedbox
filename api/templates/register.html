@@ -10,11 +10,11 @@
     <header class="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
         <nav class="mx-auto flex h-16 items-center justify-between px-4">
             <div class="logo">
-                <a href="/index" class="text-2xl font-bold text-blue-600">SpeedBox</a>
+                <a href="/" class="text-2xl font-bold text-blue-600">SpeedBox</a>
             </div>
             <div class="link">
             <nav class="hidden md:flex items-center gap-6">
-            <a href="/index" class="text-sm font-medium text-blue-600">Início</a>
+            <a href="/" class="text-sm font-medium text-blue-600">Início</a>
             <div class="flex items-center gap-2">
             <a href="/login" class="px-4 py-2 text-sm font-medium border rounded-md hover:bg-gray-100">Login</a>     
             </div>
@@ -214,35 +214,44 @@
 </body>
 
     <script>
-        // Alterna entre Cliente e Entregador
         const tabCliente = document.getElementById("tab-cliente");
         const tabEntregador = document.getElementById("tab-entregador");
         const formCliente = document.getElementById("form-cliente");
         const formEntregador = document.getElementById("form-entregador");
 
-        tabCliente.addEventListener("click", () => {
+        function switchToCliente() {
             formCliente.classList.remove("hidden");
             formEntregador.classList.add("hidden");
-
             tabCliente.classList.add("border-blue-600", "text-blue-600");
             tabCliente.classList.remove("border-transparent", "text-gray-500");
-
             tabEntregador.classList.remove("border-blue-600", "text-blue-600");
             tabEntregador.classList.add("border-transparent", "text-gray-500");
-        });
+        }
 
-        tabEntregador.addEventListener("click", () => {
+        function switchToEntregador() {
             formEntregador.classList.remove("hidden");
             formCliente.classList.add("hidden");
-
             tabEntregador.classList.add("border-blue-600", "text-blue-600");
             tabEntregador.classList.remove("border-transparent", "text-gray-500");
-
             tabCliente.classList.remove("border-blue-600", "text-blue-600");
             tabCliente.classList.add("border-transparent", "text-gray-500");
+        }
+
+        // Verifica o parâmetro na URL ao carregar a página
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const tipo = urlParams.get('tipo');
+            
+            if (tipo === 'entregador') {
+                switchToEntregador();
+            } else {
+                switchToCliente();
+            }
         });
+
+        // Event listeners para os tabs
+        tabCliente.addEventListener("click", switchToCliente);
+        tabEntregador.addEventListener("click", switchToEntregador);
     </script>
 
 </html>
-
-<!--text fonte padding header talvez footer mas não necessario-->
