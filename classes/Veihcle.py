@@ -18,6 +18,7 @@ class Vehicle:
         self._mark = mark
         self._plate = plate
         self._maximum_load = 0
+        self._can_add_load = True
         self._type_vehicle = type
 
     @property
@@ -100,3 +101,8 @@ class Vehicle:
         except Exception as e:
             print(f'[Erro ao calcular rota] {e}')
             return
+        
+        
+        
+    def can_add_load(self):
+        ...
