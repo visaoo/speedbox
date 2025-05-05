@@ -1,175 +1,330 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-white text-gray-900 min-h-screen flex flex-col">
-    <header class="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
-        <nav class="mx-auto flex h-16 items-center justify-between px-4">
-            <div class="logo">
-                <a href="/" class="text-2xl font-bold text-blue-600">SpeedBox</a>
-            </div>
-            <div class="link">
-            <nav class="hidden md:flex items-center gap-6">
-            <a href="/" class="text-sm font-medium text-blue-600">Início</a>
-            <div class="flex items-center gap-2">
-            <a href="/login" class="px-4 py-2 text-sm font-medium border rounded-md hover:bg-gray-100">Login</a>     
-            </div>
+  <!-- Header/Navbar -->
+  <header class="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
+    <nav class="mx-auto flex h-16 items-center justify-between px-4">
+      <div class="logo">
+        <a href="/" class="text-2xl font-bold text-blue-600">SpeedBox</a>
+      </div>
+      <div class="link">
+        <nav class="hidden md:flex items-center gap-6">
+          <a href="/" class="text-sm font-medium text-blue-600">Início</a>
+          <div class="flex items-center gap-2">
+            <a href="/login" class="px-4 py-2 text-sm font-medium border rounded-md hover:bg-gray-100">Login</a>
+          </div>
         </nav>
-    </header>
+  </header>
 
-    <main>
-        <section>
-            <main class="flex-1 container mx-auto max-w-4xl py-12 px-4">
-    <div class="space-y-6">
-      <div>
-        <h1 class="text-3xl font-bold tracking-tight">Cadastro</h1>
-        <p class="text-gray-500">Crie sua conta na SpeedBox e comece a usar nossa plataforma</p>
-      </div>
+  <main>
+    <section>
+      <main class="flex-1 container mx-auto max-w-4xl py-12 px-4">
+        <div class="space-y-6">
+          <div>
+            <h1 class="text-3xl font-bold tracking-tight">Cadastro</h1>
+            <p class="text-gray-500">Crie sua conta na SpeedBox e comece a usar nossa plataforma</p>
+          </div>
 
-      <div class="w-full">
-        <!-- Tabs -->
-        <div class="border-b">
-          <div class="flex">
-            <button id="tab-cliente" class="px-4 py-2 border-b-2 border-blue-600 text-blue-600 font-medium">Cliente</button>
-            <button id="tab-entregador" class="px-4 py-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium">Entregador</button>
+          <div class="w-full">
+            <!-- Tabs -->
+            <div class="border-b">
+              <div class="flex">
+                <button id="tab-cliente"
+                  class="px-4 py-2 border-b-2 border-blue-600 text-blue-600 font-medium">Cliente</button>
+                <button id="tab-entregador"
+                  class="px-4 py-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium">Entregador</button>
+                <button id="tab-empresa"
+                  class="px-4 py-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium">Empresa</button>
+              </div>
+            </div>
+
+            <!-- Cliente Form -->
+            <div id="form-cliente" class="mt-6">
+              <div class="bg-white rounded-lg border shadow-sm">
+                <div class="p-6 border-b">
+                  <h2 class="text-xl font-semibold">Cadastro de Cliente</h2>
+                  <p class="text-sm text-gray-500">Preencha os dados abaixo para criar sua conta como cliente</p>
+                </div>
+                <div class="p-6 space-y-4">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                      <label for="nome" class="text-sm font-medium">Nome completo</label>
+                      <input id="nome" type="text" placeholder="Digite seu nome completo" required maxlength="80"
+                        class="w-full px-3 py-2 border rounded-md">
+                    </div>
+                    <div class="space-y-2">
+                      <label for="cpfEntregador" class="text-sm font-medium">CPF</label>
+                      <input id="cpfEntregador" type="text" placeholder="123.456.789-00" minlength="14" maxlength="14"
+                        required class="w-full px-3 py-2 border rounded-md" oninput="aplicarMascara(event, 'cpf')">
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                      <label for="telefone" class="text-sm font-medium">Telefone</label>
+                      <input id="telefone" type="text" placeholder="(00) 00000-0000" minlength="14" maxlength="14"
+                        required class="w-full px-3 py-2 border rounded-md" oninput="aplicarMascara(event, 'telefone')">
+                    </div>
+                    <div class="space-y-2">
+                      <label for="dataNascimento" class="text-sm font-medium">Data de Nascimento</label>
+                      <input id="dataNascimento" type="date" required class="w-full px-3 py-2 border rounded-md">
+                    </div>
+                  </div>
+
+                  <div class="space-y-2">
+                    <label for="enderecoCliente" class="text-sm font-medium">Endereço</label>
+                    <input id="enderecoCliente" type="text" placeholder="Rua, número" required
+                      class="w-full px-3 py-2 border rounded-md">
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="space-y-2">
+                      <label for="bairro" class="text-sm font-medium">Bairro</label>
+                      <input id="bairro" type="text" placeholder="Seu bairro" required
+                        class="w-full px-3 py-2 border rounded-md">
+                    </div>
+                    <div class="space-y-2">
+                      <label for="cidade" class="text-sm font-medium">Cidade</label>
+                      <input id="cidade" type="text" placeholder="Sua cidade" required
+                        class="w-full px-3 py-2 border rounded-md">
+                    </div>
+                    <div class="space-y-2">
+                      <label for="estado" class="text-sm font-medium">Estado</label>
+                      <input id="estado" type="text" placeholder="UF" required
+                        class="w-full px-3 py-2 border rounded-md">
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                      <label for="emailCliente" class="text-sm font-medium">Email</label>
+                      <input id="emailCliente" type="email" placeholder="seuemail.gmail.com" required
+                        class="w-full px-3 py-2 border rounded-md">
+                    </div>
+                    <div class="space-y-2">
+                      <label for="senha" class="text-sm font-medium">Senha</label>
+                      <input id="senha" type="password" class="w-full px-3 py-2 border rounded-md">
+                    </div>
+
+
+                  </div>
+                </div>
+                <div class="p-6 border-t">
+                  <button
+                    class="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Cadastrar</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Entregador Form -->
+            <div id="form-entregador" class="mt-6 hidden">
+              <!-- Container principal do formulário -->
+              <div class="bg-white rounded-lg border shadow-sm">
+
+                <!-- Cabeçalho -->
+                <div class="p-6 border-b">
+                  <!-- Título do formulário -->
+                  <h2 class="text-xl font-semibold">Cadastro de Entregador</h2>
+                  <!-- Descrição do formulário -->
+                  <p class="text-sm text-gray-500">Preencha os dados abaixo para criar sua conta como entregador</p>
+                </div>
+
+                <!-- Corpo do formulário -->
+                <div class="p-6 space-y-4">
+
+                  <!-- Seção com Nome e CPF -->
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Campo para o nome completo do entregador -->
+                    <div class="space-y-2">
+                      <label for="nomeEntregador" class="text-sm font-medium">Nome completo</label>
+                      <input id="nomeEntregador" type="text" placeholder="Digite seu nome completo" required
+                        class="w-full px-3 py-2 border rounded-md">
+                    </div>
+
+                    <!-- Campo para o CPF do entregador -->
+                    <div class="space-y-2">
+                      <label for="cpfEntregador" class="text-sm font-medium">CPF</label>
+                      <input id="cpfEntregador" type="text" placeholder="123.456.789-00" minlength="14" maxlength="14"
+                        required class="w-full px-3 py-2 border rounded-md" oninput="aplicarMascara(event, 'cpf')">
+                    </div>
+                  </div>
+
+                  <!-- Seção com Telefone, Data de Nascimento e CNH -->
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Campo para o telefone do entregador -->
+                    <div class="space-y-2">
+                      <label for="telefoneEntregador" class="text-sm font-medium">Telefone</label>
+                      <input id="telefoneEntregador" type="text" placeholder="(00) 00000-0000" minlength="15"
+                        maxlength="15" required class="w-full px-3 py-2 border rounded-md"
+                        oninput="aplicarMascara(event, 'telefone')">
+                    </div>
+
+                    <!-- Campo para a data de nascimento do entregador -->
+                    <div class="space-y-2">
+                      <label for="dataNascimento" class="text-sm font-medium">Data de Nascimento</label>
+                      <input id="dataNascimento" type="date" required class="w-full px-3 py-2 border rounded-md">
+                    </div>
+
+                    <!-- Campo para o número da CNH -->
+                    <div class="space-y-2">
+                      <label for="cnh" class="text-sm font-medium text-gray-500">Número da CNH</label>
+                      <input id="cnh" type="text" placeholder="Digite o número da sua CNH" minlength="14" maxlength="14"
+                        required class="w-full px-3 py-2 border rounded-md text-sm text-gray-900"
+                        oninput="aplicarMascara(event, 'cnh')">
+                    </div>
+
+                    <!-- Campo para o tipo de veículo -->
+                    <div class="space-y-2">
+                      <label for="tipoVeiculo" class="text-sm font-medium">Tipo de veículo</label>
+                      <select id="tipoVeiculo" required class="w-full px-3 py-2 border rounded-md">
+                        <!-- Opções de veículos -->
+                        <option value="" disabled selected>Selecione o tipo de veículo</option>
+                        <option value="moto">Moto</option>
+                        <option value="carro">Carro</option>
+                        <option value="bicicleta">Bicicleta</option>
+                        <option value="van">Van</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- Seção com Email e Senha -->
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Campo para o email do entregador -->
+                    <div class="space-y-2">
+                      <label for="emailCliente" class="text-sm font-medium">Email</label>
+                      <input id="emailCliente" type="email" placeholder="seuemail@gmail.com" required
+                        class="w-full px-3 py-2 border rounded-md">
+                    </div>
+
+                    <!-- Campo para a senha do entregador -->
+                    <div class="space-y-2">
+                      <label for="senha" class="text-sm font-medium">Senha</label>
+                      <input id="senha" type="password" required class="w-full px-3 py-2 border rounded-md">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Rodapé com botão de envio -->
+                <div class="p-6 border-t">
+                  <button
+                    class="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Cadastrar</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Empresa Form -->
+            <div id="form-empresa" class="mt-6 hidden">
+              <div class="bg-white rounded-lg border shadow-sm">
+                <!-- Cabeçalho -->
+                <div class="p-6 border-b">
+                  <h2 class="text-xl font-semibold">Cadastro de Empresa</h2>
+                  <p class="text-sm text-gray-500">Preencha os dados abaixo para criar sua conta como empresa</p>
+                </div>
+
+                <!-- Corpo do formulário -->
+                <div class="p-6 space-y-6">
+                  <!-- Dados da Empresa -->
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Nome do Responsável -->
+                    <div class="space-y-2">
+                      <label for="nomeDono" class="text-sm font-medium">Nome do responsável</label>
+                      <input id="nomeDono" type="text" placeholder="Digite seu nome completo" required
+                        class="w-full px-3 py-2 border rounded-md">
+                    </div>
+
+                    <!-- Nome Fantasia -->
+                    <div class="space-y-2">
+                      <label for="nomeEmpresa" class="text-sm font-medium">Razão Social</label>
+                      <input id="nomeEmpresa" type="text" placeholder="Digite o nome da empresa" required
+                        maxlength="100" class="w-full px-3 py-2 border rounded-md">
+                    </div>
+                  </div>
+
+                  <!-- CNPJ e Telefone -->
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- CNPJ -->
+                    <div class="space-y-2">
+                      <label for="cnpjEmpresa" class="text-sm font-medium">CNPJ</label>
+                      <input id="cnpjEmpresa" type="text" placeholder="12.345.678/0001-00" minlength="18" maxlength="18"
+                        required class="w-full px-3 py-2 border rounded-md" oninput="aplicarMascara(event, 'cnpj')">
+                    </div>
+
+                    <!-- Telefone -->
+                    <div class="space-y-2">
+                      <label for="telefoneEmpresa" class="text-sm font-medium">Telefone</label>
+                      <input id="telefoneEmpresa" type="text" placeholder="(00) 00000-0000" minlength="15"
+                        maxlength="15" required class="w-full px-3 py-2 border rounded-md"
+                        oninput="aplicarMascara(event, 'telefone')">
+                    </div>
+                  </div>
+
+                  <!-- Endereço -->
+                  <div class=" md:grid-cols-2 gap-4">
+                    <!-- Endereço -->
+                    <div class="space-y-2">
+                      <label for="enderecoCliente" class="text-sm font-medium">Endereço</label>
+                      <input id="enderecoCliente" type="text" placeholder="Rua, número" required
+                        class="w-full px-3 py-2 border rounded-md">
+                    </div>
+                  </div>
+
+                  <!-- Bairro, Cidade e Estado -->
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Bairro -->
+                    <div class="space-y-2">
+                      <label for="bairro" class="text-sm font-medium">Bairro</label>
+                      <input id="bairro" type="text" placeholder="Seu bairro" required
+                        class="w-full px-3 py-2 border rounded-md">
+                    </div>
+
+                    <!-- Cidade -->
+                    <div class="space-y-2">
+                      <label for="cidade" class="text-sm font-medium">Cidade</label>
+                      <input id="cidade" type="text" placeholder="Sua cidade" required
+                        class="w-full px-3 py-2 border rounded-md">
+                    </div>
+
+                    <!-- Estado -->
+                    <div class="space-y-2">
+                      <label for="estado" class="text-sm font-medium">Estado</label>
+                      <input id="estado" type="text" placeholder="UF" required
+                        class="w-full px-3 py-2 border rounded-md">
+                    </div>
+                  </div>
+
+                  <!-- Email e Senha -->
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Email -->
+                    <div class="space-y-2">
+                      <label for="emailEntregador" class="text-sm font-medium">Email</label>
+                      <input id="emailEntregador" type="email" placeholder="seuemail@gmail.com" required
+                        class="w-full px-3 py-2 border rounded-md">
+                    </div>
+
+                    <!-- Senha -->
+                    <div class="space-y-2">
+                      <label for="senha" class="text-sm font-medium">Senha</label>
+                      <input id="senha" type="password" required class="w-full px-3 py-2 border rounded-md">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Rodapé com botão -->
+                <div class="p-6 border-t">
+                  <button
+                    class="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Cadastrar</button>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
-
-        <!-- Cliente Form -->
-        <div id="form-cliente" class="mt-6">
-          <div class="bg-white rounded-lg border shadow-sm">
-            <div class="p-6 border-b">
-              <h2 class="text-xl font-semibold">Cadastro de Cliente</h2>
-              <p class="text-sm text-gray-500">Preencha os dados abaixo para criar sua conta como cliente</p>
-            </div>
-            <div class="p-6 space-y-4">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="space-y-2">
-                  <label for="nome" class="text-sm font-medium">Nome completo</label>
-                  <input id="nome" type="text" placeholder="Digite seu nome completo" required class="w-full px-3 py-2 border rounded-md">
-                </div>
-                <div class="space-y-2">
-                  <label for="cpfEntregador" class="text-sm font-medium">CPF</label>
-                  <input id="cpfEntregador" type="text" placeholder="123.456.789-00" required class="w-full px-3 py-2 border rounded-md">
-                </div>
-              </div>
-
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="space-y-2">
-                  <label for="telefone" class="text-sm font-medium">Telefone</label>
-                  <input id="telefone" type="text" placeholder="(00) 00000-0000" required class="w-full px-3 py-2 border rounded-md">
-                </div>
-                <div class="space-y-2">
-                  <label for="dataNascimento" class="text-sm font-medium">Data de Nascimento</label>
-                  <input id="dataNascimento" type="date" required class="w-full px-3 py-2 border rounded-md">
-                </div>
-              </div>
-
-              <div class="space-y-2">
-                <label for="endereco" class="text-sm font-medium">Endereço</label>
-                <input id="endereco" type="text" placeholder="Rua, número" required class="w-full px-3 py-2 border rounded-md">
-              </div>
-
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="space-y-2">
-                  <label for="bairro" class="text-sm font-medium">Bairro</label>
-                  <input id="bairro" type="text" placeholder="Seu bairro" required class="w-full px-3 py-2 border rounded-md">
-                </div>
-                <div class="space-y-2">
-                  <label for="cidade" class="text-sm font-medium">Cidade</label>
-                  <input id="cidade" type="text" placeholder="Sua cidade" required class="w-full px-3 py-2 border rounded-md">
-                </div>
-                <div class="space-y-2">
-                  <label for="estado" class="text-sm font-medium">Estado</label>
-                  <input id="estado" type="text" placeholder="UF" required class="w-full px-3 py-2 border rounded-md">
-                </div>
-              </div>
-
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="space-y-2">
-                  <label for="emailCliente" class="text-sm font-medium">Email</label>
-                  <input id="emailCliente" type="email" placeholder="seuemail.gmail.com" required class="w-full px-3 py-2 border rounded-md">
-                </div>
-                <div class="space-y-2">
-                  <label for="senha" class="text-sm font-medium">Senha</label>
-                  <input id="senha" type="password" class="w-full px-3 py-2 border rounded-md">
-                </div>
-                
-                
-              </div>
-            </div>
-            <div class="p-6 border-t">
-              <button class="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Cadastrar</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Entregador Form -->
-        <div id="form-entregador" class="mt-6 hidden">
-          <div class="bg-white rounded-lg border shadow-sm">
-            <div class="p-6 border-b">
-              <h2 class="text-xl font-semibold">Cadastro de Entregador</h2>
-              <p class="text-sm text-gray-500">Preencha os dados abaixo para criar sua conta como entregador</p>
-            </div>
-            <div class="p-6 space-y-4">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="space-y-2">
-                  <label for="nomeEntregador" class="text-sm font-medium">Nome completo</label>
-                  <input id="nomeEntregador" type="text" placeholder="Digite seu nome completo" required class="w-full px-3 py-2 border rounded-md">
-                </div>
-                <div class="space-y-2">
-                  <label for="cpfEntregador" class="text-sm font-medium">CPF</label>
-                  <input id="cpfEntregador" type="text" placeholder="123.456.789-00" required class="w-full px-3 py-2 border rounded-md">
-                </div>
-              </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="space-y-2">
-                <label for="telefoneEntregador" class="text-sm font-medium">Telefone</label>
-                <input id="telefoneEntregador" type="text" placeholder="(00) 00000-0000" required class="w-full px-3 py-2 border rounded-md">
-              </div>
-
-              <div class="space-y-2">
-                  <label for="dataNascimento" class="text-sm font-medium">Data de Nascimento</label>
-                  <input id="dataNascimento" type="date" required class="w-full px-3 py-2 border rounded-md">
-                </div>
-                <div class="space-y-2">
-                  <label for="cnh" class="text-sm font-medium text-gray-500">Número da CNH</label>
-                  <input id="cnh" type="text" placeholder="Digite o número da sua CNH" class="w-full px-3 py-2 border rounded-md text-sm text-gray-900">
-              </div>
-
-              <div class="space-y-2">
-                <label for="tipoVeiculo" class="text-sm font-medium">Tipo de veículo</label>
-                <select id="tipoVeiculo" required class="w-full px-3 py-2 border rounded-md">
-                  <option value="" disabled selected>Selecione o tipo de veículo</option>
-                  <option value="moto">Moto</option>
-                  <option value="carro">Carro</option>
-                  <option value="bicicleta">Bicicleta</option>
-                  <option value="van">Van</option>
-                </select>
-              </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="space-y-2">
-                  <label for="emailCliente" class="text-sm font-medium">Email</label>
-                  <input id="emailCliente" type="email" placeholder="seuemail.gmail.com" required class="w-full px-3 py-2 border rounded-md">
-                </div>
-                <div class="space-y-2">
-                  <label for="senha" class="text-sm font-medium">Senha</label>
-                  <input id="senha" type="password" required class="w-full px-3 py-2 border rounded-md">
-                </div>
-            </div>      
-          </div>
-          
-            <div class="p-6 border-t">
-              <button class="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Cadastrar</button>
-            </div>
-        </div>
-      </div>
-
 
         <div class="text-center mt-6">
           <p class="text-sm text-gray-500">
@@ -177,81 +332,39 @@
             <a href="/login" class="text-blue-600 hover:underline"> Faça login </a>
           </p>
         </div>
-      </div>
-    </div>
-  </main>
+      </main>
 
-  <footer class="border-t bg-gray-100 mt-12">
-    <div class="container mx-auto flex flex-col gap-6 py-8 md:flex-row md:items-center px-4">
-      <div class="flex-1">
-        <div class="flex h-10 items-center space-x-2">
-          <span class="text-xl font-bold">SpeedBox</span>
+      <footer class="border-t bg-gray-100 mt-12">
+        <div class="container mx-auto flex flex-col gap-6 py-8 md:flex-row md:items-center px-4">
+          <div class="flex-1">
+            <div class="flex h-10 items-center space-x-2">
+              <span class="text-xl font-bold">SpeedBox</span>
+            </div>
+            <p class="mt-2 text-sm text-gray-500">
+              Conectando clientes e entregadores de forma intuitiva e eficiente
+            </p>
+          </div>
+          <div class="flex flex-col md:flex-row gap-4 md:items-center md:gap-6">
+            <a href="#" class="text-sm hover:underline">
+              Termos de Uso
+            </a>
+            <a href="#" class="text-sm hover:underline">
+              Política de Privacidade
+            </a>
+            <a href="#" class="text-sm hover:underline">
+              Contato
+            </a>
+          </div>
         </div>
-        <p class="mt-2 text-sm text-gray-500">
-          Conectando clientes e entregadores de forma intuitiva e eficiente
-        </p>
-      </div>
-      <div class="flex flex-col md:flex-row gap-4 md:items-center md:gap-6">
-        <a href="#" class="text-sm hover:underline">
-          Termos de Uso
-        </a>
-        <a href="#" class="text-sm hover:underline">
-          Política de Privacidade
-        </a>
-        <a href="#" class="text-sm hover:underline">
-          Contato
-        </a>
-      </div>
-    </div>
-    <div class="border-t py-6">
-      <div class="container mx-auto flex flex-col items-center justify-between gap-4 md:flex-row px-4">
-        <p class="text-center text-sm text-gray-500 md:text-left">
-          &copy; <span id="current-year"></span> SpeedBox. Todos os direitos reservados.
-        </p>
-      </div>
-    </div>
-  </footer>
+        <div class="border-t py-6">
+          <div class="container mx-auto flex flex-col items-center justify-between gap-4 md:flex-row px-4">
+            <p class="text-center text-sm text-gray-500 md:text-left">
+              &copy; <span id="current-year"></span> SpeedBox. Todos os direitos reservados.
+            </p>
+          </div>
+        </div>
+      </footer>
 </body>
-
-    <script>
-        const tabCliente = document.getElementById("tab-cliente");
-        const tabEntregador = document.getElementById("tab-entregador");
-        const formCliente = document.getElementById("form-cliente");
-        const formEntregador = document.getElementById("form-entregador");
-
-        function switchToCliente() {
-            formCliente.classList.remove("hidden");
-            formEntregador.classList.add("hidden");
-            tabCliente.classList.add("border-blue-600", "text-blue-600");
-            tabCliente.classList.remove("border-transparent", "text-gray-500");
-            tabEntregador.classList.remove("border-blue-600", "text-blue-600");
-            tabEntregador.classList.add("border-transparent", "text-gray-500");
-        }
-
-        function switchToEntregador() {
-            formEntregador.classList.remove("hidden");
-            formCliente.classList.add("hidden");
-            tabEntregador.classList.add("border-blue-600", "text-blue-600");
-            tabEntregador.classList.remove("border-transparent", "text-gray-500");
-            tabCliente.classList.remove("border-blue-600", "text-blue-600");
-            tabCliente.classList.add("border-transparent", "text-gray-500");
-        }
-
-        // Verifica o parâmetro na URL ao carregar a página
-        window.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const tipo = urlParams.get('tipo');
-            
-            if (tipo === 'entregador') {
-                switchToEntregador();
-            } else {
-                switchToCliente();
-            }
-        });
-
-        // Event listeners para os tabs
-        tabCliente.addEventListener("click", switchToCliente);
-        tabEntregador.addEventListener("click", switchToEntregador);
-    </script>
+<script src="../static/scripts/form.js"></script>
 
 </html>
