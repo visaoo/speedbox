@@ -2,15 +2,20 @@ from abc import ABC, abstractmethod
 from enum import Enum
 from uuid import uuid4
 from datetime import datetime
+import qrcode
+from Address import Address
+from client import Client
+from enterprise import Enterprise
 
 
 class Transaction(ABC):
-    def __init__(self, value, date, time_for_pay, payment_status):
+    def __init__(self, value, date, time_for_pay, payment_status, client, enterprise):
         self._value = value
         self._date = date
         self._time_for_pay = time_for_pay
         self._payment_status = payment_status
-        
+        self._client = client
+        self._enterprise = enterprise
 
     @property
     def value(self):
@@ -52,6 +57,23 @@ class Transaction(ABC):
     def status(self, value):
         self._status = value
 
+    @property
+    def client(self):
+        return self._client
+
+    @client.setter
+    def client(self, value):
+        self._client = value
+
+    @property
+    def enterprise(self):
+        return self._enterprise
+
+    @enterprise.setter
+    def enterprise(self, value):
+        self._enterprise = value
+
+
     @abstractmethod
     def make_payment(self):
         pass
@@ -61,7 +83,7 @@ class Transaction(ABC):
         pass
     
     @abstractmethod
-    def update_status():
+    def update_status(self):
         pass
 
 class Card(Transaction):
@@ -88,7 +110,6 @@ class Card(Transaction):
     @number.setter
     def number(self, value):
         cleaned_value = str(value).replace(' ', '').replace('-', '')
-        
         if not cleaned_value.isdigit():
             raise ValueError("O número deve conter apenas dígitos")
         if len(cleaned_value) < 13 or len(cleaned_value) > 19:
@@ -101,7 +122,16 @@ class Card(Transaction):
 
     @validity.setter
     def validity(self, value):
-        self._validity = value
+        try:
+            exp_month, exp_year = self._validity.split("/")
+            exp_month = int(exp_month)
+            exp_year = int("20" + exp_year) if len(exp_year) == 2 else int(exp_year)
+            now = datetime.now()
+            if exp_year > now.year or (exp_year == now.year and exp_month >= now.month):
+                self._validity = value
+        except Exception as e:
+            print(f'ERRO [{e}]')
+        
 
     @property
     def cvc(self):
@@ -109,15 +139,13 @@ class Card(Transaction):
 
     @cvc.setter
     def cvc(self, value):
-        if len(value) != 3:
-            raise ValueError('CVC diferente de 3')
-        self._cvc = value
+        if value.isdigit() and len(value) in [3,4]:
+            self._cvc = value
+        raise ValueError('CVC diferente de 3')
     
     @property
     def flag(self):
         return self._flag
-    
-    
     
     def identificar_bandeira(self):
         
@@ -166,29 +194,6 @@ class Card(Transaction):
         else:
             return "Bandeira não identificada"
 
-        
-    
-    def _validade_card_number(self):
-        digits = [int(d) for d in str(self._number)][::-1]
-        total = 0
-        for i, digit in enumerate(digits):
-            if i % 2 == 1:
-                doubled = digit * 2
-                total += doubled - 9 if doubled > 9 else doubled
-            else:
-                total += digit
-        return total % 10 == 0
-
-    def _validate_validity(self):
-        try:
-            exp_month, exp_year = self._validity.split("/")
-            exp_month = int(exp_month)
-            exp_year = int("20" + exp_year) if len(exp_year) == 2 else int(exp_year)
-            now = datetime.now()
-            return exp_year > now.year or (exp_year == now.year and exp_month >= now.month)
-        except:
-            return False
-
 
 
 class Boleto(Transaction):
@@ -214,35 +219,5 @@ class Boleto(Transaction):
     def typeable_line(self, value):
         self._typeable_line = value
 
-class TypeKeyPix(Enum):
-    EMAIL = 'email'
-    UUID = uuid4()
-    CELPHONE = 'celphone'
-    CPF = 'CPF'
-    CNPJ = 'cnpj'
-
-
-class Pix(Transaction):
-    def __init__(self, value, date, time_for_pay, payment_status, key, key_type):
-        super().__init__(value, date, time_for_pay, payment_status)
-        self._key = key
-        self._key_type = key_type
-
-
-    @property
-    def key(self):
-        return self._key
-
-    @key.setter
-    def key(self, value):
-        self._key = value
-
-    @property
-    def key_type(self):
-        return self._key_type
-
-    @key_type.setter
-    def key_type(self, value):
-        self._key_type = value
 
 
