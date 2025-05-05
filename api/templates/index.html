@@ -1,31 +1,36 @@
 <!DOCTYPE html>
 <html lang="pt-br" class="scroll-smooth">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SpeedBox</title>
-    <!-- Link para o CDN do Tailwind CSS -->
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css' integrity='sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==' crossorigin='anonymous'/>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpeedBox</title>
+  <!-- Link para o CDN do Tailwind CSS -->
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css'
+    integrity='sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=='
+    crossorigin='anonymous' />
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-white text-gray-900 min-h-screen flex flex-col">
-    <header class="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
-        <nav class="mx-auto flex h-16 items-center justify-between px-4">
-            <div class="logo">
-                <a href="/" class="text-2xl font-bold text-blue-600">SpeedBox</a>
-            </div>
-            <div class="link">
-            <nav class="hidden md:flex items-center gap-6">
-            <a href="#hero" class="text-sm font-medium text-blue-600">Início</a>
-            <a href="#sobre" class="text-sm font-medium text-gray-500 hover:text-blue-600">Sobre nós</a>
-            <div class="flex items-center gap-2">
+  <!-- Header/Navbar -->
+  <header class="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
+    <nav class="mx-auto flex h-16 items-center justify-between px-4">
+      <div class="logo">
+        <a href="/" class="text-2xl font-bold text-blue-600">SpeedBox</a>
+      </div>
+      <div class="link">
+        <nav class="hidden md:flex items-center gap-6">
+          <a href="#hero" class="text-sm font-medium text-blue-600">Início</a>
+          <a href="#sobre" class="text-sm font-medium text-gray-500 hover:text-blue-600">Sobre nós</a>
+          <div class="flex items-center gap-2">
             <a href="/login" class="px-4 py-2 text-sm font-medium border rounded-md hover:bg-gray-100">Login</a>
-            <a href="/register" class="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-md hover:bg-blue-700">Cadastro</a>
-            </div>
+            <a href="/register"
+              class="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-md hover:bg-blue-700">Cadastro</a>
+          </div>
         </nav>
-    </header>
+  </header>
 
-    <main class="flex-1">
+  <main class="flex-1">
     <!-- Hero Section -->
     <section id="hero" class="w-full pt-20 pb-12 md:pt-20 md:pb-24 lg:pt-20 lg:pb-32 xl:pt-20 xl:pb-48">
 
@@ -42,26 +47,28 @@
               </p>
             </div>
             <div class="flex flex-col gap-2 min-[400px]:flex-row">
-              <a href="/login" class="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+              <a href="/login"
+                class="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
                 Sou Cliente <i class="fa-solid fa-arrow-right ml-2 h-4 w-4"></i>
               </a>
-              <a href="/login" class="inline-flex items-center justify-center px-6 py-3 text-base font-medium border border-gray-300 rounded-md hover:bg-gray-100">
-              Sou Entregador <i class="fa-solid fa-arrow-right ml-2 h-4 w-4"></i>
+              <a href="/login"
+                class="inline-flex items-center justify-center px-6 py-3 text-base font-medium border border-gray-300 rounded-md hover:bg-gray-100">
+                Sou Entregador <i class="fa-solid fa-arrow-right ml-2 h-4 w-4"></i>
+              </a>
+              <a href="/login"
+                class="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                Sou Empresa <i class="fa-solid fa-arrow-right ml-2 h-4 w-4"></i>
               </a>
             </div>
           </div>
           <div class="flex items-center justify-center">
-            <img 
-              src="../static/images/delivery.jpeg" 
-              alt="Entrega SpeedBox" 
-              class="rounded-lg object-cover"
-              width="400"
-              height="400"
-            />
+            <img src="../static/images/delivery.jpeg" alt="Entrega SpeedBox" class="rounded-lg object-cover" width="400"
+              height="400" />
           </div>
         </div>
       </div>
     </section>
+    <!--Como funciona-->
     <section id="sobre" class="w-full py-12 md:py-24 lg:py-32 bg-gray-100">
       <div class="container mx-auto px-4 md:px-6">
         <div class="flex flex-col items-center justify-center space-y-4 text-center">
@@ -112,6 +119,7 @@
         </div>
       </div>
     </section>
+    <!--Cadastre-se-->
     <section class="w-full py-12 md:py-24 lg:py-32">
       <div class="container mx-auto px-4 md:px-6">
         <div class="flex flex-col items-center justify-center space-y-4 text-center">
@@ -121,12 +129,20 @@
               Cadastre-se agora e experimente a forma mais eficiente de fazer entregas
             </p>
           </div>
+
+          <!--Botão cadastrar-->
           <div class="flex flex-col gap-2 min-[400px]:flex-row">
-            <a href="/register?tipo=cliente" class="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+            <a href="/register?tipo=cliente"
+              class="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
               Cadastrar como Cliente
             </a>
-            <a href="/register?tipo=entregador" class="inline-flex items-center justify-center px-6 py-3 text-base font-medium border border-gray-300 rounded-md hover:bg-gray-100">
+            <a href="/register?tipo=entregador"
+              class="inline-flex items-center justify-center px-6 py-3 text-base font-medium border border-gray-300 rounded-md hover:bg-gray-100">
               Cadastrar como Entregador
+            </a>
+            <a href="/register?tipo=empresa"
+              class="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+              Cadastrar como Empresa
             </a>
           </div>
         </div>
@@ -164,6 +180,6 @@
       </div>
     </div>
   </footer>
-
 </body>
+
 </html>
