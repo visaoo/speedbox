@@ -6,7 +6,7 @@ from order import Order
 
 @dataclass
 class NFe:
-    issuer: Client
+    issue: Client
     reciver: Enterprise
     product: list[Order]
     number: int
