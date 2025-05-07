@@ -178,3 +178,5 @@ package-lock.json
 poetry.lock
 
 .vscode/
+
+speedbox.db
