@@ -9,13 +9,13 @@ from enterprise import Enterprise
 
 
 class Transaction(ABC):
-    def __init__(self, value, date, time_for_pay, payment_status, client, enterprise):
+    def __init__(self, value, date, time_for_pay, payment_status):
         self._value = value
         self._date = date
         self._time_for_pay = time_for_pay
         self._payment_status = payment_status
-        self._client = client
-        self._enterprise = enterprise
+        # self._client = client
+        # self._enterprise = enterprise
 
     @property
     def value(self):

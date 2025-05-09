@@ -122,4 +122,26 @@ class Pix(Transaction):
         return qr
 
 
+    def cancel_payment(self):
+        return super().cancel_payment()
+    
+    def make_payment(self):
+        return super().make_payment()
+    
+    def update_status(self):
+        return super().update_status()
 
+from datetime import date, timedelta
+from pix import Pix, TypeKeyPix
+
+# Criando uma transação Pix
+pix = Pix(
+    value=100.50,
+    date=date.today(),
+    time_for_pay=timedelta(minutes=15),
+    payment_status="pendente",
+    key="teste@exemplo.com",
+    key_type=TypeKeyPix.EMAIL
+)
+
+# 
