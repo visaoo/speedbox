@@ -10,6 +10,6 @@ def create_table_enterprise():
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         nome TEXT NOT NULL,
                         cnpj TEXT NOT NULL,
+                        pix TEXT NOT NULL, 
                      )
-                     
                      ''')
