@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
-from client import Client
-from enterprise import Enterprise
+from user.client import Client
+from classes.user.enterprise import Enterprise
 from order import Order
 
 @dataclass

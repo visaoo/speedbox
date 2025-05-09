@@ -1,4 +1,13 @@
 from Address import Address
+from enum import Enum
+
+
+class TypeKeyPix(Enum):
+    EMAIL = 'email'
+    UUID = 'UUID'
+    CELPHONE = 'celphone'
+    CPF = 'CPF'
+    CNPJ = 'cnpj'
 
 
 class Enterprise:

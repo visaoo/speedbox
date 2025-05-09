@@ -1,94 +1,19 @@
-from abc import ABC, abstractmethod
-from enum import Enum
-from uuid import uuid4
+from sqlalchemy import (Column, Integer, ForeignKey, String, Enum)
+from sqlalchemy.orm import relationship, declarative_base
 from datetime import datetime
-import qrcode
-from Address import Address
-from client import Client
-from enterprise import Enterprise
+Base = declarative_base()
 
-
-class Transaction(ABC):
-    def __init__(self, value, date, time_for_pay, payment_status):
-        self._value = value
-        self._date = date
-        self._time_for_pay = time_for_pay
-        self._payment_status = payment_status
-        # self._client = client
-        # self._enterprise = enterprise
-
-    @property
-    def value(self):
-        return self._value
-
-    @value.setter
-    def value(self, value):
-        self._value = value
-
-    @property
-    def date(self):
-        return self._date
-
-    @date.setter
-    def date(self, value):
-        self._date = value
-
-    @property
-    def time_for_pay(self):
-        return self._time_for_pay
-
-    @time_for_pay.setter
-    def time_for_pay(self, value):
-        self._time_for_pay = value
-
-    @property
-    def payment_status(self):
-        return self._payment_status
-
-    @payment_status.setter
-    def payment_status(self, value):
-        self._payment_status = value
-
-    @property
-    def status(self):
-        return self._status
-
-    @status.setter
-    def status(self, value):
-        self._status = value
-
-    @property
-    def client(self):
-        return self._client
-
-    @client.setter
-    def client(self, value):
-        self._client = value
-
-    @property
-    def enterprise(self):
-        return self._enterprise
-
-    @enterprise.setter
-    def enterprise(self, value):
-        self._enterprise = value
-
-
-    @abstractmethod
-    def make_payment(self):
-        pass
+class Card(Base):
+    __tablename__ = 'card'
     
-    @abstractmethod
-    def cancel_payment(self):
-        pass
+    transaction_id = Column(Integer, ForeignKey('transactions.id'), primary_key=True)
+    number_card = Column(String(16))
+    flag = Column(String(20))
+    atorization_status = Column(String(20))
     
-    @abstractmethod
-    def update_status(self):
-        pass
-
-class Card(Transaction):
-    def __init__(self, value, date, time_for_pay, payment_status, name, number, validity, cvc, flag):
-        super().__init__(value, date, time_for_pay, payment_status)
+    transaction = relationship('Trasaction', back_populates='card')
+    
+    def __init__(self, name, number, validity, cvc, flag):
         self._name = name
         self._number = number
         self._validity = validity
@@ -112,8 +37,8 @@ class Card(Transaction):
         cleaned_value = str(value).replace(' ', '').replace('-', '')
         if not cleaned_value.isdigit():
             raise ValueError("O número deve conter apenas dígitos")
-        if len(cleaned_value) < 13 or len(cleaned_value) > 19:
-            raise ValueError("O número deve ter entre 13 e 19 dígitos")
+        if len(cleaned_value) < 13 or len(cleaned_value) > 16:
+            raise ValueError("O número deve ter entre 13 e 16 dígitos")
         self._number = cleaned_value
 
     @property
@@ -189,35 +114,7 @@ class Card(Transaction):
             return 
         elif ((self.number.startswith('22') and 
             len(self.number) in [16])):
-            self.flag = "Mastercard (novos binários)"
+            self.flag = "Mastercard BIN"
             return 
         else:
             return "Bandeira não identificada"
-
-
-
-class Boleto(Transaction):
-    def __init__(self, value, date, time_for_pay, payment_status, code_bar, typeable_line):
-        super().__init__(value, date, time_for_pay, payment_status)
-        self._code_bar = code_bar
-        self._typeable_line = typeable_line
-
-
-    @property
-    def code_bar(self):
-        return self._code_bar
-
-    @code_bar.setter
-    def code_bar(self, value):
-        self._code_bar = value
-
-    @property
-    def typeable_line(self):
-        return self._typeable_line
-
-    @typeable_line.setter
-    def typeable_line(self, value):
-        self._typeable_line = value
-
-
-
