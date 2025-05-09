@@ -1,40 +1,28 @@
-from transaction import Transaction
+from sqlalchemy import (Column, String, Integer, ForeignKey, DateTime, Text)
+from sqlalchemy.orm import declarative_base, relationship
 from enum import Enum
-from uuid import uuid4
 import qrcode
 
 
-class TypeKeyPix(Enum):
-    EMAIL = 'email'
-    UUID = 'UUID'
-    CELPHONE = 'celphone'
-    CPF = 'CPF'
-    CNPJ = 'cnpj'
+Base = declarative_base()
 
-
-class Pix(Transaction):
-    def __init__(self, value, date, time_for_pay, payment_status, key, key_type):
-        super().__init__(value, date, time_for_pay, payment_status)
-        self._key = key
-        self._key_type = key_type
-
-    @property
-    def key(self):
-        return self._key
-
-    @key.setter
-    def key(self, value):
-        self._key = value
-
-    @property
-    def key_type(self):
-        return self._key_type
-
-    @key_type.setter
-    def key_type(self, value):
-        self._key_type = value
-        
+class Pix(Base):
+    __tablename__ = 'pix'
     
+    transaction_id = Column(Integer, ForeignKey('transactions.id'), primary_key=True)
+    pix_key = Column(String(255))
+    qr_code = Column(Text) # payload, copia e cola
+    txid = Column(String(100))
+    status_payment = Column(String(20))
+    date_confirmation = Column(DateTime)
+    
+    transaction = relationship('Transaction', back_populates='pix')
+
+
+# adicionar __init__ para validações.
+     
+    
+class PixQrcode:
     def generate_pix_payload(self,
         key: str,
         name: str,
@@ -131,17 +119,17 @@ class Pix(Transaction):
     def update_status(self):
         return super().update_status()
 
-from datetime import date, timedelta
-from pix import Pix, TypeKeyPix
+# from datetime import date, timedelta
+# from pix import Pix, TypeKeyPix
 
-# Criando uma transação Pix
-pix = Pix(
-    value=100.50,
-    date=date.today(),
-    time_for_pay=timedelta(minutes=15),
-    payment_status="pendente",
-    key="teste@exemplo.com",
-    key_type=TypeKeyPix.EMAIL
-)
+# # Criando uma transação Pix
+# pix = Pix(
+#     value=100.50,
+#     date=date.today(),
+#     time_for_pay=timedelta(minutes=15),
+#     payment_status="pendente",
+#     key="teste@exemplo.com",
+#     key_type=TypeKeyPix.EMAIL
+# )
 
-# 
+# # 
