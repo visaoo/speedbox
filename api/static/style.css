@@ -1,0 +1,170 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: 0.3s ease-in-out;
+  /* talvez */
+}
+
+:root {
+  --bg-color: #ffffff;
+  --secundary-bg: #ebeef1;
+  --primary-color: #2563eb;
+  --font-color: #000000;
+  --secundary-font-color: #ffffff;
+  --third-font-color: #a09a9a;
+  --border-color: #a09a9a8a;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--third-font-color);
+}
+
+header {
+  background-color: var(--bg-color);
+  border-color: var(--border-color);
+  /*Deixar meio transparente*/
+}
+
+.logo > a {
+  color: var(--primary-color);
+}
+
+nav > .hero {
+  color: var(--primary-color);
+}
+
+nav > .about {
+  color: var(--third-font-color);
+}
+
+nav > .about:hover {
+  color: var(--primary-color);
+}
+
+nav > div > .login {
+  color: var(--font-color);
+  border-color: var(--border-color);
+}
+
+nav > div > .login:hover {
+  color: var(--third-font-color);
+}
+
+nav > div > .register {
+  background-color: var(--primary-color);
+  color: var(--secundary-font-color);
+  transition: 0.3s ease-in-out;
+}
+
+nav > div > .register:hover {
+  filter: brightness(0.85);
+}
+
+/*hero*/
+
+h1 {
+  color: var(--font-color);
+}
+
+.btn.client,
+.btn.enterprise,
+.btn.enter,
+.btn.register {
+  background-color: var(--primary-color);
+  color: var(--secundary-font-color);
+}
+
+.btn.client:hover,
+.btn.enterprise:hover
+.btn.enter:hover,
+.btn.register:hover {
+  filter: brightness(0.85);
+}
+
+.btn.delivery {
+  background-color: var(--bg-color);
+  color: var(--font-color);
+  border-color: var(--border-color);
+}
+
+.btn.delivery:hover {
+  color: var(--third-font-color);
+}
+
+/*About us*/
+
+.how-it-works {
+  background-color: var(--secundary-bg);
+}
+
+.card-info {
+  background-color: var(--bg-color) !important;
+}
+
+.card-info > .rounded-icon {
+  background-color: var(--primary-color);
+}
+
+.card-info > h3,
+.card-info > p {
+  color: var(--third-font-color);
+}
+
+/*footer*/
+
+footer {
+    background-color: var(--secundary-bg);
+    border-color: var(--border-color);
+}
+
+.footer-text {
+    color: var(--third-font-color);
+}
+
+.rights-reserved {
+    border-color: var(--border-color);
+}
+
+/*Login*/
+
+.login-card {
+  background-color: var(--secundary-bg);
+  border-color: var(--border-color);
+}
+
+.login-card > div {
+  border-color: var(--border-color);
+}
+
+.login-card > div > h2, 
+.login-card > div > p,
+.email-container > label,
+.password-container > div > label {
+  color: var(--third-font-color);
+}
+
+.password-container > div > a,
+.register-text {
+  color: var(--primary-color);
+}
+
+.email-container > input,
+.password-container > input {
+  background-color: var(--bg-color);
+  border-color: var(--border-color);
+}
+
+.form-container {
+  background-color: var(--secundary-bg);
+}
+
+.text-form.title,
+.link {
+  color: var(--font-color);
+}
+
+.text-form.subtitle {
+  color: var(--third-font-color);
+}
