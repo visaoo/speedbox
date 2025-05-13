@@ -1,101 +1,135 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../static/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-
-<body class="bg-white text-gray-900 min-h-screen flex flex-col">
-  <!-- Header/Navbar -->
-  <header class="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
-    <nav class="mx-auto flex h-16 items-center justify-between px-4">
-      <div class="logo">
-        <a href="/" class="text-2xl font-bold text-blue-600">SpeedBox</a>
+  <body class="min-h-screen flex flex-col">
+    <!-- Header/Navbar -->
+    <header class="sticky top-0 z-50 w-full border-b backdrop-blur">
+      <div class="mx-auto flex h-16 items-center justify-between px-4">
+        <div class="logo">
+          <a href="/" class="text-2xl font-bold">SpeedBox</a>
+        </div>
+        <div class="link">
+          <nav class="hidden md:flex items-center gap-6">
+            <a href="/" class="hero text-sm font-medium">Início</a>
+            <div class="flex items-center gap-2">
+              <a
+                href="/register"
+                class="register px-4 py-2 text-sm font-mediu rounded-md"
+                >Cadastro</a
+              >
+            </div>
+            <div id="darkmode" class="p-4">
+              <i
+                id="sunIcon"
+                class="fa-regular fa-sun hidden w-6 h-6 cursor-pointer"
+              ></i>
+              <i
+                id="moonIcon"
+                class="fa-solid fa-moon w-6 h-6 cursor-pointer"
+              ></i>
+            </div>
+          </nav>
+        </div>
       </div>
-      <div class="link">
-        <nav class="hidden md:flex items-center gap-6">
-          <a href="/" class="text-sm font-medium text-blue-600">Início</a>
-          <div class="flex items-center gap-2">
-            <a href="/register"
-              class="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-md hover:bg-blue-700">Cadastro</a>
-          </div>
-        </nav>
-  </header>
+    </header>
 
-  <main class="flex-1 container mx-auto max-w-md py-12 px-4">
-    <!--Campo de Login-->
-    <div class="bg-white rounded-lg border shadow-sm">
-      <div class="p-6 border-b space-y-1">
-        <h2 class="text-2xl font-bold">Login</h2>
-        <p class="text-sm text-gray-500">Entre com seu e-mail e senha para acessar sua conta</p>
-      </div>
+    <main class="flex-1 container mx-auto max-w-md py-12 px-4">
+      <!--Campo de Login-->
+      <div class="login-card rounded-lg border shadow-sm">
+        <div class="p-6 border-b space-y-1">
+          <h2 class="text-2xl font-bold">Login</h2>
+          <p class="text-sm">
+            Entre com seu e-mail e senha para acessar sua conta
+          </p>
+        </div>
         <!--Corpo do formulário de Login-->
-      <div class="p-6 space-y-4">
-        <!--Email-->
-        <div class="space-y-2">
-          <label for="email" class="text-sm font-medium">E-mail</label>
-          <input id="email" type="email" placeholder="seu@email.com" required
-            class="w-full px-3 py-2 border rounded-md">
-        </div>
-        <!--Esqueceu a senha-->
-        <div class="space-y-2">
-          <div class="flex items-center justify-between">
-            <label for="senha" class="text-sm font-medium">Senha</label>
-            <a href="#" class="text-sm text-blue-600 hover:underline">
-              Esqueceu a senha?
-            </a>
+        <div class="p-6 space-y-4">
+          <!--Email-->
+          <div class="email-container space-y-2">
+            <label for="email" class="text-sm font-medium">E-mail</label>
+            <input
+              id="email"
+              type="email"
+              placeholder="seu@email.com"
+              required
+              class="w-full px-3 py-2 border rounded-md"
+            />
           </div>
-          <input id="senha" type="password" required class="w-full px-3 py-2 border rounded-md">
+          <!--Esqueceu a senha-->
+          <div class="password-container space-y-2">
+            <div class="flex items-center justify-between">
+              <label for="senha" class="text-sm font-medium">Senha</label>
+              <a href="#" class="link text-sm hover:underline">
+                Esqueceu a senha?
+              </a>
+            </div>
+            <input
+              id="senha"
+              type="password"
+              required
+              class="w-full px-3 py-2 border rounded-md"
+            />
+          </div>
+        </div>
+        <!--Botão para cadastro-->
+        <div class="p-6 border-t flex flex-col space-y-4">
+          <button class="btn enter w-full px-4 py-2 rounded-md">Entrar</button>
+          <div class="text-center text-sm">
+            <p>
+              Não tem uma conta?
+              <a href="/register" class="link register-text hover:underline">
+                Cadastre-se
+              </a>
+            </p>
+          </div>
         </div>
       </div>
-      <!--Botão para cadastro-->
-      <div class="p-6 border-t flex flex-col space-y-4">
-        <button class="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Entrar</button>
-        <div class="text-center text-sm">
-          <p class="text-gray-500">
-            Não tem uma conta?
-            <a href="/register" class="text-blue-600 hover:underline">
-              Cadastre-se
-            </a>
+    </main>
+
+    <footer class="border-t mt-12">
+      <div
+        class="container mx-auto flex flex-col gap-6 py-8 md:flex-row md:items-center px-4"
+      >
+        <div class="flex-1">
+          <div class="flex h-10 items-center space-x-2">
+            <span class="text-xl font-bold">SpeedBox</span>
+          </div>
+          <p class="mt-2 text-sm">
+            Conectando clientes e entregadores de forma intuitiva e eficiente
+          </p>
+        </div>
+        <div class="flex flex-col md:flex-row gap-4 md:items-center md:gap-6">
+          <a href="#" class="text-sm hover:underline"> Termos de Uso </a>
+          <a href="#" class="text-sm hover:underline">
+            Política de Privacidade
+          </a>
+          <a href="#" class="text-sm hover:underline"> Contato </a>
+        </div>
+      </div>
+      <div class="rights-reserved border-t py-6">
+        <div
+          class="container mx-auto flex flex-col items-center justify-between gap-4 md:flex-row px-4"
+        >
+          <p class="text-center text-s md:text-left">
+            &copy; <span id="current-year"></span> SpeedBox. Todos os direitos
+            reservados.
           </p>
         </div>
       </div>
-    </div>
-  </main>
-
-  <footer class="border-t bg-gray-100 mt-12">
-    <div class="container mx-auto flex flex-col gap-6 py-8 md:flex-row md:items-center px-4">
-      <div class="flex-1">
-        <div class="flex h-10 items-center space-x-2">
-          <span class="text-xl font-bold">SpeedBox</span>
-        </div>
-        <p class="mt-2 text-sm text-gray-500">
-          Conectando clientes e entregadores de forma intuitiva e eficiente
-        </p>
-      </div>
-      <div class="flex flex-col md:flex-row gap-4 md:items-center md:gap-6">
-        <a href="#" class="text-sm hover:underline">
-          Termos de Uso
-        </a>
-        <a href="#" class="text-sm hover:underline">
-          Política de Privacidade
-        </a>
-        <a href="#" class="text-sm hover:underline">
-          Contato
-        </a>
-      </div>
-    </div>
-    <div class="border-t py-6">
-      <div class="container mx-auto flex flex-col items-center justify-between gap-4 md:flex-row px-4">
-        <p class="text-center text-sm text-gray-500 md:text-left">
-          &copy; <span id="current-year"></span> SpeedBox. Todos os direitos reservados.
-        </p>
-      </div>
-    </div>
-  </footer>
-</body>
-
+    </footer>
+    <script src="../static/scripts/darkmode.js"></script>
+  </body>
 </html>

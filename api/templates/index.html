@@ -1,185 +1,262 @@
 <!DOCTYPE html>
 <html lang="pt-br" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpeedBox</title>
+    <link rel="stylesheet" href="../static/style.css" />
+    <!-- Link para o CDN do Tailwind CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <!-- Header/Navbar -->
+    <header class="sticky top-0 z-50 w-full border-b backdrop-blur">
+      <div class="mx-auto flex h-16 items-center justify-between px-4">
+        <div class="logo">
+          <a href="/" class="text-2xl font-bold">SpeedBox</a>
+        </div>
+        <div class="link">
+          <nav class="hidden md:flex items-center gap-6">
+            <a href="#hero" class="hero text-sm font-medium">Início</a>
+            <a href="#sobre" class="about text-sm font-medium">Sobre nós</a>
+            <div class="flex items-center gap-2">
+              <a
+                href="/login"
+                class="login px-4 py-2 text-sm font-medium border rounded-md"
+                >Login</a
+              >
+              <a
+                href="/register"
+                class="register px-4 py-2 text-sm font-medium rounded-md"
+                >Cadastro</a
+              >
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SpeedBox</title>
-  <!-- Link para o CDN do Tailwind CSS -->
-  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css'
-    integrity='sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=='
-    crossorigin='anonymous' />
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-white text-gray-900 min-h-screen flex flex-col">
-  <!-- Header/Navbar -->
-  <header class="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
-    <nav class="mx-auto flex h-16 items-center justify-between px-4">
-      <div class="logo">
-        <a href="/" class="text-2xl font-bold text-blue-600">SpeedBox</a>
+              <div id="darkmode" class="p-4">
+                <i
+                  id="sunIcon"
+                  class="fa-regular fa-sun hidden w-6 h-6 cursor-pointer"
+                ></i>
+                <i
+                  id="moonIcon"
+                  class="fa-solid fa-moon w-6 h-6 cursor-pointer"
+                ></i>
+              </div>
+            </div>
+          </nav>
+        </div>
       </div>
-      <div class="link">
-        <nav class="hidden md:flex items-center gap-6">
-          <a href="#hero" class="text-sm font-medium text-blue-600">Início</a>
-          <a href="#sobre" class="text-sm font-medium text-gray-500 hover:text-blue-600">Sobre nós</a>
-          <div class="flex items-center gap-2">
-            <a href="/login" class="px-4 py-2 text-sm font-medium border rounded-md hover:bg-gray-100">Login</a>
-            <a href="/register"
-              class="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-md hover:bg-blue-700">Cadastro</a>
+    </header>
+
+    <main class="flex-1">
+      <!-- Hero Section -->
+      <section
+        id="hero"
+        class="w-full pt-20 pb-12 md:pt-20 md:pb-24 lg:pt-20 lg:pb-32 xl:pt-20 xl:pb-48"
+      >
+        <div class="container mx-auto px-4 md:px-6">
+          <div class="grid gap-6 lg:grid-cols-2 lg:gap-12 xl:grid-cols-2">
+            <div class="flex flex-col justify-center space-y-4">
+              <div class="space-y-2">
+                <h1
+                  class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl"
+                >
+                  Entregas rápidas e eficientes
+                </h1>
+                <p class="max-w-[600px] text-gray-500 md:text-xl">
+                  Conectamos clientes e entregadores de forma intuitiva.
+                  Solicite uma entrega e acompanhe em tempo real.
+                </p>
+              </div>
+              <div class="flex flex-col gap-2 min-[400px]:flex-row">
+                <a
+                  href="/login"
+                  class="btn client inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-md"
+                >
+                  Sou Cliente
+                  <i class="fa-solid fa-arrow-right ml-2 h-4 w-4"></i>
+                </a>
+                <a
+                  href="/login"
+                  class="btn delivery inline-flex items-center justify-center px-6 py-3 text-base font-medium border border-gray-300 rounded-md"
+                >
+                  Sou Entregador
+                  <i class="fa-solid fa-arrow-right ml-2 h-4 w-4"></i>
+                </a>
+                <a
+                  href="/login"
+                  class="btn enterprise inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-md"
+                >
+                  Sou Empresa
+                  <i class="fa-solid fa-arrow-right ml-2 h-4 w-4"></i>
+                </a>
+              </div>
+            </div>
+            <div class="flex items-center justify-center">
+              <img
+                src="../static/images/delivery.jpeg"
+                alt="Entrega SpeedBox"
+                class="rounded-lg object-cover"
+                width="400"
+                height="400"
+              />
+            </div>
           </div>
-        </nav>
-  </header>
-
-  <main class="flex-1">
-    <!-- Hero Section -->
-    <section id="hero" class="w-full pt-20 pb-12 md:pt-20 md:pb-24 lg:pt-20 lg:pb-32 xl:pt-20 xl:pb-48">
-
-      <div class="container mx-auto px-4 md:px-6">
-        <div class="grid gap-6 lg:grid-cols-2 lg:gap-12 xl:grid-cols-2">
-          <div class="flex flex-col justify-center space-y-4">
+        </div>
+      </section>
+      <!--How it works-->
+      <section id="sobre" class="how-it-works w-full py-12 md:py-24 lg:py-32">
+        <div class="container mx-auto px-4 md:px-6">
+          <div
+            class="flex flex-col items-center justify-center space-y-4 text-center"
+          >
             <div class="space-y-2">
-              <h1 class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
-                Entregas rápidas e eficientes
-              </h1>
-              <p class="max-w-[600px] text-gray-500 md:text-xl">
-                Conectamos clientes e entregadores de forma intuitiva. Solicite uma entrega e acompanhe em tempo
-                real.
+              <h2 class="text-3xl font-bold tracking-tighter sm:text-5xl">
+                Como funciona
+              </h2>
+              <p
+                class="max-w-[900px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
+              >
+                Nossa plataforma conecta clientes e entregadores de forma
+                simples e eficiente
               </p>
             </div>
+          </div>
+          <div
+            class="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 md:grid-cols-2 lg:grid-cols-4"
+          >
+            <div
+              class="card-info flex flex-col items-center space-y-2 rounded-lg p-4"
+            >
+              <div class="rounded-icon rounded-full bg-blue-600 p-2 text-white">
+                <i data-lucide="package" class="h-6 w-6"></i>
+              </div>
+              <h3 class="text-xl font-bold">Solicite</h3>
+              <p class="text-sm text-gray-500 text-center">
+                Cadastre-se e solicite uma entrega em poucos cliques
+              </p>
+            </div>
+            <div
+              class="card-info flex flex-col items-center space-y-2 rounded-lg p-4"
+            >
+              <div class="rounded-icon rounded-full bg-blue-600 p-2 text-white">
+                <i data-lucide="map-pin" class="h-6 w-6"></i>
+              </div>
+              <h3 class="text-xl font-bold">Acompanhe</h3>
+              <p class="text-sm text-gray-500 text-center">
+                Acompanhe o status da sua entrega em tempo real
+              </p>
+            </div>
+            <div
+              class="card-info flex flex-col items-center space-y-2 rounded-lg p-4"
+            >
+              <div class="rounded-icon rounded-full bg-blue-600 p-2 text-white">
+                <i data-lucide="clock" class="h-6 w-6"></i>
+              </div>
+              <h3 class="text-xl font-bold">Receba</h3>
+              <p class="text-sm text-gray-500 text-center">
+                Receba sua entrega no prazo e com segurança
+              </p>
+            </div>
+            <div
+              class="card-info flex flex-col items-center space-y-2 rounded-lg p-4"
+            >
+              <div class="rounded-icon rounded-full bg-blue-600 p-2 text-white">
+                <i data-lucide="shield" class="h-6 w-6"></i>
+              </div>
+              <h3 class="text-xl font-bold">Segurança</h3>
+              <p class="text-sm text-gray-500 text-center">
+                Entregadores verificados e sistema de avaliação
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!--Cadastre-se-->
+      <section class="w-full py-12 md:py-24 lg:py-32">
+        <div class="container mx-auto px-4 md:px-6">
+          <div
+            class="flex flex-col items-center justify-center space-y-4 text-center"
+          >
+            <div class="space-y-2">
+              <h2
+                class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl"
+              >
+                Pronto para começar?
+              </h2>
+              <p
+                class="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
+              >
+                Cadastre-se agora e experimente a forma mais eficiente de fazer
+                entregas
+              </p>
+            </div>
+
+            <!--Botão cadastrar-->
             <div class="flex flex-col gap-2 min-[400px]:flex-row">
-              <a href="/login"
-                class="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
-                Sou Cliente <i class="fa-solid fa-arrow-right ml-2 h-4 w-4"></i>
+              <a
+                href="/register?tipo=cliente"
+                class="btn client inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white rounded-md"
+              >
+                Cadastrar como Cliente
               </a>
-              <a href="/login"
-                class="inline-flex items-center justify-center px-6 py-3 text-base font-medium border border-gray-300 rounded-md hover:bg-gray-100">
-                Sou Entregador <i class="fa-solid fa-arrow-right ml-2 h-4 w-4"></i>
+              <a
+                href="/register?tipo=entregador"
+                class="btn delivery inline-flex items-center justify-center px-6 py-3 text-base font-medium border rounded-md"
+              >
+                Cadastrar como Entregador
               </a>
-              <a href="/login"
-                class="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
-                Sou Empresa <i class="fa-solid fa-arrow-right ml-2 h-4 w-4"></i>
+              <a
+                href="/register?tipo=empresa"
+                class="btn enterprise inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white rounded-md"
+              >
+                Cadastrar como Empresa
               </a>
             </div>
           </div>
-          <div class="flex items-center justify-center">
-            <img src="../static/images/delivery.jpeg" alt="Entrega SpeedBox" class="rounded-lg object-cover" width="400"
-              height="400" />
-          </div>
         </div>
-      </div>
-    </section>
-    <!--Como funciona-->
-    <section id="sobre" class="w-full py-12 md:py-24 lg:py-32 bg-gray-100">
-      <div class="container mx-auto px-4 md:px-6">
-        <div class="flex flex-col items-center justify-center space-y-4 text-center">
-          <div class="space-y-2">
-            <h2 class="text-3xl font-bold tracking-tighter sm:text-5xl">Como funciona</h2>
-            <p class="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Nossa plataforma conecta clientes e entregadores de forma simples e eficiente
-            </p>
-          </div>
-        </div>
-        <div class="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 md:grid-cols-2 lg:grid-cols-4">
-          <div class="flex flex-col items-center space-y-2 rounded-lg border bg-white p-4">
-            <div class="rounded-full bg-blue-600 p-2 text-white">
-              <i data-lucide="package" class="h-6 w-6"></i>
-            </div>
-            <h3 class="text-xl font-bold">Solicite</h3>
-            <p class="text-sm text-gray-500 text-center">
-              Cadastre-se e solicite uma entrega em poucos cliques
-            </p>
-          </div>
-          <div class="flex flex-col items-center space-y-2 rounded-lg border bg-white p-4">
-            <div class="rounded-full bg-blue-600 p-2 text-white">
-              <i data-lucide="map-pin" class="h-6 w-6"></i>
-            </div>
-            <h3 class="text-xl font-bold">Acompanhe</h3>
-            <p class="text-sm text-gray-500 text-center">
-              Acompanhe o status da sua entrega em tempo real
-            </p>
-          </div>
-          <div class="flex flex-col items-center space-y-2 rounded-lg border bg-white p-4">
-            <div class="rounded-full bg-blue-600 p-2 text-white">
-              <i data-lucide="clock" class="h-6 w-6"></i>
-            </div>
-            <h3 class="text-xl font-bold">Receba</h3>
-            <p class="text-sm text-gray-500 text-center">
-              Receba sua entrega no prazo e com segurança
-            </p>
-          </div>
-          <div class="flex flex-col items-center space-y-2 rounded-lg border bg-white p-4">
-            <div class="rounded-full bg-blue-600 p-2 text-white">
-              <i data-lucide="shield" class="h-6 w-6"></i>
-            </div>
-            <h3 class="text-xl font-bold">Segurança</h3>
-            <p class="text-sm text-gray-500 text-center">
-              Entregadores verificados e sistema de avaliação
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!--Cadastre-se-->
-    <section class="w-full py-12 md:py-24 lg:py-32">
-      <div class="container mx-auto px-4 md:px-6">
-        <div class="flex flex-col items-center justify-center space-y-4 text-center">
-          <div class="space-y-2">
-            <h2 class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Pronto para começar?</h2>
-            <p class="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Cadastre-se agora e experimente a forma mais eficiente de fazer entregas
-            </p>
-          </div>
+      </section>
+    </main>
 
-          <!--Botão cadastrar-->
-          <div class="flex flex-col gap-2 min-[400px]:flex-row">
-            <a href="/register?tipo=cliente"
-              class="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
-              Cadastrar como Cliente
-            </a>
-            <a href="/register?tipo=entregador"
-              class="inline-flex items-center justify-center px-6 py-3 text-base font-medium border border-gray-300 rounded-md hover:bg-gray-100">
-              Cadastrar como Entregador
-            </a>
-            <a href="/register?tipo=empresa"
-              class="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
-              Cadastrar como Empresa
-            </a>
+    <footer class="border-t">
+      <div
+        class="container mx-auto flex flex-col gap-6 py-8 md:flex-row md:items-center px-4"
+      >
+        <div class="flex-1">
+          <div class="footer-text flex h-10 items-center space-x-2">
+            <a class="text-xl font-bold">SpeedBox</a>
           </div>
+          <p class="footer-text mt-2 text-sm">
+            Conectando clientes e entregadores de forma intuitiva e eficiente
+          </p>
+        </div>
+        <div class="flex flex-col md:flex-row gap-4 md:items-center md:gap-6">
+          <a href="#" class="footer-text text-sm hover:underline">
+            Termos de Uso
+          </a>
+          <a href="#" class="footer-text text-sm hover:underline">
+            Política de Privacidade
+          </a>
+          <a href="#" class="footer-text text-sm hover:underline"> Contato </a>
         </div>
       </div>
-    </section>
-  </main>
-
-  <footer class="border-t bg-gray-100">
-    <div class="container mx-auto flex flex-col gap-6 py-8 md:flex-row md:items-center px-4">
-      <div class="flex-1">
-        <div class="flex h-10 items-center space-x-2">
-          <span class="text-xl font-bold">SpeedBox</span>
+      <div class="rights-reserved border-t py-6">
+        <div
+          class="container mx-auto flex flex-col items-center justify-between gap-4 md:flex-row px-4"
+        >
+          <p class="footer-text text-center text-sm md:text-left">
+            &copy; <span id="current-year"></span> SpeedBox. Todos os direitos
+            reservados.
+          </p>
         </div>
-        <p class="mt-2 text-sm text-gray-500">
-          Conectando clientes e entregadores de forma intuitiva e eficiente
-        </p>
       </div>
-      <div class="flex flex-col md:flex-row gap-4 md:items-center md:gap-6">
-        <a href="#" class="text-sm hover:underline">
-          Termos de Uso
-        </a>
-        <a href="#" class="text-sm hover:underline">
-          Política de Privacidade
-        </a>
-        <a href="#" class="text-sm hover:underline">
-          Contato
-        </a>
-      </div>
-    </div>
-    <div class="border-t py-6">
-      <div class="container mx-auto flex flex-col items-center justify-between gap-4 md:flex-row px-4">
-        <p class="text-center text-sm text-gray-500 md:text-left">
-          &copy; <span id="current-year"></span> SpeedBox. Todos os direitos reservados.
-        </p>
-      </div>
-    </div>
-  </footer>
-</body>
+    </footer>
 
+    <script src="../static/scripts/darkmode.js"></script>
+  </body>
 </html>
