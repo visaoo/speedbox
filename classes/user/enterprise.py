@@ -1,5 +1,6 @@
-from Address import Address
 from enum import Enum
+
+from Address import Address
 
 
 class TypeKeyPix(Enum):
@@ -11,7 +12,7 @@ class TypeKeyPix(Enum):
 
 
 class Enterprise:
-    def __init__(self, name:str, cnpj:str, address:Address):
+    def __init__(self, name: str, cnpj: str, address: Address):
         self._name = name
         self._cnpj = cnpj
         self._address = address
@@ -39,6 +40,3 @@ class Enterprise:
     @address.setter
     def address(self, value):
         self._address = value
-
-        
-        
