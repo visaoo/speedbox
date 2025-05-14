@@ -19,7 +19,7 @@ class VehicleType(Enum):
 class Vehicle(Base):
     __tablename__ = 'veiculos'
 
-    id_vehicle = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     _model = Column("model", String(15))
     _mark = Column("mark", String(15))
     _plate = Column("plate", String(7))
