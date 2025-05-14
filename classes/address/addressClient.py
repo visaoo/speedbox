@@ -1,32 +1,57 @@
-from sqlalchemy import (Column, ForeignKey, Integer, String)
-from sqlalchemy.orm import relationship
-from db.database import Base
+from sqlalchemy import (Column, ForeignKey, Integer, select)
+from sqlalchemy.orm import relationship, Session
+from addressBase import AddressBase
 
-class AddressClient(Base):
+
+
+
+class AddressClient(AddressBase):
+    
     __tablename__ = 'address_client'
     
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    _street = Column(String(100))
-    _number = Column(Integer)
-    _neighborhood = Column(String(50))
-    _city = Column(String(25))
-    _state = Column(String(20))
     _id_client = Column(Integer, ForeignKey('client.id'))
     
     client = relationship('Client', back_populates='address_client')
+
+
+
+def create_address_client(db: Session, client_or_id, **kwargs) -> AddressClient:
+    #dps do visão criar o cliente, trocar os ... por client 
     
-    
-    def __str__(self):
-        return f'{self.rua}, {self.numero}, {self.bairro}, {self.cidade}, {self.estado}'
+    if isinstance(client_or_id, int):
+        client = db.query(...).filter_by(id=client_or_id).first()
+        if not client:
+            raise ValueError("Cliente não encontrado.")
+    else:
+        client = client_or_id
+
+    address = AddressClient(client=client, **kwargs)
+    db.add(address)
+    db.commit()
+    db.refresh(address)
+    return address
 
 
-# origem = Address('Rua Folha Dourada', '6', 'Jardim Miragaia', 'São Paulo', 'SP')
-# destino = Address('Rua Olivio Segatto', '1017', 'Centro', 'Tupi Paulista', 'SP')
+def get_address_client(db:Session, address_id):
+    stmt = select(AddressClient).where(AddressClient.id == address_id)
+    return db.execute(stmt).scalars().first()
 
+def get_address_by_client(db:Session, client_id):
+    stmt = select(AddressClient).where(AddressClient._id_client == client_id)
+    return db.execute(stmt).scalars().first()
 
-# print(origem, destino)
+def update_address_client(db:Session, address_id, address_data:dict):
+    address = select(AddressClient).where(AddressClient.id == address_id)
+    if address:
+        for key, value in address_data.items():
+            setattr(address, key, value)
+        db.commit()
+        db.refresh(address)
+    return address
 
-# ford = Vehicle('model', 'mark', 'str', Vehicle_type.CARRO)
-
-
-# print(ford.calculate_distance(origem, destino))
+def delete_address_client(db: Session, address_id):
+    address = select(AddressClient).where(AddressClient.id == address_id)
+    if address:
+        db.delete(address)
+        db.commit
+    return address
