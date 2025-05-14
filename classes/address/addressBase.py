@@ -1,5 +1,4 @@
 from sqlalchemy import (Column, Integer, String)
-from sqlalchemy.orm import relationship
 from db.database import Base
 
 class AddressBase(Base):
@@ -15,3 +14,6 @@ class AddressBase(Base):
     
     def __str__(self):
         return f'{self.rua}, {self.numero}, {self.bairro}, {self.cidade}, {self.estado}'
+
+
+
