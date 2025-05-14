@@ -1,7 +1,6 @@
 from enum import Enum, auto
 
-import classes.AddressClient as AddressClient
-
+import address.address as Address 
 
 class OrderStatus(Enum):
     PENDING = auto()
@@ -11,7 +10,7 @@ class OrderStatus(Enum):
 
 
 class Order:
-    def __init__(self, id: int, origem: AddressClient, status: OrderStatus, destino: AddressClient) -> dict:
+    def __init__(self, id: int, origem: Address, status: OrderStatus, destino: Address) -> dict:
         """
         Classe que representa um pedido de entrega.
         :param id: ID do pedido

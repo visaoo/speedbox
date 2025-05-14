@@ -8,8 +8,9 @@ class item_size(Enum):
 
 
 class Item:
-    def __init__(self, name, price, type, description, size):
+    def __init__(self, name, id: int, price, type, description, size):
         self._name = name
+        self._id = id   
         self._price = price
         self._type = type
         self._description = description
@@ -22,6 +23,14 @@ class Item:
     @name.setter
     def name(self, value):
         self._name = value
+        
+    @property
+    def id(self):
+        return self._id
+    
+    @id.setter # codigo vai gerar automaticamente o id 
+    def id(self, value):
+        self._id = value
 
     @property
     def price(self):
@@ -54,3 +63,6 @@ class Item:
     @size.setter
     def size(self, value):
         self._size = value
+        
+    def __repr__(self):
+        return f"Item(id={self.id}, name={self.name}, price={self.price})"

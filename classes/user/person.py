@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List
 
-from classes.address.addressClient import Address
+from classes.address.address import Address
 from abc import ABC
 
 class Person(ABC):
