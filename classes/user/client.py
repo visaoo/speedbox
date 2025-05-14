@@ -37,6 +37,7 @@ class Client(Person):
     def add_item(self, item: Item):
         self._cart.append(item)
 
+
 def remove_item_by_id(self, item_id: str):
     """Recebe o id do item e o remove do sistema"""
     for item in self._cart:

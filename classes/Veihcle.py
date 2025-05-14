@@ -3,16 +3,18 @@ from enum import Enum
 
 from dotenv import load_dotenv
 from openrouteservice import Client
-
-from sqlalchemy import (Column, Integer, ForeignKey, String, Boolean)
-from sqlalchemy.orm import relationship, declarative_base
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.ext.hybrid import hybrid_property
-Base = declarative_base()
+from sqlalchemy.orm import relationship
+
+from db.database import Base
+
 
 class VehicleType(Enum):
     MOTO = "moto"
     CARRO = "carro"
     CAMINHAO = "caminhao"
+
 
 class Vehicle(Base):
     __tablename__ = 'veiculos'
@@ -27,8 +29,6 @@ class Vehicle(Base):
 
     delivery_person_id = Column(Integer, ForeignKey('delivery_person.id'))
     delivery_person = relationship('Delivery_person', back_populates='veiculos')
-
-
 
     def __init__(self, model: str, mark: str, plate: str, type_vehicle: VehicleType, maximum_load: int = 0):
         self.model = model
