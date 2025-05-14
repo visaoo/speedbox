@@ -1,18 +1,20 @@
-from sqlalchemy import (Column, Integer, ForeignKey, String, Enum)
-from sqlalchemy.orm import relationship, declarative_base
 from datetime import datetime
-Base = declarative_base()
+
+from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy.orm import declarative_base, relationship
+from db.database import Base
+
 
 class Card(Base):
     __tablename__ = 'card'
-    
+
     transaction_id = Column(Integer, ForeignKey('transactions.id'), primary_key=True)
     number_card = Column(String(16))
     flag = Column(String(20))
     atorization_status = Column(String(20))
-    
+
     transaction = relationship('Trasaction', back_populates='card')
-    
+
     def __init__(self, name, number, validity, cvc, flag):
         self._name = name
         self._number = number
@@ -56,7 +58,6 @@ class Card(Base):
                 self._validity = value
         except Exception as e:
             print(f'ERRO [{e}]')
-        
 
     @property
     def cvc(self):
@@ -64,57 +65,57 @@ class Card(Base):
 
     @cvc.setter
     def cvc(self, value):
-        if value.isdigit() and len(value) in [3,4]:
+        if value.isdigit() and len(value) in [3, 4]:
             self._cvc = value
         raise ValueError('CVC diferente de 3')
-    
+
     @property
     def flag(self):
         return self._flag
-    
+
     def identificar_bandeira(self):
-        
+
         # Identificação por prefixo e comprimento
-        if (self.number.startswith('4') and 
+        if (self.number.startswith('4') and
             len(self.number) in [13, 16]):
             self.flag = "Visa"
             return
-        elif ((self.number.startswith('51') or 
-            self.number.startswith('52') or 
-            self.number.startswith('53') or 
-            self.number.startswith('54') or 
-            self.number.startswith('55')) and 
+        elif ((self.number.startswith('51') or
+            self.number.startswith('52') or
+            self.number.startswith('53') or
+            self.number.startswith('54') or
+            self.number.startswith('55')) and
             len(self.number) == 16):
             self.flag = "Mastercard"
-            return 
-        elif ((self.number.startswith('34') or 
-            self.number.startswith('37')) and 
+            return
+        elif ((self.number.startswith('34') or
+            self.number.startswith('37')) and
             len(self.number) == 15):
             self.flag = "American Express"
-            return 
-        elif ((self.number.startswith('300') or 
-            self.number.startswith('301') or 
-            self.number.startswith('302') or 
-            self.number.startswith('303') or 
-            self.number.startswith('304') or 
-            self.number.startswith('305') or 
-            self.number.startswith('36') or 
-            self.number.startswith('38') or 
-            self.number.startswith('39')) and 
+            return
+        elif ((self.number.startswith('300') or
+            self.number.startswith('301') or
+            self.number.startswith('302') or
+            self.number.startswith('303') or
+            self.number.startswith('304') or
+            self.number.startswith('305') or
+            self.number.startswith('36') or
+            self.number.startswith('38') or
+            self.number.startswith('39')) and
             len(self.number) in [14, 15, 16]):
             self.flag = "Diners Club"
-            return 
-        elif (self.number.startswith('6011') and 
+            return
+        elif (self.number.startswith('6011') and
             len(self.number) == 16):
             self.flag = "Discover"
-            return 
-        elif ((self.number.startswith('35') and 
+            return
+        elif ((self.number.startswith('35') and
             len(self.number) in [16, 17, 18, 19])):
             self.flag = "JCB"
-            return 
-        elif ((self.number.startswith('22') and 
+            return
+        elif ((self.number.startswith('22') and
             len(self.number) in [16])):
             self.flag = "Mastercard BIN"
-            return 
+            return
         else:
             return "Bandeira não identificada"

@@ -1,8 +1,11 @@
 from dataclasses import dataclass
 from datetime import datetime
-from user.client import Client
-from classes.user.enterprise import Enterprise
+
 from order import Order
+from user.client import Client
+
+from classes.user.enterprise import Enterprise
+
 
 @dataclass
 class NFe:
@@ -12,7 +15,7 @@ class NFe:
     number: int
     serie: int = 1
     date_issue: datetime = datetime.now()
-    
+
     def generate_xml(self) -> str:
         """Gera o XML da NF-e conforme o padrão da SEFAZ"""
         total = self.calcular_total()

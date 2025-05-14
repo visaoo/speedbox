@@ -22,17 +22,9 @@ class Client(Person):
     def cart(self):
         return self._cart
 
-    @cart.setter
-    def cart(self, value):
-        self._cart = value
-
     @property
     def user(self):
         return self._user
-
-    @user.setter
-    def user(self, value: User):
-        self._user = value
 
     def finalize_order(self, item: Item):
         if not self._cart:
@@ -45,11 +37,14 @@ class Client(Person):
     def add_item(self, item: Item):
         self._cart.append(item)
 
-    def remove_item(self, item: Item):
-        if item in self._cart:
+
+def remove_item_by_id(self, item_id: str):
+    """Recebe o id do item e o remove do sistema"""
+    for item in self._cart:
+        if item.id == item_id:
             self._cart.remove(item)
-        else:
-            print("Carrinho vazio! Não é possível remover o pedido.")
+            return
+    print("Item não encontrado no carrinho!")
 
     def cancel_order(self):
         self._cart.clear()
