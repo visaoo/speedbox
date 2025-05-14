@@ -3,9 +3,7 @@ from enum import Enum
 
 from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer, Numeric
 from sqlalchemy.orm import declarative_base, relationship
-
-Base = declarative_base()
-
+from db.database import Base
 
 class PaymentMethod(Enum):
     PIX = 'pix'

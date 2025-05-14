@@ -3,7 +3,7 @@ import qrcode
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import declarative_base, relationship
 
-Base = declarative_base()
+from db.database import Base
 
 
 class Pix(Base):
