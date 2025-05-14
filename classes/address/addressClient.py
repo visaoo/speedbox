@@ -2,11 +2,8 @@ from sqlalchemy import (Column, ForeignKey, Integer, String)
 from sqlalchemy.orm import relationship
 from db.database import Base
 
-
-
-
 class AddressClient(Base):
-    __tablename__ = 'address client'
+    __tablename__ = 'address_client'
     
     id = Column(Integer, primary_key=True, autoincrement=True)
     _street = Column(String(100))
@@ -16,7 +13,7 @@ class AddressClient(Base):
     _state = Column(String(20))
     _id_client = Column(Integer, ForeignKey('client.id'))
     
-    client = relationship('Client')
+    client = relationship('Client', back_populates='address_client')
     
     
     def __str__(self):
