@@ -1,10 +1,10 @@
 from datetime import datetime
 from typing import List
 
-from Address import Address
+from classes.address.addressClient import Address
+from abc import ABC
 
-
-class Person:
+class Person(ABC):
     def __init__(self, name: str, cpf: str, address: List[Address], birth_date: datetime):
         self._name = name
         self._cpf = cpf

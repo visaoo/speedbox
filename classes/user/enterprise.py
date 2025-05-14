@@ -1,6 +1,6 @@
 from enum import Enum
 
-from Address import Address
+from classes.AddressClient import Address
 
 
 class TypeKeyPix(Enum):
