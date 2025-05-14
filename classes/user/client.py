@@ -1,9 +1,9 @@
+from classes.item import Item
+from classes.order import Order
+from classes.user.person import Person
+from classes.user.user import User
+from classes.address.address import Address
 from typing import List
-from item import Item
-from order import Order
-from person import Person
-from user import User
-from address.address import Address
 # from db import database
 
 

@@ -1,6 +1,6 @@
 from enum import Enum, auto
 
-import address.address as Address 
+from classes.address.address import Address
 
 class OrderStatus(Enum):
     PENDING = auto()
