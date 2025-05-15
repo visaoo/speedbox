@@ -6,6 +6,14 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.requests import Request
+from passlib.context import CryptContext
+from fastapi import Request
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel
+
+from database import insert_client, insert_delivery, insert_enterprise
+
+# criar insert no banco
 
 app = FastAPI()
 
@@ -30,7 +38,7 @@ async def login_page(request: Request):
 async def register_page(request: Request):
     return templates.TemplateResponse("register.html", {"request": request})
 
-# API para registrar usuário
+# CORS 
 
 app.add_middleware(
     CORSMiddleware,
@@ -39,20 +47,40 @@ app.add_middleware(
     allow_headers=["*"], 
 )
 
+# API para registrar usuário
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+def hash_password(password: str) -> str:
+    return pwd_context.hash(password)
+
 @app.post("/api/register-client")
-async def get_data(
+async def register_client(
     client_name: str = Form(...),
     client_cpf: str = Form(...),
     client_phone: str = Form(...),
     client_birth: str = Form(...),
     client_email: str = Form(...),
-    client_password: str = Form(...),
+    client_password: str = Form(...),    
     client_address: str = Form(...),
     client_neighborhood: str = Form(...),
     client_city: str = Form(...),
     client_state: str = Form(...),
 ): 
     try:
+        hashed_password = hash_password(client_password)
+        insert_client({
+            "client_name": client_name,
+            "client_cpf": client_cpf,
+            "client_phone": client_phone,
+            "client_birth": client_birth,
+            "client_email": client_email,
+            "client_password": hashed_password,
+            "client_address": client_address,
+            "client_neighborhood": client_neighborhood,
+            "client_city": client_city,
+            "client_state": client_state,
+        })
         return {
             "msg": "Cliente cadastrado com sucesso",
             "data": {
@@ -61,7 +89,7 @@ async def get_data(
                 "client_phone": client_phone,
                 "client_birth": client_birth,
                 "client_email": client_email,
-                "client_password": client_password,
+                "client_password": hashed_password,
                 "client_address": client_address,
                 "client_neighborhood": client_neighborhood,
                 "client_city": client_city,
@@ -83,6 +111,17 @@ async def register_delivery(
     delivery_password: str = Form(...),
 ):
     try:
+        hashed_password = hash_password(delivery_password)
+        insert_delivery({
+            "delivery_name": delivery_name,
+            "delivery_cpf": delivery_cpf,
+            "delivery_phone": delivery_phone,
+            "delivery_birth": delivery_birth,
+            "delivery_cnh": delivery_cnh,
+            "delivery_vehicle_type": delivery_vehicle_type,
+            "delivery_email": delivery_email,
+            "delivery_password": hashed_password,
+        })
         return {
             "msg": "Entregador cadastrado com sucesso",
             "data": {
@@ -93,7 +132,7 @@ async def register_delivery(
                 "delivery_cnh": delivery_cnh,
                 "delivery_vehicle_type": delivery_vehicle_type,
                 "delivery_email": delivery_email,
-                "delivery_password": delivery_password,
+                "delivery_password": hashed_password,
             }
         }
     except Exception as e:
@@ -113,6 +152,19 @@ async def register_enterprise(
     enterprise_password: str = Form(...),
 ):
     try:
+        hashed_password = hash_password(enterprise_password)
+        insert_enterprise({
+            "enterprise_owner_name": enterprise_owner_name,
+            "enterprise_name": enterprise_name,
+            "enterprise_cnpj": enterprise_cnpj,
+            "enterprise_phone": enterprise_phone,
+            "enterprise_address": enterprise_address,
+            "enterprise_neighborhood": enterprise_neighborhood,
+            "enterprise_city": enterprise_city,
+            "enterprise_state": enterprise_state,
+            "enterprise_email": enterprise_email,
+            "enterprise_password": hashed_password,
+        })
         return {
             "msg": "Empresa cadastrada com sucesso",
             "data": {
@@ -125,12 +177,35 @@ async def register_enterprise(
                 "enterprise_city": enterprise_city,
                 "enterprise_state": enterprise_state,
                 "enterprise_email": enterprise_email,
-                "enterprise_password": enterprise_password,
+                "enterprise_password": hashed_password,
             }
         }
     except Exception as e:
         return {"error": f"Erro ao salvar: {str(e)}"}
-    
+
+class LoginData(BaseModel):
+    email: str
+    password: str
+
+@app.post("/login")
+async def login(data: LoginData):
+    try:
+        # buscar no banco o usuário pelo email
+        user = get_user_by_email(data.email)  # criar funcao amanhã
+
+        if user is None:
+            return JSONResponse(status_code=401, content={"detail": "Usuário não encontrado"})
+
+        # Verifica se a senha bate com o hash
+        if not pwd_context.verify(data.password, user["password"]):
+            return JSONResponse(status_code=401, content={"detail": "Senha incorreta"})
+
+        return {"user_type": user["user_type"]}
+
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"detail": f"Erro interno: {str(e)}"})
+
+  
     # lista de atividades para amanhã
     
     # fazer conexão e armazenar no banco
