@@ -75,11 +75,11 @@ class Order:
 
 
 # Testando a classe Order
-pedido = Order(1, "Rua Folha Dourada, 6, Jardim Miragaia, São Paulo, SP", OrderStatus.PENDING, "Rua Olivio Segatto, 1017, Centro, Tupi Paulista, SP")
-print(pedido)  # Pendente
-pedido.nextStatus()
-print(pedido)  # Em andamento
-pedido.nextStatus()
-print(pedido)  # Concluído
-pedido.nextStatus()
-print(pedido)  # Cancelado
+# pedido = Order(1, "Rua Folha Dourada, 6, Jardim Miragaia, São Paulo, SP", OrderStatus.PENDING, "Rua Olivio Segatto, 1017, Centro, Tupi Paulista, SP")
+# print(pedido)  # Pendente
+# pedido.nextStatus()
+# print(pedido)  # Em andamento
+# pedido.nextStatus()
+# print(pedido)  # Concluído
+# pedido.nextStatus()
+# print(pedido)  # Cancelado
