@@ -1,117 +1,117 @@
-const tabCliente = document.getElementById("tab-cliente");
-const tabEntregador = document.getElementById("tab-entregador");
-const formCliente = document.getElementById("form-cliente");
-const formEntregador = document.getElementById("form-entregador");
-const tabEmpresa = document.getElementById("tab-empresa")
-const formEmpresa = document.getElementById("form-empresa");
+const tabClient = document.getElementById("tab-cliente");
+const tabDelivery = document.getElementById("tab-entregador");
+const tabEnterprise = document.getElementById("tab-empresa");
+const formClient = document.getElementById("client-form");
+const formDelivery = document.getElementById("delivery-form");
+const formEnterprise = document.getElementById("form-empresa");
 
+function switchToClient() {
+  formClient.classList.remove("hidden");
+  formEnterprise.classList.add("hidden");
+  formDelivery.classList.add("hidden");
 
-function switchToCliente() {
-    formCliente.classList.remove("hidden");
-    formEmpresa.classList.add("hidden");
-    formEntregador.classList.add("hidden");
-
-    tabCliente.classList.add("border-blue-600", "text-blue-600");
-    tabCliente.classList.remove("border-transparent", "text-gray-500");
-    tabEntregador.classList.remove("border-blue-600", "text-blue-600");
-    tabEntregador.classList.add("border-transparent", "text-gray-500");
-    tabEmpresa.classList.remove("border-blue-600", "text-blue-600");
-    tabEmpresa.classList.add("border-transparent", "text-gray-500");
+  tabClient.classList.add("border-blue-600", "text-blue-600");
+  tabClient.classList.remove("border-transparent", "text-gray-500");
+  tabDelivery.classList.remove("border-blue-600", "text-blue-600");
+  tabDelivery.classList.add("border-transparent", "text-gray-500");
+  tabEnterprise.classList.remove("border-blue-600", "text-blue-600");
+  tabEnterprise.classList.add("border-transparent", "text-gray-500");
 }
 
-function switchToEntregador() {
-    formEntregador.classList.remove("hidden");
-    formEmpresa.classList.add("hidden");
-    formCliente.classList.add("hidden");
+function switchToDelivery() {
+  formDelivery.classList.remove("hidden");
+  formEnterprise.classList.add("hidden");
+  formClient.classList.add("hidden");
 
-    tabEntregador.classList.add("border-blue-600", "text-blue-600");
-    tabEntregador.classList.remove("border-transparent", "text-gray-500");
-    tabCliente.classList.remove("border-blue-600", "text-blue-600");
-    tabCliente.classList.add("border-transparent", "text-gray-500");
-    tabEmpresa.classList.remove("border-blue-600", "text-blue-600");
-    tabEmpresa.classList.add("border-transparent", "text-gray-500");
+  tabDelivery.classList.add("border-blue-600", "text-blue-600");
+  tabDelivery.classList.remove("border-transparent", "text-gray-500");
+  tabClient.classList.remove("border-blue-600", "text-blue-600");
+  tabClient.classList.add("border-transparent", "text-gray-500");
+  tabEnterprise.classList.remove("border-blue-600", "text-blue-600");
+  tabEnterprise.classList.add("border-transparent", "text-gray-500");
 }
 
-function switchToEmpresa() {
-    formEntregador.classList.add("hidden");
-    formCliente.classList.add("hidden");
-    formEmpresa.classList.remove("hidden");
+function switchToEnterprise() {
+  formDelivery.classList.add("hidden");
+  formClient.classList.add("hidden");
+  formEnterprise.classList.remove("hidden");
 
-    tabEmpresa.classList.remove("border-transparent", "text-gray-500");
-    tabEmpresa.classList.add("border-blue-600", "text-blue-600");
-    tabCliente.classList.remove("border-blue-600", "text-blue-600");
-    tabCliente.classList.add("border-transparent", "text-gray-500");
-    tabEntregador.classList.remove("border-blue-600", "text-blue-600");
-    tabEntregador.classList.add("border-transparent", "text-gray-500");
+  tabEnterprise.classList.remove("border-transparent", "text-gray-500");
+  tabEnterprise.classList.add("border-blue-600", "text-blue-600");
+  tabClient.classList.remove("border-blue-600", "text-blue-600");
+  tabClient.classList.add("border-transparent", "text-gray-500");
+  tabDelivery.classList.remove("border-blue-600", "text-blue-600");
+  tabDelivery.classList.add("border-transparent", "text-gray-500");
 }
 
 // Verifica o parâmetro na URL ao carregar a página
-window.addEventListener('DOMContentLoaded', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const tipo = urlParams.get('tipo');
+window.addEventListener("DOMContentLoaded", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const tipo = urlParams.get("tipo");
 
-    if (tipo === 'entregador') {
-        switchToEntregador();
-    } else if (tipo === 'cliente') {
-        switchToCliente();
-    } else {
-        switchToEmpresa();
-    }
+  if (tipo === "entregador") {
+    switchToDelivery();
+  } else if (tipo === "cliente") {
+    switchToClient();
+  } else {
+    switchToEnterprise();
+  }
 });
 
 // Event listeners para os tabs
-tabCliente.addEventListener("click", switchToCliente);
-tabEntregador.addEventListener("click", switchToEntregador);
-tabEmpresa.addEventListener("click", switchToEmpresa);
+tabClient.addEventListener("click", switchToClient);
+tabDelivery.addEventListener("click", switchToDelivery);
+tabEnterprise.addEventListener("click", switchToEnterprise);
 
-// Máscaras 
+// Máscaras
 
-// Máscara para CPF 
 function mascaraCPF(cpf) {
-    cpf = cpf.replace(/\D/g, ''); // Remove caracteres não numéricos
-    cpf = cpf.replace(/^(\d{3})(\d)/, '$1.$2'); // Adiciona ponto
-    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2'); // Adiciona ponto
-    cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2'); // Adiciona hífen
-    return cpf;
+  cpf = cpf.replace(/\D/g, "");
+  cpf = cpf.replace(/^(\d{3})(\d)/, "$1.$2");
+  cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+  cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+  return cpf;
 }
 
-// Máscara para CNH
 function mascaraCNH(cnh) {
-    cnh = cnh.replace(/\D/g, ''); // Remove caracteres não numéricos
-    cnh = cnh.replace(/^(\d{3})(\d)/, '$1.$2'); // Adiciona ponto
-    cnh = cnh.replace(/(\d{3})(\d)/, '$1.$2'); // Adiciona ponto
-    cnh = cnh.replace(/(\d{3})(\d{1,2})$/, '$1-$2'); // Adiciona hífen
-    return cnh;
+  cnh = cnh.replace(/\D/g, "");
+  cnh = cnh.replace(/^(\d{3})(\d)/, "$1.$2");
+  cnh = cnh.replace(/(\d{3})(\d)/, "$1.$2");
+  cnh = cnh.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+  return cnh;
 }
 
-// Máscara para CNPJ
 function mascaraCNPJ(cnpj) {
-    cnpj = cnpj.replace(/\D/g, ''); // Remove caracteres não numéricos
-    cnpj = cnpj.replace(/^(\d{2})(\d)/, '$1.$2'); // Adiciona ponto
-    cnpj = cnpj.replace(/(\d{3})(\d)/, '$1.$2'); // Adiciona ponto
-    cnpj = cnpj.replace(/(\d{3})(\d)/, '$1/$2'); // Adiciona barra
-    cnpj = cnpj.replace(/(\d{4})(\d)/, '$1-$2'); // Adiciona hífen
-    return cnpj;
+  cnpj = cnpj.replace(/\D/g, "");
+  cnpj = cnpj.replace(/^(\d{2})(\d)/, "$1.$2");
+  cnpj = cnpj.replace(/(\d{3})(\d)/, "$1.$2");
+  cnpj = cnpj.replace(/(\d{3})(\d)/, "$1/$2");
+  cnpj = cnpj.replace(/(\d{4})(\d)/, "$1-$2");
+  return cnpj;
 }
 
-// Máscara para Telefone
 function mascaraTelefone(telefone) {
-    telefone = telefone.replace(/\D/g, ''); // Remove caracteres não numéricos
-    telefone = telefone.replace(/^(\d{2})(\d)/, '($1) $2'); // Adiciona parênteses e espaço
-    telefone = telefone.replace(/(\d{5})(\d{1,4})$/, '$1-$2'); // Adiciona hífen
-    return telefone;
+  telefone = telefone.replace(/\D/g, "");
+  telefone = telefone.replace(/^(\d{2})(\d)/, "($1) $2");
+  telefone = telefone.replace(/(\d{5})(\d{1,4})$/, "$1-$2");
+  return telefone;
 }
 
 function aplicarMascara(event, tipo) {
-    let value = event.target.value;
+  let value = event.target.value;
 
-    if (tipo === "cpf") {
-        event.target.value = mascaraCPF(value);
-    } else if (tipo === "cnh") {
-        event.target.value = mascaraCNH(value);
-    } else if (tipo === "cnpj") {
-        event.target.value = mascaraCNPJ(value);
-    } else if (tipo === "telefone") {
-        event.target.value = mascaraTelefone(value);
-    }
+  switch (tipo) {
+    case "cpf":
+      event.target.value = mascaraCPF(value);
+      break;
+    case "cnh":
+      event.target.value = mascaraCNH(value);
+      break;
+    case "cpnj":
+      event.target.value = mascaraCNPJ(value);
+      break;
+    case "telefone":
+      event.target.value = mascaraTelefone(value);
+      break;
+  }
 }
