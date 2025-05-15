@@ -3,11 +3,7 @@ from enum import Enum
 
 from dotenv import load_dotenv
 from openrouteservice import Client
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
-from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import relationship
 
-from db.database import Base
 
 
 class VehicleType(Enum):
@@ -16,29 +12,17 @@ class VehicleType(Enum):
     CAMINHAO = "caminhao"
 
 
-class Vehicle(Base):
-    __tablename__ = 'veiculos'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    _model = Column("model", String(15))
-    _mark = Column("mark", String(15))
-    _plate = Column("plate", String(7))
-    _maximum_load = Column("maximum_load", Integer, default=0)
-    is_max = Column(Boolean, default=True)
-    _type_vehicle = Column("type_vehicle", Enum(VehicleType))
-
-    delivery_person_id = Column(Integer, ForeignKey('delivery_person.id'))
-    delivery_person = relationship('Delivery_person', back_populates='veiculos')
+class Vehicle:
 
     def __init__(self, model: str, mark: str, plate: str, type_vehicle: VehicleType, maximum_load: int = 0):
-        self.model = model
-        self.mark = mark
-        self.plate = plate
-        self.maximum_load = maximum_load
-        self.type_vehicle = type_vehicle
+        self._model = model
+        self._mark = mark
+        self._plate = plate
+        self._maximum_load = maximum_load
+        self._type_vehicle = type_vehicle
         self._can_add_load = True  # usado internamente
 
-    @hybrid_property
+    @property
     def model(self):
         return self._model
 
@@ -46,7 +30,7 @@ class Vehicle(Base):
     def model(self, value):
         self._model = value
 
-    @hybrid_property
+    @property
     def mark(self):
         return self._mark
 
@@ -54,7 +38,7 @@ class Vehicle(Base):
     def mark(self, value):
         self._mark = value
 
-    @hybrid_property
+    @property
     def plate(self):
         return self._plate
 
@@ -64,7 +48,7 @@ class Vehicle(Base):
             raise ValueError("Placa deve ter exatamente 7 caracteres.")
         self._plate = value
 
-    @hybrid_property
+    @property
     def maximum_load(self):
         return self._maximum_load
 
@@ -74,7 +58,7 @@ class Vehicle(Base):
             raise ValueError("Carga máxima não pode ser negativa.")
         self._maximum_load = value
 
-    @hybrid_property
+    @property
     def type_vehicle(self):
         return self._type_vehicle
 

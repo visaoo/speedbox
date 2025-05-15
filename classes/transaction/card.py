@@ -1,20 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
-from db.database import Base
-
-
-class Card(Base):
-    __tablename__ = 'card'
-
-    transaction_id = Column(Integer, ForeignKey('transactions.id'), primary_key=True)
-    number_card = Column(String(16))
-    flag = Column(String(20))
-    atorization_status = Column(String(20))
-
-    transaction = relationship('Trasaction', back_populates='card')
-
+class Card():
     def __init__(self, name, number, validity, cvc, flag):
         self._name = name
         self._number = number

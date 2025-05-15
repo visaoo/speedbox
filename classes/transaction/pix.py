@@ -1,28 +1,7 @@
-
 import qrcode
-from sqlalchemy import (Column, DateTime, ForeignKey, Integer, String, Text)
-from sqlalchemy.orm import relationship
-
-from db.database import Base
-
-
-class Pix(Base):
-    __tablename__ = 'pix'
-
-    transaction_id = Column(Integer, ForeignKey('transactions.id'), primary_key=True)
-    pix_key = Column(String(255))
-    qr_code = Column(Text)  # payload, copia e cola
-    txid = Column(String(100))
-    status_payment = Column(String(20))
-    date_confirmation = Column(DateTime)
-
-    transaction = relationship('Transaction', back_populates='pix')
-
-
-# adicionar __init__ para validações.
-
-
-class PixQrcode:
+from transaction import Transaction
+class PixQrcode(Transaction):
+        
     def generate_pix_payload(self,
         key: str,
         name: str,
@@ -108,15 +87,6 @@ class PixQrcode:
             qr.show()
 
         return qr
-
-    def cancel_payment(self):
-        return super().cancel_payment()
-
-    def make_payment(self):
-        return super().make_payment()
-
-    def update_status(self):
-        return super().update_status()
 
 # from datetime import date, timedelta
 # from pix import Pix, TypeKeyPix

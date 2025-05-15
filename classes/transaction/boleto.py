@@ -1,19 +1,8 @@
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+from transaction import Transaction
 
-from db.database import Base
-
-
-class Boleto(Base):
-    __tablename__ = 'boleto'
-
-    transaction_id = Column(Integer, ForeignKey('transactions.id'), primary_key=True)
-    code_bar = Column(String(100))
-    expiration = Column(DateTime)
-
-    transaction = relationship('Transaction', back_populates='boleto')
-
+class Boleto(Transaction):
     def __init__(self, typeable_line):
+        
         self._typeable_line = typeable_line
 
     @property

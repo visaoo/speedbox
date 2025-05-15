@@ -18,8 +18,6 @@ dependencies = [
     "pix-utils (>=1.0.1,<2.0.0)",
     "crcmod (>=1.7,<2.0)",
     "pillow (>=11.2.1,<12.0.0)",
-    "sqlalchemy (>=2.0.40,<3.0.0)",
-    "python-multipart (>=0.0.20,<0.0.21)",
 ]
 
 
