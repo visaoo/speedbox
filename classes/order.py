@@ -8,7 +8,7 @@ class OrderStatus(Enum):
     COMPLETED = auto()
     CANCELLED = auto()
 
-
+# Visão corrige dps, destino tem q ser um atributo da classe cliente e origem de empresa
 class Order:
     def __init__(self, id: int, origem: Address, status: OrderStatus, destino: Address) -> dict:
         """
@@ -33,6 +33,7 @@ class Order:
         self._origem = origem
         self._status = status
         self._destino = destino
+        self._value_total = 0.0
 
     @property
     def id(self):

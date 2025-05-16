@@ -129,8 +129,60 @@ def create_tables():
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         );
     """
+    )
+    
+        # criando a tabela `transactions`
+        cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS transactions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            payment_method ENUM('card', 'boleto', 'pix') NOT NULL,
+            status ENUM('pending', 'completed', 'failed') DEFAULT 'pending',
+            order_id INTEGER NOT NULL,
+            FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE
+        );
+        """
         )
-
+        # Criando a tabela `card`
+        cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS card (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            number TEXT NOT NULL,
+            validity TEXT NOT NULL,
+            cvc TEXT NOT NULL,
+            flag ENUM('visa', 'mastercard', 'elo', 'amex') NOT NULL,
+            transaction_id INTEGER NOT NULL,
+            FOREIGN KEY (transaction_id) REFERENCES transactions(id) ON DELETE CASCADE
+        );
+        """
+        )
+        # Criando a tabela `pix`
+        cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS pix (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            key TEXT NOT NULL,
+            transaction_id INTEGER NOT NULL,
+            FOREIGN KEY (transaction_id) REFERENCES transactions(id) ON DELETE CASCADE
+        );
+        """
+        )
+    
+        # Criando a tabela `boleto`
+        cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS boleto (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            due_date TEXT NOT NULL,
+            typeline TEXT NOT NULL,
+            transaction_id INTEGER NOT NULL,
+            FOREIGN KEY (transaction_id) REFERENCES transactions(id) ON DELETE CASCADE
+        );
+        """
+        )
+            
 
 if __name__ == "__main__":
     create_tables()
