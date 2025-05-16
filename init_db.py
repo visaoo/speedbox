@@ -3,11 +3,12 @@ import populate
 
 sql.connect("database.db")
 
+
 # Criando nossas tabelitas
 def create_tables():
     with sql.connect("database.db") as conn:
         cursor = conn.cursor()
-        
+
         cursor.execute("PRAGMA foreign_keys = ON")
 
         # Criando a tabela `clients`
@@ -19,6 +20,7 @@ def create_tables():
             cpf TEXT UNIQUE NOT NULL,
             birth_date TEXT,
             user_id INTEGER
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         );
         """
         )
@@ -29,7 +31,9 @@ def create_tables():
             CREATE TABLE IF NOT EXISTS products (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
-            price REAL NOT NULL
+            price REAL NOT NULL,
+            enterprise_id INTEGER NOT NULL,
+            FOREIGN KEY (enterprise_id) REFERENCES enterprises(id) ON DELETE CASCADE
         );
         """
         )
@@ -39,9 +43,10 @@ def create_tables():
             """
             CREATE TABLE IF NOT EXISTS orders (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            client_id INTEGER NOT NULL,
             total REAL,
             date TEXT,
+            client_id INTEGER NOT NULL,
+            status ENUM('payment_pending', 'pending', 'completed', 'canceled') DEFAULT 'pending',
             FOREIGN KEY (client_id) REFERENCES clients(id)
         );
         """
@@ -61,30 +66,42 @@ def create_tables():
         """
         )
         # Criando a tabela `users`
-        cursor.execute( #coloquei is_admin para test, se sobrar tempo implementar
+        cursor.execute(  # coloquei is_admin para test, se sobrar tempo implementar
             """
             CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             email TEXT UNIQUE NOT NULL,
             username TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL,
-            is_admin INTEGER NOT NULL DEFAULT 0 
-                
+            is_admin BOOLEAN DEFAULT FALSE,
         );
         """
-        
         )
-        # Criando a tabela `Addresses`
+        # Criando a tabela `addresses_clients`
         cursor.execute(
             """
-            CREATE TABLE IF NOT EXISTS addresses (
+            CREATE TABLE IF NOT EXISTS addresses_clients (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             street TEXT NOT NULL,
             city TEXT NOT NULL,
             state TEXT NOT NULL,
-            zip_code TEXT NOT NULL,
+            postcode TEXT NOT NULL,
             client_id INTEGER NOT NULL,
             FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
+        );
+        """
+        )
+        # Criando a tabela `Addresses_enterprises`
+        cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS addresses_enterprises (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            street TEXT NOT NULL,
+            city TEXT NOT NULL,
+            state TEXT NOT NULL,
+            postcode TEXT NOT NULL,
+            enterprise_id INTEGER NOT NULL,
+            FOREIGN KEY (enterprise_id) REFERENCES enterprises(id) ON DELETE CASCADE
         );
         """
         )
@@ -94,18 +111,31 @@ def create_tables():
             CREATE TABLE IF NOT EXISTS enterprises (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
-            cnpj TEXT UNIQUE NOT NULL,
-            address INTEGER,
-            FOREIGN KEY (address) REFERENCES addresses(id)
+            cnpj TEXT UNIQUE NOT NULL
+            user_id INTEGER,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         );
         """
         )
 
-        
+        # Criando a tabela `delivery_person`
+        cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS delivery_person (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            cpf TEXT UNIQUE NOT NULL,
+            user_id INTEGER,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        );
+    """
+        )
+
+
 if __name__ == "__main__":
     create_tables()
     print("Tabelas criadas com sucesso!")
-    
+
     r_user = input("Deseja popular as tabelas com dados de teste? (s/n): ")
     r_qtd = input("Quantas linhas deseja inserir? (padrão 10): ")
     r_qtd = int(r_qtd) if r_qtd.isdigit() else 10

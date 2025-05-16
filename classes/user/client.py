@@ -5,67 +5,7 @@ from classes.user.user import User
 from classes.address.address import Address
 from typing import List
 
-# from db import database
-
-
-########### tests
-import sqlite3
-
-database = sqlite3.connect("database.db")
-
-
-cursor = database.cursor()
-
-database.commit()
-
-# Criando a tabela `cart_items`
-cursor.execute(
-    """
-    CREATE TABLE IF NOT EXISTS clients (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    cpf TEXT UNIQUE NOT NULL,
-    address TEXT,
-    birth_date TEXT,
-    user_id INTEGER
-);
-"""
-)
-
-cursor.execute(
-    """
-    CREATE TABLE IF NOT EXISTS products (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    price REAL NOT NULL
-);
-"""
-)
-
-cursor.execute(
-    """
-    CREATE TABLE IF NOT EXISTS orders (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    client_id INTEGER NOT NULL,
-    total REAL,
-    date TEXT,
-    FOREIGN KEY (client_id) REFERENCES clients(id)
-);
-"""
-)
-cursor.execute(
-    """
-    CREATE TABLE IF NOT EXISTS order_items (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    order_id INTEGER NOT NULL,
-    product_id INTEGER NOT NULL,
-    quantity INTEGER NOT NULL DEFAULT 1,
-    FOREIGN KEY (order_id) REFERENCES orders(id),
-    FOREIGN KEY (product_id) REFERENCES products(id)
-);
-"""
-)
-
+from db import database
 
 class Client(Person):
     def __init__(
@@ -99,8 +39,8 @@ class Client(Person):
     def save_to_db(self):
         database.execute(
             """
-            INSERT OR REPLACE INTO clients (name, cpf, address, birth_date, user_id)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT OR REPLACE INTO clients (name, cpf, birth_date, user_id)
+            VALUES (?, ?, ?, ?)
         """,
             (self.name, self.cpf, self.address, self.birth_date, self._user.id),
         )
@@ -156,42 +96,3 @@ class Client(Person):
 
         # Limpa o carrinho
         self.cancel_order()
-
-
-cliente1 = Client(
-    "João",
-    "12345678901",
-    Address("Rua A", "1234", "1", "skylake", "massacheetos"),
-    "1990-01-01",
-    [],
-    [],
-    User("joao", "joao123@gmail.com", "senha123"),
-)
-
-cliente1.add_item(
-    Item("Produto 1", 202, 10.0, "1", "Produto 1", "Descrição do Produto 1")
-)
-cliente1.add_item(
-    Item("Produto 1", 192, 550.0, "1", "Produto 1", "Descrição do Produto 1")
-)
-
-cliente1.add_item(
-    Item("Produto 1", 21, 13.01, "1", "Produto 1", "Descrição do Produto 1")
-)
-cliente1.add_item(
-    Item("Produto 1", 24, 10.02, "1", "Produto 1", "Descrição do Produto 1")
-)
-cliente1.add_item(
-    Item("Produto 1", 22, 10.20, "1", "Produto 1", "Descrição do Produto 1")
-)
-cliente1.add_item(
-    Item("Produto 1", 21, 10.30, "1", "Produto 1", "Descrição do Produto 1")
-)
-
-cliente1.add_item(
-    Item("Produto 2", 24, 20.99, "1", "Produto 2", "Descrição do Produto 2")
-)
-
-cliente1.remove_item_by_id(20)
-
-cliente1.finalize_order()
