@@ -1,14 +1,8 @@
 from transaction import Transaction
 
-class Boleto(Transaction):
-    def __init__(self, typeable_line):
-        
-        self._typeable_line = typeable_line
+class Boleto:
+    def __init__(self, amount: float, due_date: str, payer_name: str):
+        self.due_date = due_date
+        self.payer_name = payer_name
 
-    @property
-    def typeable_line(self):
-        return self._typeable_line
-
-    @typeable_line.setter
-    def typeable_line(self, value):
-        self._typeable_line = value
+    

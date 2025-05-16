@@ -1,14 +1,45 @@
 import qrcode
-from transaction import Transaction
-class PixQrcode(Transaction):
+from classes.order import Order
+from classes.user.enterprise import Enterprise
+
+
+class PixQrcode:
+    def __init__(self, enterprise: Enterprise, order: Order):
+        self._key = enterprise.pix_key
+        self._name = enterprise.name
+        self._city = enterprise.address.city    
+        self._value_total = order.value_total
+
+
+    @property
+    def key(self):
+        return self._key
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def value_total(self):
+        return self._value_total
+
+    @property
+    def city(self):
+        return self._city
+
+    def calculate_crc16(self, data: str) -> str:
+        """Calcula o CRC16 conforme especificação PIX"""
+        from crcmod import mkCrcFun
+
+        crc16 = mkCrcFun(0x11021, rev=False, initCrc=0xFFFF, xorOut=0x0000)
+        calculated_crc = crc16(data.encode('utf-8'))
+        return f"{calculated_crc:04X}"
         
-    def generate_pix_payload(self,
-        key: str,
-        name: str,
-        city: str,
-        amount: float = None,
-        txid: str = None,
-        description: str = None) -> str:
+    def generate_pix_payload(self, txid: str = None, description: str = None) -> str:
+        key = self.key
+        name = self.name
+        city = self.city
+        value_total = self.value_total
         gui = f"BR.GOV.BCB.PIX0114{key}"
         gui_len = f"{len(gui):02d}"
         merchant_account = f"0014{gui_len}{gui}"
@@ -21,8 +52,8 @@ class PixQrcode(Transaction):
             "5303986",  # Transaction Currency (BRL)
         ]
 
-        if amount is not None:
-            amount_str = f"{amount:.2f}"
+        if value_total is not None:
+            amount_str = f"{value_total:.2f}"
             payload.append(f"54{len(amount_str)}{amount_str}")
 
         # País e quem recebe
@@ -50,30 +81,15 @@ class PixQrcode(Transaction):
 
         return payload_str + crc
 
-    @staticmethod
-    def calculate_crc16(data: str) -> str:
-        """Calcula o CRC16 conforme especificação PIX(sim, isso eu descobri pelo gpt caso haja duvidas)"""
-        from crcmod import mkCrcFun
 
-        crc16 = mkCrcFun(0x11021, rev=False, initCrc=0xFFFF, xorOut=0x0000)
-        calculated_crc = crc16(data.encode('utf-8'))
-        return f"{calculated_crc:04X}"
 
     def generate_pix_qrcode(self,
-        key: str,
-        name: str,
-        city: str,
-        amount: float = None,
         txid: str = None,
         description: str = None,  # seria msg, gostei de testar com isso por isso deixei
         save_path: str = None
     ):
         # payload seria o copia e cola
         payload = self.generate_pix_payload(
-            key=key,
-            name=name,
-            city=city,
-            amount=amount,
             txid=txid,
             description=description
         )
