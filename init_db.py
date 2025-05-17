@@ -18,8 +18,8 @@ def create_tables():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             cpf TEXT UNIQUE NOT NULL,
-            birth_date TEXT,
-            user_id INTEGER
+            birth_date TEXT NOT NULL,
+            user_id INTEGER NOT NULL,
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         );
         """
