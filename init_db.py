@@ -25,20 +25,7 @@ def create_tables():
         """
         )
 
-        # Criando a tabela `products`
-        cursor.execute(
-            """
-            CREATE TABLE IF NOT EXISTS products (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            price REAL NOT NULL,
-            enterprise_id INTEGER NOT NULL,
-            FOREIGN KEY (enterprise_id) REFERENCES enterprises(id) ON DELETE CASCADE
-        );
-        """
-        )
-
-        # Criando a tabela `orders`
+        # Criando a tabela `orders_clients`
         cursor.execute(
             """
             CREATE TABLE IF NOT EXISTS orders (
@@ -46,22 +33,29 @@ def create_tables():
             total REAL,
             date TEXT,
             client_id INTEGER NOT NULL,
+            delivery_person_id INTEGER, NOT NULL,
+            addrss_final TEXT NOT NULL,
+            addrss_initial TEXT NOT NULL,
             status ENUM('payment_pending', 'pending', 'completed', 'canceled') DEFAULT 'pending',
+            FOREIGN KEY (delivery_person_id) REFERENCES delivery_person(id),
             FOREIGN KEY (client_id) REFERENCES clients(id)
         );
         """
         )
-
-        # Criando a tabela `order_items`
+        # Criando a tabela `orders_enterprises`
         cursor.execute(
             """
-            CREATE TABLE IF NOT EXISTS order_items (
+            CREATE TABLE IF NOT EXISTS orders_enterprises (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            order_id INTEGER NOT NULL,
-            product_id INTEGER NOT NULL,
-            quantity INTEGER NOT NULL DEFAULT 0,
-            FOREIGN KEY (order_id) REFERENCES orders(id),
-            FOREIGN KEY (product_id) REFERENCES products(id)
+            total REAL,
+            date TEXT,
+            enterprise_id INTEGER NOT NULL,
+            delivery_person_id INTEGER, NOT NULL,
+            addrss_final TEXT NOT NULL,
+            addrss_initial TEXT NOT NULL,
+            status ENUM('payment_pending', 'pending', 'completed', 'canceled') DEFAULT 'pending',
+            FOREIGN KEY (delivery_person_id) REFERENCES delivery_person(id),
+            FOREIGN KEY (enterprise_id) REFERENCES enterprises(id)
         );
         """
         )
@@ -85,7 +79,6 @@ def create_tables():
             street TEXT NOT NULL,
             city TEXT NOT NULL,
             state TEXT NOT NULL,
-            postcode TEXT NOT NULL,
             client_id INTEGER NOT NULL,
             FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
         );
@@ -99,7 +92,6 @@ def create_tables():
             street TEXT NOT NULL,
             city TEXT NOT NULL,
             state TEXT NOT NULL,
-            postcode TEXT NOT NULL,
             enterprise_id INTEGER NOT NULL,
             FOREIGN KEY (enterprise_id) REFERENCES enterprises(id) ON DELETE CASCADE
         );
@@ -138,8 +130,10 @@ def create_tables():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             payment_method ENUM('card', 'boleto', 'pix') NOT NULL,
             status ENUM('pending', 'completed', 'failed') DEFAULT 'pending',
-            order_id INTEGER NOT NULL,
-            FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE
+            order_enterprise_id INTEGER,
+            order_client_id INTEGER,
+            FOREIGN KEY (order_client_id) REFERENCES orders(id) ON DELETE CASCADE,
+            FOREIGN KEY (order_enterprise_id) REFERENCES orders_enterprises(id) ON DELETE CASCADE
         );
         """
         )
@@ -182,6 +176,23 @@ def create_tables():
         );
         """
         )
+        
+        # Criando a tabela `vehicle`
+        cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS vehicle (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            model TEXT NOT NULL,
+            mark TEXT NOT NULL,
+            plate TEXT UNIQUE,
+            type_vehicle ENUM('bicicleta','moto', 'carro', 'caminhao') NOT NULL,
+            maximum_distance ENUM('municipal', 'estadual', 'inter_estadual') NOT NULL,
+            delivery_person_id INTEGER NOT NULL,
+            FOREIGN KEY (delivery_person_id) REFERENCES delivery_person(id) ON DELETE CASCADE
+        );
+        """
+        )
+
             
 
 if __name__ == "__main__":
