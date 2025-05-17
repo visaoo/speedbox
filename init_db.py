@@ -33,10 +33,10 @@ def create_tables():
             total REAL,
             date TEXT,
             client_id INTEGER NOT NULL,
-            delivery_person_id INTEGER, NOT NULL,
+            delivery_person_id INTEGER NOT NULL,
             addrss_final TEXT NOT NULL,
             addrss_initial TEXT NOT NULL,
-            status ENUM('payment_pending', 'pending', 'completed', 'canceled') DEFAULT 'pending',
+            status TEXT DEFAULT 'pending' CHECK(status IN ('payment_pending', 'pending', 'completed', 'canceled')),
             FOREIGN KEY (delivery_person_id) REFERENCES delivery_person(id),
             FOREIGN KEY (client_id) REFERENCES clients(id)
         );
@@ -50,10 +50,10 @@ def create_tables():
             total REAL,
             date TEXT,
             enterprise_id INTEGER NOT NULL,
-            delivery_person_id INTEGER, NOT NULL,
+            delivery_person_id INTEGER NOT NULL,
             addrss_final TEXT NOT NULL,
             addrss_initial TEXT NOT NULL,
-            status ENUM('payment_pending', 'pending', 'completed', 'canceled') DEFAULT 'pending',
+            status TEXT DEFAULT 'pending' CHECK(status IN ('payment_pending', 'pending', 'completed', 'canceled')),
             FOREIGN KEY (delivery_person_id) REFERENCES delivery_person(id),
             FOREIGN KEY (enterprise_id) REFERENCES enterprises(id)
         );
@@ -66,8 +66,7 @@ def create_tables():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             email TEXT UNIQUE NOT NULL,
             username TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL,
-            is_admin BOOLEAN DEFAULT FALSE,
+            password TEXT NOT NULL
         );
         """
         )
@@ -103,8 +102,8 @@ def create_tables():
             CREATE TABLE IF NOT EXISTS enterprises (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
-            cnpj TEXT UNIQUE NOT NULL
-            user_id INTEGER,
+            cnpj TEXT UNIQUE NOT NULL,
+            user_id INTEGER NOT NULL,
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         );
         """
@@ -117,7 +116,7 @@ def create_tables():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             cpf TEXT UNIQUE NOT NULL,
-            user_id INTEGER,
+            user_id INTEGER NOT NULL,
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         );
     """
@@ -128,8 +127,7 @@ def create_tables():
             """
             CREATE TABLE IF NOT EXISTS transactions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            payment_method ENUM('card', 'boleto', 'pix') NOT NULL,
-            status ENUM('pending', 'completed', 'failed') DEFAULT 'pending',
+            payment_method TEXT NOT NULL CHECK(payment_method IN ('card', 'boleto', 'pix')),
             order_enterprise_id INTEGER,
             order_client_id INTEGER,
             FOREIGN KEY (order_client_id) REFERENCES orders(id) ON DELETE CASCADE,
