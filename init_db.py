@@ -120,8 +120,8 @@ def create_tables():
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         );
     """
-    )
-    
+        )
+
         # criando a tabela `transactions`
         cursor.execute(
             """
@@ -138,18 +138,19 @@ def create_tables():
         # Criando a tabela `card`
         cursor.execute(
             """
-            CREATE TABLE IF NOT EXISTS card (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            number TEXT NOT NULL,
-            validity TEXT NOT NULL,
-            cvc TEXT NOT NULL,
-            flag ENUM('visa', 'mastercard', 'elo', 'amex') NOT NULL,
-            transaction_id INTEGER NOT NULL,
-            FOREIGN KEY (transaction_id) REFERENCES transactions(id) ON DELETE CASCADE
-        );
-        """
+        CREATE TABLE IF NOT EXISTS card (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        number TEXT NOT NULL,
+        validity TEXT NOT NULL,
+        cvc TEXT NOT NULL,
+        flag TEXT DEFAULT 'elo' CHECK(flag IN ('visa', 'mastercard', 'elo', 'amex')),
+        transaction_id INTEGER NOT NULL,
+        FOREIGN KEY (transaction_id) REFERENCES transactions(id) ON DELETE CASCADE
+    );
+    """
         )
+
         # Criando a tabela `pix`
         cursor.execute(
             """
@@ -161,7 +162,7 @@ def create_tables():
         );
         """
         )
-    
+
         # Criando a tabela `boleto`
         cursor.execute(
             """
@@ -174,7 +175,7 @@ def create_tables():
         );
         """
         )
-        
+
         # Criando a tabela `vehicle`
         cursor.execute(
             """
@@ -183,15 +184,14 @@ def create_tables():
             model TEXT NOT NULL,
             mark TEXT NOT NULL,
             plate TEXT UNIQUE,
-            type_vehicle ENUM('bicicleta','moto', 'carro', 'caminhao') NOT NULL,
-            maximum_distance ENUM('municipal', 'estadual', 'inter_estadual') NOT NULL,
+            type_vehicle TEXT DEFAULT 'bicicleta' CHECK(type_vehicle IN ('bicicleta','moto', 'carro', 'caminhao')),
+            maximum_distance TEXT DEFAULT 'bicicleta' CHECK(maximum_distance IN ('municipal', 'estadual', 'inter_estadual')),
             delivery_person_id INTEGER NOT NULL,
             FOREIGN KEY (delivery_person_id) REFERENCES delivery_person(id) ON DELETE CASCADE
         );
         """
         )
 
-            
 
 if __name__ == "__main__":
     create_tables()
