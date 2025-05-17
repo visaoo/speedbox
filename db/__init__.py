@@ -1,0 +1,15 @@
+__all__ = [ # Usamos isso para importar todos os arquivos de uma vez, dinamicamente
+    "crud_address_client",
+    "crud_address_enterprise",
+    "crud_boleto",
+    "crud_card",
+    "crud_client",
+    "crud_delivery_person",
+    "crud_enterprise",
+    "crud_order_clients",
+    "crud_order_enterprise",
+    "crud_pix",
+    "crud_transactions",
+    "crud_user",
+    "crud_vehicle",
+]
