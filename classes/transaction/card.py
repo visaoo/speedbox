@@ -130,3 +130,15 @@ class Card(Transaction):
             return CardFlag.MASTERCARD_BIN
             
         return CardFlag.UNIDENTIFIED
+    
+    def to_dict(self) -> dict:
+        return {
+            "name": self.name,
+            "number": self.number,
+            "validity": self.validity,
+            "cvc": self.cvc,
+            "flag": self.flag.value
+        }
+        
+    def __str__(self) -> str:
+        return f"Card(name={self.name}, number={self.number}, validity={self.validity}, cvc={self.cvc}, flag={self.flag.value})"

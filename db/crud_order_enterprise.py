@@ -20,6 +20,13 @@ def get_by_enterprise(enterprise_id):
         cursor.execute("SELECT * FROM orders_enterprises WHERE enterprise_id = ?;", (enterprise_id,))
         return cursor.fetchall()
 
+def update_delivery_person(order_id, delivery_person_id):
+    with sqlite3.connect("database.db") as conn:
+        cursor = conn.cursor()
+        cursor.execute("UPDATE orders_enterprises SET delivery_person_id = ? WHERE id = ?;", (delivery_person_id, order_id))
+        conn.commit()
+
+
 def update_status(order_id, new_status):
     if new_status not in STATUS_VALUES:
         raise ValueError("Status inválido.")
