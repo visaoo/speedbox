@@ -15,13 +15,17 @@ class Person(ABC):
     def name(self):
         return self._name
 
+    @property
+    def cpf(self):
+        return self._cpf
+
     @name.setter
     def name(self, value):
         self._name = value
 
     @property
-    def cpf(self):
-        return self._cpf
+    def address(self):
+        return self._address
 
     @property
     def birth_date(self):
