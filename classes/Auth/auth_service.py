@@ -1,12 +1,17 @@
-import sqlite3
 import hashlib
+import sqlite3
+
 from classes.user.user import User
 
-class AuthService:   
-    def __init__(self, db_path='speedbox.db'):
+
+class AuthService:
+    def __init__(self, db_path='speedbox.db') -> None:
+        """
+        Inicializa o serviço de autenticação com o caminho do banco de dados.
+        param db_path: Caminho do banco de dados SQLite.
+        """
         self.db_path = db_path
         self.current_user = None
-        
 
     def _hash_password(self, password: str) -> str:
         """
@@ -32,7 +37,7 @@ class AuthService:
             )
             row = cursor.fetchone()
             if row:
-                user = User(*row)  # usando destructuring 
+                user = User(*row)  # usando destructuring
                 self.current_user = user
                 return user
         return None
@@ -48,26 +53,27 @@ class AuthService:
         return: True se o usuário estiver autenticado, False caso contrário.
         """
         return self.current_user is not None
-    
-    def register_user(self, username: str, email: str, password: str) -> bool:
+
+    def register_user(self, username: str, email: str, password: str, user_type) -> bool:
         """
         Registra um novo usuário no banco de dados.
         param username: Nome de usuário
         param email: Email do usuário
         param password: Senha do usuário
+        param user_type: Tipo de usuário (ex: client, delivery_person, enterprise)
         return: True se o registro for bem-sucedido, False caso contrário.
-        """ 
+        """
         hashed = self._hash_password(password)
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
             try:
                 cursor.execute(
-                    'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
-                    (username, email, hashed)
+                    'INSERT INTO users (username, email, password, user_type) VALUES (?, ?, ?, ?)',
+                    (username, email, hashed, user_type)
                 )
                 conn.commit()
-                
-                # user = User(username, email, hashed) 
+
+                # user = User(username, email, hashed, user_type)
 
                 return True
             except sqlite3.IntegrityError:

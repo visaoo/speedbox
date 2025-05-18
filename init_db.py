@@ -1,4 +1,5 @@
 import sqlite3 as sql
+
 import populate
 
 sql.connect("database.db")
@@ -33,8 +34,9 @@ def create_tables():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             total REAL,
             date TEXT,
+            description TEXT,
             client_id INTEGER NOT NULL,
-            delivery_person_id INTEGER NOT NULL,
+            delivery_person_id INTEGER,
             addrss_final TEXT NOT NULL,
             addrss_initial TEXT NOT NULL,
             status TEXT DEFAULT 'pending' CHECK(status IN ('payment_pending', 'pending', 'completed', 'canceled')),
@@ -50,8 +52,9 @@ def create_tables():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             total REAL,
             date TEXT,
+            description TEXT,
             enterprise_id INTEGER NOT NULL,
-            delivery_person_id INTEGER NOT NULL,
+            delivery_person_id INTEGER,
             addrss_final TEXT NOT NULL,
             addrss_initial TEXT NOT NULL,
             status TEXT DEFAULT 'pending' CHECK(status IN ('payment_pending', 'pending', 'completed', 'canceled')),
@@ -68,6 +71,7 @@ def create_tables():
             email TEXT UNIQUE NOT NULL,
             username TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL
+            user_type TEXT DEFAULT 'client' CHECK(user_type IN ('client', 'delivery_person', 'enterprise')),
         );
         """
         )
