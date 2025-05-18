@@ -5,7 +5,6 @@ from dotenv import load_dotenv
 from openrouteservice import Client
 
 
-
 class VehicleType(Enum):
     MOTO = "moto"
     CARRO = "carro"
