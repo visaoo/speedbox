@@ -3,7 +3,7 @@ from typing import List
 from order import Order
 from person import Person
 from user import User
-from Veihcle import Vehicle
+from Vehicle import Vehicle
 
 
 class DeliveryPerson(Person):
