@@ -8,8 +8,9 @@ class TypeKeyPix(Enum):
     UUID = 'UUID'
     CELPHONE = 'celphone'
     CNPJ = 'cnpj'
-
-
+    CPF = 'cpf'
+    
+    
 class Enterprise:
     def __init__(self, name: str, cnpj: str, address: Address):
         self._name = name

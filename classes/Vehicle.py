@@ -107,16 +107,25 @@ class Vehicle:
         except Exception as e:
             print(f'[Erro ao calcular rota] {e}')
             return
-
-    def can_add_load(self, peso: int) -> bool:
-        return self.maximum_load + peso <= self.get_max_capacity()
-
-    def get_max_capacity(self) -> int:
+        
+    def get_max_capacity(self, aaaaa) -> int:
         tipo = self.type_vehicle
         if tipo == VehicleType.MOTO:
-            return 50
+            return 100
         elif tipo == VehicleType.CARRO:
             return 200
         elif tipo == VehicleType.CAMINHAO:
             return 1000
         return 0
+
+    def to_dict(self):
+        return {
+            "model": self._model,
+            "mark": self._mark,
+            "plate": self._plate,
+            "maximum_load": self._maximum_load,
+            "type_vehicle": self._type_vehicle.value
+        }
+        
+    def __str__(self):
+        return f'{self._type_vehicle.value} vrum vrum: {self._model} {self._mark} {self._plate} {self._maximum_load}'
