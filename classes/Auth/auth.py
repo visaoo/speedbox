@@ -1,6 +1,5 @@
-from auth_service import AuthService
-from user.user import User
-
+from classes.Auth.auth_service import AuthService
+from classes.user.user import User
 
 class Authenticator:
     def __init__(self, auth_service: AuthService):
@@ -12,6 +11,14 @@ class Authenticator:
 
     def register(self, username: str, email: str, password: str) -> bool:
         return self.auth_service.register_user(username, email, password)
+    
+    def login (self, username: str, password: str) -> bool:
+        if self.is_authenticated():
+            return False
+        user = self.authenticate(username, password)
+        if user:
+            return True
+        return False
 
     def logout(self) -> bool:
         if not self.is_authenticated():

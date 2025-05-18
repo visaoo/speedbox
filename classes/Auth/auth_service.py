@@ -1,6 +1,6 @@
 import sqlite3
 import hashlib
-from user.user import User
+from classes.user.user import User
 
 class AuthService:   
     def __init__(self, db_path='speedbox.db'):

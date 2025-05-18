@@ -181,3 +181,5 @@ poetry.lock
 
 # database file
 *.db
+
+tempCodeRunnerFile.*
