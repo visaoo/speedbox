@@ -179,6 +179,5 @@ poetry.lock
 
 .vscode/
 
-# remove db files
+# database file
 *.db
-*.sqlite    
