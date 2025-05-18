@@ -178,3 +178,7 @@ package-lock.json
 poetry.lock
 
 .vscode/
+
+# remove db files
+*.db
+*.sqlite    
