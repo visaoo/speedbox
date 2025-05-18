@@ -9,7 +9,7 @@ class User:
         return self._username
 
     @username.setter
-    def login(self, value):
+    def username(self, value):
         self._username = value
 
     @property
@@ -27,3 +27,6 @@ class User:
     @senha.setter
     def senha(self, value):
         self._senha = value
+
+    def __str__(self):
+        return f"User(username={self.username}, email={self.email})"
