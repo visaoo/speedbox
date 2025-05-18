@@ -2,6 +2,7 @@ import phonenumbers
 import re
 from datetime import datetime
 
+
 def get_input(prompt, validation=None, errorMensage='Entrada invalida, por favor tente novamente'):
     while True:
         userInput = input(prompt)

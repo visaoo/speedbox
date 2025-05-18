@@ -9,7 +9,7 @@ from classes.user.enterprise import Enterprise
 
 @dataclass
 class NFe:
-    issue: Client
+    issuer: Client
     reciver: Enterprise
     product: list[Order]
     number: int
