@@ -7,12 +7,12 @@ from Veihcle import Vehicle
 
 
 class DeliveryPerson(Person):
-    def __init__(self, name, cpf, address, birth_date, cnh: None, available: bool, vehicle: List[Vehicle], accepted_orders: List[Order], user: User):
+    def __init__(self, name, cpf, address, birth_date, cnh: None, available: bool, vehicle: List[Vehicle], user: User):
         super().__init__(name, cpf, address, birth_date)
         self._cnh = cnh
         self._available = True
         self._vehicle = vehicle
-        self._accepted_orders = []
+        self._accepted_orders = [List[Order]]
         self.user = user
 
         @property
@@ -60,7 +60,3 @@ class DeliveryPerson(Person):
                 return f"Pedido {order} aceito."
             else:
                 return f"{self.name} precisa entregar o pedido aceito."
-
-
-class DeliveryCustomer:
-    pass  # crud

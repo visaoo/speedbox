@@ -19,6 +19,7 @@ def create_tables():
             name TEXT NOT NULL,
             cpf TEXT UNIQUE NOT NULL,
             birth_date TEXT NOT NULL,
+            celphone TEXT NOT NULL,
             user_id INTEGER NOT NULL,
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         );
@@ -117,6 +118,9 @@ def create_tables():
             name TEXT NOT NULL,
             cpf TEXT UNIQUE NOT NULL,
             user_id INTEGER NOT NULL,
+            in_delivery TEXT DEFAULT 'false' CHECK(in_delivery IN ('true', 'false')),
+            birth_date TEXT NOT NULL,
+            celphone TEXT NOT NULL,
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         );
     """

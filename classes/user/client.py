@@ -1,5 +1,4 @@
 import datetime
-from classes.item import Item
 from classes.order import Order
 from classes.user.person import Person
 from classes.user.user import User

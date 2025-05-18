@@ -1,6 +1,6 @@
 import sqlite3
 
-def insert_address_client(street, city, state, client_id):
+def insert(street, city, state, client_id):
     with sqlite3.connect("database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("""
@@ -9,19 +9,19 @@ def insert_address_client(street, city, state, client_id):
         """, (street, city, state, client_id))
         conn.commit()
 
-def get_all_addresses_clients():
+def get_all():
     with sqlite3.connect("database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM addresses_clients;")
         return cursor.fetchall()
 
-def get_address_client_by_id(address_id):
+def get_by_id(address_id):
     with sqlite3.connect("database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM addresses_clients WHERE id = ?;", (address_id,))
         return cursor.fetchone()
 
-def update_address_client(address_id, street=None, city=None, state=None, client_id=None):
+def update(address_id, street=None, city=None, state=None, client_id=None):
     with sqlite3.connect("database.db") as conn:
         cursor = conn.cursor()
         fields, values = [], []
@@ -47,7 +47,7 @@ def update_address_client(address_id, street=None, city=None, state=None, client
         cursor.execute(query, values)
         conn.commit()
 
-def delete_address_client(address_id):
+def delete(address_id):
     with sqlite3.connect("database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("DELETE FROM addresses_clients WHERE id = ?;", (address_id,))
