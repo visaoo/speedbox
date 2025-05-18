@@ -1,6 +1,6 @@
 import sqlite3
 
-def insert_enterprise(name, cnpj, user_id):
+def insert(name, cnpj, user_id):
     with sqlite3.connect("database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("""
@@ -9,19 +9,19 @@ def insert_enterprise(name, cnpj, user_id):
         """, (name, cnpj, user_id))
         conn.commit()
 
-def get_all_enterprises():
+def get_all():
     with sqlite3.connect("database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM enterprises;")
         return cursor.fetchall()
 
-def get_enterprise_by_id(enterprise_id):
+def get_by_id(enterprise_id):
     with sqlite3.connect("database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM enterprises WHERE id = ?;", (enterprise_id,))
         return cursor.fetchone()
 
-def update_enterprise(enterprise_id, name=None, cnpj=None, user_id=None):
+def update(enterprise_id, name=None, cnpj=None, user_id=None):
     with sqlite3.connect("database.db") as conn:
         cursor = conn.cursor()
         fields, values = [], []
@@ -44,7 +44,7 @@ def update_enterprise(enterprise_id, name=None, cnpj=None, user_id=None):
         cursor.execute(query, values)
         conn.commit()
 
-def delete_enterprise(enterprise_id):
+def delete(enterprise_id):
     with sqlite3.connect("database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("DELETE FROM enterprises WHERE id = ?;", (enterprise_id,))

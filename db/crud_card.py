@@ -1,6 +1,6 @@
 import sqlite3
 
-def insert_card(name, number, validity, cvc, flag, transaction_id):
+def insert(name, number, validity, cvc, flag, transaction_id):
     with sqlite3.connect("database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("""
@@ -9,13 +9,13 @@ def insert_card(name, number, validity, cvc, flag, transaction_id):
         """, (name, number, validity, cvc, flag, transaction_id))
         conn.commit()
 
-def get_card_by_transaction(transaction_id):
+def get_by_transaction(transaction_id):
     with sqlite3.connect("database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM card WHERE transaction_id = ?;", (transaction_id,))
         return cursor.fetchone()
 
-def delete_card_by_transaction(transaction_id):
+def delete_by_transaction(transaction_id):
     with sqlite3.connect("database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("DELETE FROM card WHERE transaction_id = ?;", (transaction_id,))

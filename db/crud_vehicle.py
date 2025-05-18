@@ -1,6 +1,6 @@
 import sqlite3
 
-def insert_vehicle(model, mark, plate, type_vehicle, maximum_distance, delivery_person_id):
+def insert(model, mark, plate, type_vehicle, maximum_distance, delivery_person_id):
     with sqlite3.connect("database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("""
@@ -9,19 +9,19 @@ def insert_vehicle(model, mark, plate, type_vehicle, maximum_distance, delivery_
         """, (model, mark, plate, type_vehicle, maximum_distance, delivery_person_id))
         conn.commit()
 
-def get_all_vehicles():
+def get_all():
     with sqlite3.connect("database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM vehicle;")
         return cursor.fetchall()
 
-def get_vehicle_by_id(vehicle_id):
+def get_by_id(vehicle_id):
     with sqlite3.connect("database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM vehicle WHERE id = ?;", (vehicle_id,))
         return cursor.fetchone()
 
-def update_vehicle(vehicle_id, model=None, mark=None, plate=None, type_vehicle=None, maximum_distance=None, delivery_person_id=None):
+def update(vehicle_id, model=None, mark=None, plate=None, type_vehicle=None, maximum_distance=None, delivery_person_id=None):
     with sqlite3.connect("database.db") as conn:
         cursor = conn.cursor()
         fields, values = [], []
@@ -53,7 +53,7 @@ def update_vehicle(vehicle_id, model=None, mark=None, plate=None, type_vehicle=N
         cursor.execute(query, values)
         conn.commit()
 
-def delete_vehicle(vehicle_id):
+def delete(vehicle_id):
     with sqlite3.connect("database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("DELETE FROM vehicle WHERE id = ?;", (vehicle_id,))

@@ -1,6 +1,6 @@
 import sqlite3
 
-def insert_client(name, cpf, birth_date, user_id):
+def insert(name, cpf, birth_date, celphone,user_id):
     """
     Função para inserir um cliente no banco de dados.
     """
@@ -8,14 +8,14 @@ def insert_client(name, cpf, birth_date, user_id):
         cursor = conn.cursor()
         cursor.execute(
             """
-            INSERT INTO clients (name, cpf, birth_date, user_id)
-            VALUES (?, ?, ?, ?);
+            INSERT INTO clients (name, cpf, birth_date, celphone, user_id)
+            VALUES (?, ?, ?, ?, ?);
             """,
-            (name, cpf, birth_date, user_id),
+            (name, cpf, birth_date, celphone, user_id),
         )
         conn.commit()
 
-def get_all_clients():
+def get_all():
     """
     Função para obter todos os clientes do banco de dados.
     """
@@ -25,7 +25,7 @@ def get_all_clients():
         clients = cursor.fetchall()
     return clients
 
-def get_client_by_id(client_id):
+def get_by_id(client_id):
     """
     Função para obter um cliente pelo ID.
     """
@@ -35,7 +35,7 @@ def get_client_by_id(client_id):
         client = cursor.fetchone()
     return client
 
-def update_client(client_id, name=None, cpf=None, birth_date=None):
+def update(client_id, name=None, cpf=None, birth_date=None, celphone=None):
     """
     Função para atualizar um cliente no banco de dados.
     """
@@ -54,7 +54,9 @@ def update_client(client_id, name=None, cpf=None, birth_date=None):
         if birth_date:
             fields.append("birth_date = ?")
             values.append(birth_date)
-
+        if celphone:
+            fields.append("celphone = ?")
+            values.append(celphone)
         if not fields:
             return  # Nenhum campo para atualizar
 
@@ -63,7 +65,7 @@ def update_client(client_id, name=None, cpf=None, birth_date=None):
         cursor.execute(query, values)
         conn.commit()
 
-def delete_client(client_id):
+def delete(client_id):
     """
     Função para deletar um cliente do banco de dados.
     """

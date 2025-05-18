@@ -12,19 +12,19 @@ def insert_transaction(payment_method, status, order_client_id=None, order_enter
         """, (payment_method, status, order_client_id, order_enterprise_id))
         conn.commit()
 
-def get_transaction_by_id(transaction_id):
+def get_by_id(transaction_id):
     with sqlite3.connect("database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM transactions WHERE id = ?;", (transaction_id,))
         return cursor.fetchone()
 
-def update_transaction_status(transaction_id, status):
+def update_status(transaction_id, status):
     with sqlite3.connect("database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("UPDATE transactions SET status = ? WHERE id = ?;", (status, transaction_id))
         conn.commit()
 
-def delete_transaction(transaction_id):
+def delete(transaction_id):
     with sqlite3.connect("database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("DELETE FROM transactions WHERE id = ?;", (transaction_id,))

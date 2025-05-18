@@ -1,6 +1,6 @@
 import sqlite3
 
-def insert_user(email, username, password, is_admin=False):
+def insert(email, username, password, is_admin=False):
     """
     Insere um novo usuário no banco de dados.
     """
@@ -15,7 +15,7 @@ def insert_user(email, username, password, is_admin=False):
         )
         conn.commit()
 
-def get_all_users():
+def get_all():
     """
     Retorna todos os usuários cadastrados.
     """
@@ -24,7 +24,7 @@ def get_all_users():
         cursor.execute("SELECT * FROM users;")
         return cursor.fetchall()
 
-def get_user_by_id(user_id):
+def get_by_id(user_id):
     """
     Retorna um usuário pelo ID.
     """
@@ -33,7 +33,7 @@ def get_user_by_id(user_id):
         cursor.execute("SELECT * FROM users WHERE id = ?;", (user_id,))
         return cursor.fetchone()
 
-def update_user(user_id, email=None, username=None, password=None, is_admin=None):
+def update(user_id, email=None, username=None, password=None, is_admin=None):
     """
     Atualiza dados de um usuário.
     """
@@ -63,7 +63,7 @@ def update_user(user_id, email=None, username=None, password=None, is_admin=None
         cursor.execute(query, values)
         conn.commit()
 
-def delete_user(user_id):
+def delete(user_id):
     """
     Deleta um usuário do banco de dados.
     """
