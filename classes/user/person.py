@@ -5,7 +5,7 @@ from classes.address.address import Address
 from abc import ABC
 
 class Person(ABC):
-    def __init__(self, name: str, cpf: str, address: List[Address], birth_date: datetime):
+    def __init__(self, name: str, cpf: str, address: Address, birth_date: str):
         self._name = name
         self._cpf = cpf
         self._address = address

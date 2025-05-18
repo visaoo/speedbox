@@ -1,5 +1,6 @@
 from enum import Enum, auto
 
+from Veihcle import Vehicle
 from classes.address.address import Address
 
 class OrderStatus(Enum):
@@ -8,9 +9,8 @@ class OrderStatus(Enum):
     COMPLETED = auto()
     CANCELLED = auto()
 
-# Visão corrige dps, destino tem q ser um atributo da classe cliente e origem de empresa
 class Order:
-    def __init__(self, id: int, origem: Address, status: OrderStatus, destino: Address) -> dict:
+    def __init__(self, origem: Address, status: OrderStatus, destino: Address, description: str) -> None:
         """
         Classe que representa um pedido de entrega.
         :param id: ID do pedido
@@ -18,8 +18,8 @@ class Order:
         :param status: Status do pedido (Pendente, Em andamento, Concluído, Cancelado)
         :param destino: Endereço de destino
         """
-        if not isinstance(id, int):
-            raise ValueError("ID deve ser um número inteiro")
+        if not isinstance(description, str):
+            raise ValueError("Descrição deve ser uma string")
         if not isinstance(origem, str):
             raise ValueError("Origem deve ser uma string")
         if not isinstance(status, OrderStatus):
@@ -28,17 +28,19 @@ class Order:
             raise ValueError("Destino deve ser uma string")
         if status not in OrderStatus:
             raise ValueError("Status deve ser um valor do enum OrderStatus")
-
-        self._id = id
+        self._description = description
         self._origem = origem
         self._status = status
         self._destino = destino
-        self._value_total = 0.0
+        self._value_total = 15.0  # Valor fixo do pedido, vai aumentar de acordo com a distancia
 
     @property
-    def id(self):
-        return self._id
-
+    def description(self):
+        return self._description
+    @description.setter
+    def description(self, value):
+        self._description = value
+        
     @property
     def origem(self):
         return self._origem
@@ -60,19 +62,31 @@ class Order:
     @destino.setter
     def destino(self, value):
         self._destino = value
-
-    def nextStatus(self):
-        if self._status == OrderStatus.PENDING:
-            self._status = OrderStatus.IN_PROGRESS
-        elif self._status == OrderStatus.IN_PROGRESS:
-            self._status = OrderStatus.COMPLETED
-        elif self._status == OrderStatus.COMPLETED:
-            self._status = OrderStatus.CANCELLED
-        else:
-            raise ValueError("Pedido já cancelado")
-
+        
+    @property
+    def value_total(self):
+        return self._value_total
+    
+    @value_total.setter
+    def value_total(self, value):
+        if not isinstance(value, float):
+            raise ValueError("Valor total deve ser um número float")
+        self._value_total = value
+        
+    def to_dict(self) -> dict:
+        """
+        Método para converter o pedido em um dicionário.
+        :return: Dicionário com os dados do pedido
+        """
+        return {
+            "origem": self._origem,
+            "status": self._status.name,
+            "destino": self._destino,
+            "value_total": self._value_total
+        }
+        
     def __str__(self):
-        return f"Pedido({self._id=}, {self._origem=}, {self._status=}, {self._destino=})"
+        return f"Order({self._origem}, {self._status}, {self._destino}, {self._value_total})"
 
 
 # Testando a classe Order
