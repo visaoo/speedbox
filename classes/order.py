@@ -1,143 +1,186 @@
 from enum import Enum, auto
+from datetime import datetime
+from typing import Union
 
-from classes import user
+from db.database import get_connection
 from classes.address.address import Address
-from datetime import date, datetime
 import sqlite3
 
+
 class OrderStatus(Enum):
+    """Enumeração para os possíveis status de um pedido."""
     PENDING = auto()
     IN_PROGRESS = auto()
     COMPLETED = auto()
     CANCELLED = auto()
 
+
 class Order:
-    def __init__(self, origem: Address, status: OrderStatus, destino: Address, description: str) -> None:
-        """
-        Classe que representa um pedido de entrega.
-        :param id: ID do pedido
-        :param origem: Endereço de origem
-        :param status: Status do pedido (Pendente, Em andamento, Concluído, Cancelado)
-        :param destino: Endereço de destino
-        """
+    """
+    Classe que representa um pedido de entrega.
+
+    Atributos:
+        origem (Address): Endereço de origem.
+        destino (Address): Endereço de destino.
+        description (str): Descrição do pedido.
+        status (OrderStatus): Status atual do pedido.
+        value_total (float): Valor do pedido.
+        date (datetime): Data de criação do pedido.
+    """
+
+    def __init__(self, origem: Address, destino: Address, description: str, status: OrderStatus) -> None:
         if not isinstance(description, str):
-            raise ValueError("Descrição deve ser uma string")
-        if not isinstance(origem, str):
-            raise ValueError("Origem deve ser uma string")
+            raise ValueError("Descrição deve ser uma string.")
+        if not isinstance(origem, Address):
+            raise ValueError("Origem deve ser um endereço válido.")
+        if not isinstance(destino, Address):
+            raise ValueError("Destino deve ser um endereço válido.")
         if not isinstance(status, OrderStatus):
-            raise ValueError("Status deve ser um valor do enum OrderStatus")
-        if not isinstance(destino, str):
-            raise ValueError("Destino deve ser uma string")
-        if status not in OrderStatus:
-            raise ValueError("Status deve ser um valor do enum OrderStatus")
-        self._description = description
+            raise ValueError("Status deve ser uma instância de OrderStatus.")
+
         self._origem = origem
-        self._status = status
         self._destino = destino
-        self._value_total = 15.0  # Valor fixo do pedido, vai aumentar de acordo com a distancia
+        self._description = description
+        self._status = status
+        self._value_total = 15.0  # Pode ser ajustado por distância
         self._date = datetime.now()
+
     @property
-    def description(self):
-        return self._description
-    @description.setter
-    def description(self, value):
-        self._description = value
-    
-    @property
-    def date(self):
-        return self._date
-    @property
-    def origem(self):
+    def origem(self) -> Address:
         return self._origem
 
-    @property
-    def status(self):
-        return self._status
+    @origem.setter
+    def origem(self, value: Address) -> None:
+        self._origem = value
 
     @property
-    def destino(self):
+    def destino(self) -> Address:
         return self._destino
 
+    @destino.setter
+    def destino(self, value: Address) -> None:
+        self._destino = value
+
+    @property
+    def description(self) -> str:
+        return self._description
+
+    @description.setter
+    def description(self, value: str) -> None:
+        self._description = value
+
+    @property
+    def status(self) -> OrderStatus:
+        return self._status
+
     @status.setter
-    def status(self, value):
+    def status(self, value: OrderStatus) -> None:
         if not isinstance(value, OrderStatus):
-            raise ValueError("Status deve ser um valor do enum OrderStatus")
+            raise ValueError("Status deve ser uma instância de OrderStatus.")
         self._status = value
 
-    @destino.setter
-    def destino(self, value):
-        self._destino = value
-        
     @property
-    def value_total(self):
+    def value_total(self) -> float:
         return self._value_total
-    
-    @value_total.setter
-    def value_total(self, value):
-        if not isinstance(value, float):
-            raise ValueError("Valor total deve ser um número float")
-        self._value_total = value
-    
 
-    def insert(self, type_user):
+    @value_total.setter
+    def value_total(self, value: float) -> None:
+        if not isinstance(value, float):
+            raise ValueError("O valor total deve ser um número decimal (float).")
+        self._value_total = value
+
+    @property
+    def date(self) -> datetime:
+        return self._date
+
+    def insert(self, type_user: str) -> None:
+        """
+        Insere o pedido no banco de dados de acordo com o tipo de usuário.
+
+        Args:
+            type_user (str): "enterprise" ou "client"
+        """
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
+
             if type_user == "enterprise":
                 cursor.execute("""
-                    INSERT INTO orders_enterprises (total, date, addrss_final, addrss_initial, status)
-                    VALUES (?, ?, ?, ?);
-                """, (self.value_total, self.date, self.destino, self.origem, self.status))
-                conn.commit()
-            if type_user == "client":
+                    INSERT INTO orders_enterprises (total, date, addrss_final, addrss_initial, status, description)
+                    VALUES (?, ?, ?, ?, ?, ?);
+                """, (
+                    self.value_total,
+                    self.date.isoformat(),
+                    str(self.destino),
+                    str(self.origem),
+                    self.status.name,
+                    self.description
+                ))
+
+            elif type_user == "client":
                 cursor.execute("""
-                    INSERT INTO orders (total, date, addrss_final, addrss_initial, description,status)
-                    VALUES (?, ?, ?, ?);
-                """, (self.value_total, self.date, self.destino, self.origem, self.description,self.status))
-                conn.commit()
-    
-    @staticmethod            
-    def get_by_enterprise(enterprise_id):
-        with sqlite3.connect("database.db") as conn:
+                    INSERT INTO orders (total, date, addrss_final, addrss_initial, status, description)
+                    VALUES (?, ?, ?, ?, ?, ?);
+                """, (
+                    self.value_total,
+                    self.date.isoformat(),
+                    str(self.destino),
+                    str(self.origem),
+                    self.status.name,
+                    self.description
+                ))
+            else:
+                raise ValueError("Tipo de usuário inválido. Use 'enterprise' ou 'client'.")
+
+            conn.commit()
+
+    @staticmethod
+    def get_by_enterprise(enterprise_id: int):
+        """Retorna todos os pedidos de uma empresa pelo ID."""
+        with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM orders_enterprises WHERE enterprise_id = ?;", (enterprise_id,))
             return cursor.fetchall()
-        
+
     @staticmethod
-    def get_by_client(client_id):
-        with sqlite3.connect("database.db") as conn:
+    def get_by_client(client_id: int):
+        """Retorna todos os pedidos de um cliente pelo ID."""
+        with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM orders WHERE client_id = ?;", (client_id,))
             return cursor.fetchall()
 
     @staticmethod
-    def update_delivery_person(user_type, id, delivery_person_id):
-        with sqlite3.connect("database.db") as conn:
+    def update_delivery_person(user_type: str, order_id: int, delivery_person_id: int) -> None:
+        """Atualiza o entregador associado a um pedido."""
+        with get_connection() as conn:
             cursor = conn.cursor()
-            if user_type == "enterprise":
-                cursor.execute("UPDATE orders_enterprises SET delivery_person_id = ? WHERE id = ?;", (delivery_person_id, id))
-                conn.commit()
-            elif user_type == "client":
-                cursor.execute("UPDATE orders SET delivery_person_id = ? WHERE id = ?;", (delivery_person_id, id))
-                conn.commit()
+            table = "orders_enterprises" if user_type == "enterprise" else "orders"
+            cursor.execute(
+                f"UPDATE {table} SET delivery_person_id = ? WHERE id = ?;",
+                (delivery_person_id, order_id)
+            )
+            conn.commit()
 
     @staticmethod
-    def update_status(id, new_status, user_type):
-        with sqlite3.connect("database.db") as conn:
+    def update_status(order_id: int, new_status: OrderStatus, user_type: str) -> None:
+        """Atualiza o status de um pedido."""
+        if not isinstance(new_status, OrderStatus):
+            raise ValueError("new_status deve ser uma instância de OrderStatus.")
+
+        with get_connection() as conn:
             cursor = conn.cursor()
-            if user_type == "enterprise":
-                cursor.execute("UPDATE orders_enterprises SET status = ? WHERE id = ?;", (new_status, id))
-                conn.commit()
-            elif user_type == "client":
-                cursor.execute("UPDATE orders SET status = ? WHERE id = ?;", (new_status, id))
-                conn.commit()
+            table = "orders_enterprises" if user_type == "enterprise" else "orders"
+            cursor.execute(
+                f"UPDATE {table} SET status = ? WHERE id = ?;",
+                (new_status.name, order_id)
+            )
+            conn.commit()
 
     @staticmethod
-    def delete_order(id, user_type):
-        with sqlite3.connect("database.db") as conn:
+    def delete_order(order_id: int, user_type: str) -> None:
+        """Deleta um pedido do banco de dados."""
+        with get_connection() as conn:
             cursor = conn.cursor()
-            if user_type == "enterprise":
-                cursor.execute("DELETE FROM orders_enterprises WHERE id = ?;", (id,))
-                conn.commit()
-            elif user_type == "client":
-                cursor.execute("DELETE FROM orders WHERE id = ?;", (id,))
-                conn.commit()
+            table = "orders_enterprises" if user_type == "enterprise" else "orders"
+            cursor.execute(f"DELETE FROM {table} WHERE id = ?;", (order_id,))
+            conn.commit()
