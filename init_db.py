@@ -1,9 +1,5 @@
 import sqlite3 as sql
-
 import populate
-
-sql.connect("database.db")
-
 
 # Criando nossas tabelitas
 def create_tables():
@@ -206,8 +202,9 @@ if __name__ == "__main__":
     print("Tabelas criadas com sucesso!")
 
     r_user = input("Deseja popular as tabelas com dados de teste? (s/n): ")
-    r_qtd = input("Quantas linhas deseja inserir? (padrão 10): ")
-    r_qtd = int(r_qtd) if r_qtd.isdigit() else 10
     if r_user.lower() == "s":
-        populate.insert_data_faker(r_qtd)
-        print("Dados de teste inseridos com sucesso!")
+        r_qtd = input("Quantas linhas deseja inserir? (padrão 10): ")
+        r_qtd = int(r_qtd) if r_qtd.isdigit() else 10
+        if r_qtd:
+            populate.insert_data_faker(r_qtd)
+            print("Dados de teste inseridos com sucesso!")

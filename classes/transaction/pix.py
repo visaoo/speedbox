@@ -2,6 +2,7 @@ import qrcode
 from classes.order import Order
 from classes.user.enterprise import Enterprise
 
+import sqlite3
 
 class PixQrcode:
     def __init__(self, enterprise: Enterprise, order: Order):
@@ -104,17 +105,26 @@ class PixQrcode:
 
         return qr
 
-# from datetime import date, timedelta
-# from pix import Pix, TypeKeyPix
 
-# # Criando uma transação Pix
-# pix = Pix(
-#     value=100.50,
-#     date=date.today(),
-#     time_for_pay=timedelta(minutes=15),
-#     payment_status="pendente",
-#     key="teste@exemplo.com",
-#     key_type=TypeKeyPix.EMAIL
-# )
 
-# #
+    def insert(key, transaction_id):
+        with sqlite3.connect("database.db") as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                INSERT INTO pix (key, transaction_id)
+                VALUES (?, ?);
+            """, (key, transaction_id))
+            conn.commit()
+
+    def get_by_transaction(transaction_id):
+        with sqlite3.connect("database.db") as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM pix WHERE transaction_id = ?;", (transaction_id,))
+            return cursor.fetchone()
+
+    def delete_by_transaction(transaction_id):
+        with sqlite3.connect("database.db") as conn:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM pix WHERE transaction_id = ?;", (transaction_id,))
+            conn.commit()
+

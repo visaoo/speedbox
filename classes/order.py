@@ -1,6 +1,9 @@
 from enum import Enum, auto
 
+from classes import user
 from classes.address.address import Address
+
+import sqlite3
 
 class OrderStatus(Enum):
     PENDING = auto()
@@ -71,29 +74,65 @@ class Order:
         if not isinstance(value, float):
             raise ValueError("Valor total deve ser um número float")
         self._value_total = value
-        
-    def to_dict(self) -> dict:
-        """
-        Método para converter o pedido em um dicionário.
-        :return: Dicionário com os dados do pedido
-        """
-        return {
-            "origem": self._origem,
-            "status": self._status.name,
-            "destino": self._destino,
-            "value_total": self._value_total
-        }
-        
-    def __str__(self):
-        return f"Order({self._origem}, {self._status}, {self._destino}, {self._value_total})"
+    
+
+    def insert(self, type_user):
+        with sqlite3.connect("database.db") as conn:
+            cursor = conn.cursor()
+            if type_user == "enterprise":
+                cursor.execute("""
+                    INSERT INTO orders_enterprises (total, date, enterprise_id, delivery_person_id, addrss_final, addrss_initial, status)
+                    VALUES (?, ?, ?, ?, ?, ?, ?);
+                """, (self.total, self.date, self.enterprise_id, self.delivery_person_id, self.addrss_final, self.addrss_initial, self.status))
+                conn.commit()
+            if type_user == "client":
+                cursor.execute("""
+                    INSERT INTO orders (total, date, client_id, delivery_person_id, addrss_final, addrss_initial, description,status)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+                """, (self.total, self.date, self.client_id, self.delivery_person_id, self.addrss_final, self.addrss_initial, self.description,self.status))
+                conn.commit()
+                
+    def get_by_enterprise(enterprise_id):
+        with sqlite3.connect("database.db") as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM orders_enterprises WHERE enterprise_id = ?;", (enterprise_id,))
+            return cursor.fetchall()
+
+    def get_by_client(client_id):
+        with sqlite3.connect("database.db") as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM orders WHERE client_id = ?;", (client_id,))
+            return cursor.fetchall()
+
+    
+    def update_delivery_person(user_type, id, delivery_person_id):
+        with sqlite3.connect("database.db") as conn:
+            cursor = conn.cursor()
+            if user_type == "enterprise":
+                cursor.execute("UPDATE orders_enterprises SET delivery_person_id = ? WHERE id = ?;", (delivery_person_id, id))
+                conn.commit()
+            elif user_type == "client":
+                cursor.execute("UPDATE orders SET delivery_person_id = ? WHERE id = ?;", (delivery_person_id, id))
+                conn.commit()
 
 
-# Testando a classe Order
-# pedido = Order(1, "Rua Folha Dourada, 6, Jardim Miragaia, São Paulo, SP", OrderStatus.PENDING, "Rua Olivio Segatto, 1017, Centro, Tupi Paulista, SP")
-# print(pedido)  # Pendente
-# pedido.nextStatus()
-# print(pedido)  # Em andamento
-# pedido.nextStatus()
-# print(pedido)  # Concluído
-# pedido.nextStatus()
-# print(pedido)  # Cancelado
+    def update_status(id, new_status, user_type):
+        with sqlite3.connect("database.db") as conn:
+            cursor = conn.cursor()
+            if user_type == "enterprise":
+                cursor.execute("UPDATE orders_enterprises SET status = ? WHERE id = ?;", (new_status, id))
+                conn.commit()
+            elif user_type == "client":
+                cursor.execute("UPDATE orders SET status = ? WHERE id = ?;", (new_status, id))
+                conn.commit()
+
+
+    def delete_order(id, user_type):
+        with sqlite3.connect("database.db") as conn:
+            cursor = conn.cursor()
+            if user_type == "enterprise":
+                cursor.execute("DELETE FROM orders_enterprises WHERE id = ?;", (id,))
+                conn.commit()
+            elif user_type == "client":
+                cursor.execute("DELETE FROM orders WHERE id = ?;", (id,))
+                conn.commit()
