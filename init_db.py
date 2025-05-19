@@ -70,8 +70,8 @@ def create_tables():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             email TEXT UNIQUE NOT NULL,
             username TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL
-            user_type TEXT DEFAULT 'client' CHECK(user_type IN ('client', 'delivery_person', 'enterprise')),
+            password TEXT NOT NULL,
+            user_type TEXT DEFAULT 'client' CHECK(user_type IN ('client', 'delivery_person', 'enterprise'))
         );
         """
         )
