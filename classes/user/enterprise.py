@@ -2,6 +2,8 @@ from enum import Enum
 from classes.address.address import Address
 
 from uuid import uuid4
+from db.database import get_connection
+
 
 import sqlite3
 
@@ -72,11 +74,9 @@ class Enterprise:
             self._pix_key = str(uuid4())
         else: 
             raise ValueError("Invalid TypeKeyPix")
-        
-    import sqlite3
 
     def insert(name, cnpj, user_id):
-        with sqlite3.connect("database.db") as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("""
                 INSERT INTO enterprises (name, cnpj, user_id)
@@ -85,19 +85,19 @@ class Enterprise:
             conn.commit()
 
     def get_all():
-        with sqlite3.connect("database.db") as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM enterprises;")
             return cursor.fetchall()
 
     def get_by_id(enterprise_id):
-        with sqlite3.connect("database.db") as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM enterprises WHERE id = ?;", (enterprise_id,))
             return cursor.fetchone()
 
     def update(enterprise_id, name=None, cnpj=None, user_id=None):
-        with sqlite3.connect("database.db") as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             fields, values = [], []
 
@@ -120,7 +120,7 @@ class Enterprise:
             conn.commit()
 
     def delete(enterprise_id):
-        with sqlite3.connect("database.db") as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("DELETE FROM enterprises WHERE id = ?;", (enterprise_id,))
             conn.commit()

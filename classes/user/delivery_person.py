@@ -4,6 +4,8 @@ from order import Order
 from person import Person
 from user import User
 from Vehicle import Vehicle
+from db.database import get_connection
+
 
 import sqlite3
 
@@ -11,7 +13,7 @@ class DeliveryPerson(Person):
     def __init__(self, name, cpf, address, birth_date, cnh: None, available: bool, vehicle: List[Vehicle], user: User):
         super().__init__(name, cpf, address, birth_date)
         self._cnh = cnh
-        self._available = True
+        self._available = available
         self._vehicle = vehicle
         self._accepted_orders = [List[Order]]
         self.user = user
@@ -54,29 +56,29 @@ class DeliveryPerson(Person):
         def user(self, value: User):
             self._user = value
         
-    def insert(name, cpf, birth_date, celphone,user_id):
-        with sqlite3.connect("database.db") as conn:
+    def insert(self):
+        with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("""
-                INSERT INTO delivery_person (name, cpf, birth_date, celphone, user_id)
+                INSERT INTO delivery_person (name, cpf, cnh,birth_date, celphone)
                 VALUES (?, ?, ?, ?, ?);
-            """, (name, cpf, birth_date, celphone, user_id))
+            """, (self.name, self.cpf, self.birth_date, self.celphone))
             conn.commit()
 
     def get_all():
-        with sqlite3.connect("database.db") as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM delivery_person;")
             return cursor.fetchall()
 
     def get_by_id(person_id):
-        with sqlite3.connect("database.db") as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM delivery_person WHERE id = ?;", (person_id,))
             return cursor.fetchone()
 
     def update(person_id, name=None, cpf=None, user_id=None, birth_date=None, celphone=None):
-        with sqlite3.connect("database.db") as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             fields, values = [], []
 
@@ -104,7 +106,7 @@ class DeliveryPerson(Person):
             conn.commit()
 
     def delete(person_id):
-        with sqlite3.connect("database.db") as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("DELETE FROM delivery_person WHERE id = ?;", (person_id,))
             conn.commit()
