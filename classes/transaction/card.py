@@ -1,6 +1,5 @@
 from datetime import datetime
 from enum import Enum
-
 from classes.transaction.transaction import Transaction
 
 import sqlite3
@@ -16,9 +15,8 @@ class CardFlag(Enum):
     UNIDENTIFIED = 'Unidentified'
 
 
-class Card(Transaction):
+class Card:
     def __init__(self, name: str, number: str, validity: str, cvc: str):
-        super().__init__(value_total=0.0, payment_method='card', status='pending')
         self._name = name
         self._number = self._clean_number(number)
         self._validity = validity
@@ -135,21 +133,23 @@ class Card(Transaction):
         return CardFlag.UNIDENTIFIED
 
 
-    def insert(name, number, validity, cvc, flag, transaction_id):
+    def insert(self):
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
             cursor.execute("""
-                INSERT INTO card (name, number, validity, cvc, flag, transaction_id)
-                VALUES (?, ?, ?, ?, ?, ?);
-            """, (name, number, validity, cvc, flag, transaction_id))
+                INSERT INTO card (name, number, validity, cvc, flag)
+                VALUES (?, ?, ?, ?, ?);
+            """, (self.name, self.number, self.validity, self.cvc, self.flag))
             conn.commit()
-
+            
+    @staticmethod
     def get_by_transaction(transaction_id):
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM card WHERE transaction_id = ?;", (transaction_id,))
             return cursor.fetchone()
 
+    @staticmethod
     def delete_by_transaction(transaction_id):
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()

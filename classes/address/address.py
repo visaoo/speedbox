@@ -65,22 +65,26 @@ class Address:
             raise ValueError("State must be a non-empty string")
         self._state = value
 
-    def insert_address(self, enterprise_id, type_user):
+    def insert_address(self, type_user):
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
             if type_user.lower() == 'enterprise':
                 cursor.execute("""
-                    INSERT INTO addresses_enterprises (street, city, state, enterprise_id)
+                    INSERT INTO addresses_enterprises (street, city, state)
                     VALUES (?, ?, ?, ?);
-                """, (self.street, self.city, self.state, enterprise_id))
+                """, (self.street, self.city, self.state))
                 conn.commit()
             elif type_user.lower() == 'client':
                 cursor.execute("""
-                    INSERT INTO addresses_clients (street, city, state, client_id)
+                    INSERT INTO addresses_clients (street, city, state)
                     VALUES (?, ?, ?, ?);
-                """, (self.street, self.city, self.state, enterprise_id))
+                """, (self.street, self.city, self.state))
                 conn.commit()
-                
+            else:
+                raise ValueError("Invalid type_user. Must be 'enterprise' or 'client'.")
+            
+            
+    @staticmethod
     def get_all(type_user):
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
@@ -90,7 +94,10 @@ class Address:
             elif type_user.lower() == 'client':
                 cursor.execute("SELECT * FROM addresses_clients;")
                 return cursor.fetchall()
-            
+            else:
+                raise ValueError("Invalid type_user. Must be 'enterprise' or 'client'.")
+   
+    @staticmethod        
     def get_address_by_id(id, type_user):
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
@@ -100,7 +107,8 @@ class Address:
             elif type_user.lower() == 'client':
                 cursor.execute("SELECT * FROM addresses_clients WHERE id = ?;", (id,))
                 return cursor.fetchone()
-
+    
+    @staticmethod
     def update_enterprise(id, type_user,street=None, city=None, state=None):
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
@@ -126,6 +134,7 @@ class Address:
             cursor.execute(query, values)
             conn.commit()
 
+    @staticmethod
     def delete_enterprise(id, type_user):
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
@@ -136,6 +145,14 @@ class Address:
                 cursor.execute("DELETE FROM addresses_clients WHERE id = ?;", (id,))
                 conn.commit()
 
+    def to_dict(self) -> dict:
+        return {
+            "street": self._street,
+            "number": self._number,
+            "neighborhood": self._neighborhood,
+            "city": self._city,
+            "state": self._state
+        }
 
     def __str__(self) -> str:
         return f"{self._street}, {self._number}, {self._neighborhood}, {self._city}, {self._state}"

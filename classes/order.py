@@ -2,7 +2,7 @@ from enum import Enum, auto
 
 from classes import user
 from classes.address.address import Address
-
+from datetime import date, datetime
 import sqlite3
 
 class OrderStatus(Enum):
@@ -35,14 +35,17 @@ class Order:
         self._status = status
         self._destino = destino
         self._value_total = 15.0  # Valor fixo do pedido, vai aumentar de acordo com a distancia
-
+        self._date = datetime.now()
     @property
     def description(self):
         return self._description
     @description.setter
     def description(self, value):
         self._description = value
-        
+    
+    @property
+    def date(self):
+        return self._date
     @property
     def origem(self):
         return self._origem
@@ -81,30 +84,32 @@ class Order:
             cursor = conn.cursor()
             if type_user == "enterprise":
                 cursor.execute("""
-                    INSERT INTO orders_enterprises (total, date, enterprise_id, delivery_person_id, addrss_final, addrss_initial, status)
-                    VALUES (?, ?, ?, ?, ?, ?, ?);
-                """, (self.total, self.date, self.enterprise_id, self.delivery_person_id, self.addrss_final, self.addrss_initial, self.status))
+                    INSERT INTO orders_enterprises (total, date, addrss_final, addrss_initial, status)
+                    VALUES (?, ?, ?, ?);
+                """, (self.value_total, self.date, self.destino, self.origem, self.status))
                 conn.commit()
             if type_user == "client":
                 cursor.execute("""
-                    INSERT INTO orders (total, date, client_id, delivery_person_id, addrss_final, addrss_initial, description,status)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?);
-                """, (self.total, self.date, self.client_id, self.delivery_person_id, self.addrss_final, self.addrss_initial, self.description,self.status))
+                    INSERT INTO orders (total, date, addrss_final, addrss_initial, description,status)
+                    VALUES (?, ?, ?, ?);
+                """, (self.value_total, self.date, self.destino, self.origem, self.description,self.status))
                 conn.commit()
-                
+    
+    @staticmethod            
     def get_by_enterprise(enterprise_id):
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM orders_enterprises WHERE enterprise_id = ?;", (enterprise_id,))
             return cursor.fetchall()
-
+        
+    @staticmethod
     def get_by_client(client_id):
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM orders WHERE client_id = ?;", (client_id,))
             return cursor.fetchall()
 
-    
+    @staticmethod
     def update_delivery_person(user_type, id, delivery_person_id):
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
@@ -115,7 +120,7 @@ class Order:
                 cursor.execute("UPDATE orders SET delivery_person_id = ? WHERE id = ?;", (delivery_person_id, id))
                 conn.commit()
 
-
+    @staticmethod
     def update_status(id, new_status, user_type):
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
@@ -126,7 +131,7 @@ class Order:
                 cursor.execute("UPDATE orders SET status = ? WHERE id = ?;", (new_status, id))
                 conn.commit()
 
-
+    @staticmethod
     def delete_order(id, user_type):
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()

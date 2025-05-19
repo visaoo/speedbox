@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from turtle import st
 from classes.user.person import Person
 from classes.address.address import Address
 
@@ -28,13 +29,14 @@ class Client(Person):
             cursor = conn.cursor()
             cursor.execute(
                 """
-                INSERT INTO clients (name, cpf, birth_date, celphone)
+                INSERT INTO clients (name, cpf, birth_date, phone)
                 VALUES (?, ?, ?, ?);
                 """,
                 (self.name, self.cpf, self.birth_date, self.phone),
             )
             conn.commit()
-
+            
+    @staticmethod
     def get_all():
         """
         Função para obter todos os clientes do banco de dados.
@@ -44,7 +46,8 @@ class Client(Person):
             cursor.execute("SELECT * FROM clients;")
             clients = cursor.fetchall()
         return clients
-
+    
+    @staticmethod
     def get_by_id(client_id):
         """
         Função para obter um cliente pelo ID.
@@ -54,8 +57,9 @@ class Client(Person):
             cursor.execute("SELECT * FROM clients WHERE id = ?;", (client_id,))
             client = cursor.fetchone()
         return client
-
-    def update(client_id, name=None, cpf=None, birth_date=None, celphone=None):
+    
+    @staticmethod
+    def update(client_id, name=None, cpf=None, birth_date=None, phone=None):
         """
         Função para atualizar um cliente no banco de dados.
         """
@@ -74,9 +78,9 @@ class Client(Person):
             if birth_date:
                 fields.append("birth_date = ?")
                 values.append(birth_date)
-            if celphone:
-                fields.append("celphone = ?")
-                values.append(celphone)
+            if phone:
+                fields.append("phone = ?")
+                values.append(phone)
             if not fields:
                 return  # Nenhum campo para atualizar
 
@@ -84,7 +88,7 @@ class Client(Person):
             query = f"UPDATE clients SET {', '.join(fields)} WHERE id = ?;"
             cursor.execute(query, values)
             conn.commit()
-
+    @staticmethod
     def delete(client_id):
         """
         Função para deletar um cliente do banco de dados.
@@ -97,7 +101,7 @@ class Client(Person):
         
        
     def __str__(self) -> str:
-        return f"Client: {self._name}, CPF: {self._cpf}, Phone: {self._phone}, Address: {self._address}, Birth Date: {self._birth_date}"
+        return f"Client: {self._name}, CPF: {self._cpf}, phone: {self._phone}, Address: {self._address}, Birth Date: {self._birth_date}"
     
     def to_dict(self) -> dict:
         return {

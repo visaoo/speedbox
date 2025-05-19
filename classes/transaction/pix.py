@@ -4,13 +4,13 @@ from classes.user.enterprise import Enterprise
 
 import sqlite3
 
+
 class PixQrcode:
     def __init__(self, enterprise: Enterprise, order: Order):
         self._key = enterprise.pix_key
         self._name = enterprise.name
-        self._city = enterprise.address.city    
+        self._city = enterprise.address.city
         self._value_total = order.value_total
-
 
     @property
     def key(self):
@@ -33,10 +33,10 @@ class PixQrcode:
         from crcmod import mkCrcFun
 
         crc16 = mkCrcFun(0x11021, rev=False, initCrc=0xFFFF, xorOut=0x0000)
-        calculated_crc = crc16(data.encode('utf-8'))
+        calculated_crc = crc16(data.encode("utf-8"))
         return f"{calculated_crc:04X}"
-        
-    def generate_pix_payload(self, txid: str = None, description: str = None) -> str:
+
+    def generate_pix_payload(self, txid: str | None, description: str | None) -> str:
         key = self.key
         name = self.name
         city = self.city
@@ -48,7 +48,9 @@ class PixQrcode:
         # Obrigatório
         payload = [
             "000201",  # Payload Format Indicator
-            "26" + str(len(merchant_account)) + merchant_account,  # Merchant Account Information
+            "26"
+            + str(len(merchant_account))
+            + merchant_account,  # Merchant Account Information
             "52040000",  # Merchant Category Code
             "5303986",  # Transaction Currency (BRL)
         ]
@@ -58,11 +60,13 @@ class PixQrcode:
             payload.append(f"54{len(amount_str)}{amount_str}")
 
         # País e quem recebe
-        payload.extend([
-            "5802BR",  # Country Code
-            f"59{len(name[:25]):02d}{name[:25]}",  # Merchant Name
-            f"60{len(city[:15]):02d}{city[:15]}",  # Merchant City
-        ])
+        payload.extend(
+            [
+                "5802BR",  # Country Code
+                f"59{len(name[:25]):02d}{name[:25]}",  # Merchant Name
+                f"60{len(city[:15]):02d}{city[:15]}",  # Merchant City
+            ]
+        )
 
         # ID da transação
         if txid:
@@ -77,54 +81,45 @@ class PixQrcode:
         payload.append("6304")
 
         # Junta tudo e calcula o CRC
-        payload_str = ''.join(payload)
+        payload_str = "".join(payload)
         crc = self.calculate_crc16(payload_str)
 
         return payload_str + crc
 
-
-
-    def generate_pix_qrcode(self,
-        txid: str = None,
-        description: str = None,  # seria msg, gostei de testar com isso por isso deixei
-        save_path: str = None
-    ):
-        # payload seria o copia e cola
-        payload = self.generate_pix_payload(
-            txid=txid,
-            description=description
-        )
-
+    def generate_pix_qrcode( self, txid: str | None, description: str | None, save_path):
+        payload = self.generate_pix_payload(txid=txid, description=description)
         qr = qrcode.make(payload)
-
         if save_path:
             qr.save(save_path)
             print(f"QRCode PIX salvo em: {save_path}")
-        else:
-            qr.show()
-
         return qr
 
-
-
-    def insert(key, transaction_id):
+    def insert(self):
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
-            cursor.execute("""
+            cursor.execute(
+                """
                 INSERT INTO pix (key, transaction_id)
                 VALUES (?, ?);
-            """, (key, transaction_id))
+            """,
+                (self.key),
+            )
             conn.commit()
-
+            
+    @staticmethod
     def get_by_transaction(transaction_id):
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM pix WHERE transaction_id = ?;", (transaction_id,))
+            cursor.execute(
+                "SELECT * FROM pix WHERE transaction_id = ?;", (transaction_id,)
+            )
             return cursor.fetchone()
 
+    @staticmethod
     def delete_by_transaction(transaction_id):
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
-            cursor.execute("DELETE FROM pix WHERE transaction_id = ?;", (transaction_id,))
+            cursor.execute(
+                "DELETE FROM pix WHERE transaction_id = ?;", (transaction_id,)
+            )
             conn.commit()
-
