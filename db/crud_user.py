@@ -1,20 +1,5 @@
 import sqlite3
 
-def insert(email, username, password, is_admin=False):
-    """
-    Insere um novo usuário no banco de dados.
-    """
-    with sqlite3.connect("database.db") as conn:
-        cursor = conn.cursor()
-        cursor.execute(
-            """
-            INSERT INTO users (email, username, password, is_admin)
-            VALUES (?, ?, ?, ?);
-            """,
-            (email, username, password, is_admin)
-        )
-        conn.commit()
-
 def get_all():
     """
     Retorna todos os usuários cadastrados.
@@ -33,7 +18,7 @@ def get_by_id(user_id):
         cursor.execute("SELECT * FROM users WHERE id = ?;", (user_id,))
         return cursor.fetchone()
 
-def update(user_id, email=None, username=None, password=None, is_admin=None):
+def update(user_id, email=None, username=None, password=None):
     """
     Atualiza dados de um usuário.
     """
@@ -51,10 +36,6 @@ def update(user_id, email=None, username=None, password=None, is_admin=None):
         if password:
             fields.append("password = ?")
             values.append(password)
-        if is_admin is not None:
-            fields.append("is_admin = ?")
-            values.append(is_admin)
-
         if not fields:
             return  # Nada para atualizar
 
