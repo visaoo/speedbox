@@ -33,18 +33,25 @@ def register_menu():
     return input(f"\n{Colors.GREEN}Escolha o tipo de usuário: {Colors.ENDC}")
 
 # Função para cadastrar um usuário base
-def register_base_user():
+def register_base_user(user_select):
     username = get_input(f"{Colors.CYAN}Nome de usuário: {Colors.ENDC}", none_word)
     email = get_input(f"{Colors.CYAN}Email: {Colors.ENDC}", is_email)
     password = get_input(f"{Colors.CYAN}Senha: {Colors.ENDC}", none_word)
+    
+    user_types = {
+        "1": "client",
+        "2": "enterprise",
+        "3": "delivery_person",
+    }
 
-    auth_response = auth.register(username, email, password)
+    auth_response = auth.register(username, email, password, user_types[user_select])
+    
     if auth_response:
         print(f"\n{Colors.GREEN}Usuário registrado com sucesso!{Colors.ENDC}")
         return {"username": username, "email": email}
     else:
         print(f"{Colors.RED}Email ou senha inválidos. Tente novamente.{Colors.ENDC}")
-        return register_base_user()  # chama novamente se der errado
+        return register_base_user(user_select)  # chama novamente se der errado
 
 
 # Função para cadastrar um cliente
@@ -53,7 +60,7 @@ def register_client():
     # mostrar registro cliente personalizado
     print(f"\n{Colors.BOLD}CADASTRO DE CLIENTE{Colors.ENDC}")
     
-    user = register_base_user()
+    user = register_base_user("1")
     
     print(f"\n{Colors.BOLD}INFORMAÇÕES PESSOAIS{Colors.ENDC}")
     name = input(f"{Colors.CYAN}Nome completo: {Colors.ENDC}")
@@ -68,7 +75,7 @@ def register_enterprise():
     display_logo()
     print(f"\n{Colors.BOLD}CADASTRO DE EMPRESA{Colors.ENDC}")
     
-    user = register_base_user()
+    user = register_base_user("2")
     
     print(f"\n{Colors.BOLD}INFORMAÇÕES DA EMPRESA{Colors.ENDC}")
     name = input(f"{Colors.CYAN}Nome da empresa: {Colors.ENDC}")
@@ -83,7 +90,7 @@ def register_delivery_person():
     display_logo()
     print(f"\n{Colors.BOLD}CADASTRO DE ENTREGADOR{Colors.ENDC}")
     
-    user = register_base_user()
+    user = register_base_user("3")
     
     print(f"\n{Colors.BOLD}INFORMAÇÕES PESSOAIS{Colors.ENDC}")
     name = input(f"{Colors.CYAN}Nome completo: {Colors.ENDC}")
