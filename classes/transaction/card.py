@@ -1,7 +1,9 @@
-from enum import Enum
 from datetime import datetime
-from typing import Optional
+from enum import Enum
+
 from classes.transaction.transaction import Transaction
+
+import sqlite3
 
 class CardFlag(Enum):
     VISA = 'Visa'
@@ -12,6 +14,7 @@ class CardFlag(Enum):
     AMERICAN_EXPRESS = 'American Express'
     MASTERCARD_BIN = 'Mastercard BIN'
     UNIDENTIFIED = 'Unidentified'
+
 
 class Card(Transaction):
     def __init__(self, name: str, number: str, validity: str, cvc: str):
@@ -59,10 +62,10 @@ class Card(Transaction):
             month_str, year_str = value.split("/")
             month = int(month_str)
             year = int(year_str) if len(year_str) == 4 else int(f"20{year_str}")
-            
+
             if month < 1 or month > 12:
                 raise ValueError("Mês inválido")
-                
+
             now = datetime.now()
             if year > now.year or (year == now.year and month >= now.month):
                 self._validity = value
@@ -88,49 +91,73 @@ class Card(Transaction):
     def identify_flag(self) -> CardFlag:
         """Identifica a bandeira do cartão com base no número."""
         num = self._number
-        
+
         # Visa: 4, 13 ou 16 dígitos
         if num.startswith('4') and len(num) in {13, 16}:
             return CardFlag.VISA
-            
+
         # Mastercard: 51-55, 2221-2720, 16 dígitos
-        if ((len(num) == 16) and 
+        if ((len(num) == 16) and
             ((num.startswith(('51', '52', '53', '54', '55')) or
              (num.startswith('22') and 221 <= int(num[:3]) <= 272) or
              (num.startswith('2') and 2210 <= int(num[:4]) <= 2720)))):
             return CardFlag.MASTERCARD
-            
+
         # American Express: 34 ou 37, 15 dígitos
         if num.startswith(('34', '37')) and len(num) == 15:
             return CardFlag.AMERICAN_EXPRESS
-            
+
         # Diners Club: múltiplos prefixos, 14-16 dígitos
         diners_prefixes = (
             '300', '301', '302', '303', '304', '305', '36', '38', '39'
         )
-        if (any(num.startswith(p) for p in diners_prefixes) and 
+        if (any(num.startswith(p) for p in diners_prefixes) and
             len(num) in {14, 15, 16}):
             return CardFlag.DINERS
-            
+
         # Discover: 6011, 644-649, 65, 16 dígitos
-        if ((len(num) == 16) and 
-            (num.startswith('6011') or 
+        if ((len(num) == 16) and
+            (num.startswith('6011') or
              num.startswith(('644', '645', '646', '647', '648', '649')) or
              num.startswith('65'))):
             return CardFlag.DISCOVER
-            
+
         # JCB: 3528-3589, 16-19 dígitos
-        if (num.startswith('35') and 
+        if (num.startswith('35') and
             len(num) in {16, 17, 18, 19} and
             3528 <= int(num[:4]) <= 3589):
             return CardFlag.JCB
-            
+
         # Mastercard BIN: 22, 16 dígitos (caso especial)
         if num.startswith('22') and len(num) == 16:
             return CardFlag.MASTERCARD_BIN
-            
+
         return CardFlag.UNIDENTIFIED
-    
+
+
+    def insert(name, number, validity, cvc, flag, transaction_id):
+        with sqlite3.connect("database.db") as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                INSERT INTO card (name, number, validity, cvc, flag, transaction_id)
+                VALUES (?, ?, ?, ?, ?, ?);
+            """, (name, number, validity, cvc, flag, transaction_id))
+            conn.commit()
+
+    def get_by_transaction(transaction_id):
+        with sqlite3.connect("database.db") as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM card WHERE transaction_id = ?;", (transaction_id,))
+            return cursor.fetchone()
+
+    def delete_by_transaction(transaction_id):
+        with sqlite3.connect("database.db") as conn:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM card WHERE transaction_id = ?;", (transaction_id,))
+            conn.commit()
+
+
+
     def to_dict(self) -> dict:
         return {
             "name": self.name,
@@ -139,6 +166,6 @@ class Card(Transaction):
             "cvc": self.cvc,
             "flag": self.flag.value
         }
-        
+
     def __str__(self) -> str:
         return f"Card(name={self.name}, number={self.number}, validity={self.validity}, cvc={self.cvc}, flag={self.flag.value})"

@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from random import randint
 from datetime import datetime, timedelta
 
+import sqlite3
 
 @dataclass
 class Boleto:
@@ -15,6 +16,30 @@ class Boleto:
     
     def generate_typeline():
         return ''.join(str(randint(0, 9)) for _ in range(47))
+    
+
+    def insert(due_date, typeline, transaction_id):
+        with sqlite3.connect("database.db") as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                INSERT INTO boleto (due_date, typeline, transaction_id)
+                VALUES (?, ?, ?);
+            """, (due_date, typeline, transaction_id))
+            conn.commit()
+
+    def get_by_transaction(transaction_id):
+        with sqlite3.connect("database.db") as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM boleto WHERE transaction_id = ?;", (transaction_id,))
+            return cursor.fetchone()
+
+    def delete_by_transaction(transaction_id):
+        with sqlite3.connect("database.db") as conn:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM boleto WHERE transaction_id = ?;", (transaction_id,))
+            conn.commit()
+
+        
     
     
     def to_dict(self):
