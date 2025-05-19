@@ -1,29 +1,38 @@
-from dataclasses import dataclass
-from turtle import st
 from classes.user.person import Person
 from classes.address.address import Address
-
-import sqlite3
-
 from db.database import get_connection
+
+from typing import Optional, List, Any
 
 
 class Client(Person):
-    def __init__(self, name: str, cpf:str, phone: str, birth_date: str, address: Address) -> None:
+    def __init__(self, name: str, cpf: str, phone: str, birth_date: str, address: Address) -> None:
+        """
+        Inicializa um cliente com nome, CPF, telefone, data de nascimento e endereço.
+
+        Args:
+            name (str): Nome completo do cliente.
+            cpf (str): CPF do cliente.
+            phone (str): Telefone de contato.
+            birth_date (str): Data de nascimento no formato 'YYYY-MM-DD'.
+            address (Address): Endereço associado ao cliente.
+        """
         super().__init__(name, cpf, address, birth_date)
-        self._phone = phone
-    
+        self._phone: str = phone
+
     @property
     def phone(self) -> str:
+        """Retorna o telefone do cliente."""
         return self._phone
-    
+
     @phone.setter
     def phone(self, value: str) -> None:
+        """Atualiza o telefone do cliente."""
         self._phone = value
-    
-    def insert(self):
+
+    def insert(self) -> None:
         """
-        Função para inserir um cliente no banco de dados.
+        Insere o cliente no banco de dados.
         """
         with get_connection() as conn:
             cursor = conn.cursor()
@@ -35,33 +44,53 @@ class Client(Person):
                 (self.name, self.cpf, self.birth_date, self.phone),
             )
             conn.commit()
-            
+
     @staticmethod
-    def get_all():
+    def get_all() -> List[Any]:
         """
-        Função para obter todos os clientes do banco de dados.
+        Retorna todos os clientes cadastrados no banco de dados.
+
+        Returns:
+            List[Any]: Lista de tuplas com os dados dos clientes.
         """
         with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM clients;")
-            clients = cursor.fetchall()
-        return clients
-    
+            return cursor.fetchall()
+
     @staticmethod
-    def get_by_id(client_id):
+    def get_by_id(client_id: int) -> Optional[Any]:
         """
-        Função para obter um cliente pelo ID.
+        Retorna um cliente específico pelo ID.
+
+        Args:
+            client_id (int): ID do cliente.
+
+        Returns:
+            Optional[Any]: Dados do cliente, se encontrado.
         """
         with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM clients WHERE id = ?;", (client_id,))
-            client = cursor.fetchone()
-        return client
-    
+            return cursor.fetchone()
+
     @staticmethod
-    def update(client_id, name=None, cpf=None, birth_date=None, phone=None):
+    def update(
+        client_id: int,
+        name: Optional[str] = None,
+        cpf: Optional[str] = None,
+        birth_date: Optional[str] = None,
+        phone: Optional[str] = None,
+    ) -> None:
         """
-        Função para atualizar um cliente no banco de dados.
+        Atualiza os dados de um cliente no banco de dados.
+
+        Args:
+            client_id (int): ID do cliente.
+            name (Optional[str]): Novo nome.
+            cpf (Optional[str]): Novo CPF.
+            birth_date (Optional[str]): Nova data de nascimento.
+            phone (Optional[str]): Novo telefone.
         """
         with get_connection() as conn:
             cursor = conn.cursor()
@@ -82,28 +111,41 @@ class Client(Person):
                 fields.append("phone = ?")
                 values.append(phone)
             if not fields:
-                return  # Nenhum campo para atualizar
+                return  # Nenhum campo foi fornecido para atualização
 
             values.append(client_id)
             query = f"UPDATE clients SET {', '.join(fields)} WHERE id = ?;"
             cursor.execute(query, values)
             conn.commit()
+
     @staticmethod
-    def delete(client_id):
+    def delete(client_id: int) -> None:
         """
-        Função para deletar um cliente do banco de dados.
+        Remove um cliente do banco de dados.
+
+        Args:
+            client_id (int): ID do cliente a ser removido.
         """
         with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("DELETE FROM clients WHERE id = ?;", (client_id,))
             conn.commit()
 
-        
-       
     def __str__(self) -> str:
-        return f"Client: {self._name}, CPF: {self._cpf}, phone: {self._phone}, Address: {self._address}, Birth Date: {self._birth_date}"
-    
+        """Retorna uma representação textual do cliente."""
+        return (
+            f"Client: {self._name}, CPF: {self._cpf}, "
+            f"Phone: {self._phone}, Address: {self._address}, "
+            f"Birth Date: {self._birth_date}"
+        )
+
     def to_dict(self) -> dict:
+        """
+        Retorna os dados do cliente como um dicionário.
+
+        Returns:
+            dict: Dicionário com os dados do cliente.
+        """
         return {
             "name": self._name,
             "cpf": self._cpf,
@@ -111,5 +153,3 @@ class Client(Person):
             "address": self._address.to_dict(),
             "birth_date": self._birth_date
         }
-    
-    
