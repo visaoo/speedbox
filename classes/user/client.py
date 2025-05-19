@@ -1,16 +1,13 @@
 from dataclasses import dataclass
-import datetime
-from tarfile import data_filter
-from classes.order import Order
+from turtle import st
 from classes.user.person import Person
-from classes.user.user import User
 from classes.address.address import Address
-from typing import List
 
 import sqlite3
 
+from db.database import get_connection
 
-@dataclass
+
 class Client(Person):
     def __init__(self, name: str, cpf:str, phone: str, birth_date: str, address: Address) -> None:
         super().__init__(name, cpf, address, birth_date)
@@ -19,50 +16,54 @@ class Client(Person):
     @property
     def phone(self) -> str:
         return self._phone
+    
     @phone.setter
     def phone(self, value: str) -> None:
         self._phone = value
     
-    def insert(name, cpf, birth_date, celphone,user_id):
+    def insert(self):
         """
         Função para inserir um cliente no banco de dados.
         """
-        with sqlite3.connect("../database.db") as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute(
                 """
-                INSERT INTO clients (name, cpf, birth_date, celphone, user_id)
-                VALUES (?, ?, ?, ?, ?);
+                INSERT INTO clients (name, cpf, birth_date, phone)
+                VALUES (?, ?, ?, ?);
                 """,
-                (name, cpf, birth_date, celphone, user_id),
+                (self.name, self.cpf, self.birth_date, self.phone),
             )
             conn.commit()
-
+            
+    @staticmethod
     def get_all():
         """
         Função para obter todos os clientes do banco de dados.
         """
-        with sqlite3.connect("../database.db") as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM clients;")
             clients = cursor.fetchall()
         return clients
-
+    
+    @staticmethod
     def get_by_id(client_id):
         """
         Função para obter um cliente pelo ID.
         """
-        with sqlite3.connect("../database.db") as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM clients WHERE id = ?;", (client_id,))
             client = cursor.fetchone()
         return client
-
-    def update(client_id, name=None, cpf=None, birth_date=None, celphone=None):
+    
+    @staticmethod
+    def update(client_id, name=None, cpf=None, birth_date=None, phone=None):
         """
         Função para atualizar um cliente no banco de dados.
         """
-        with sqlite3.connect("../database.db") as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
 
             fields = []
@@ -77,9 +78,9 @@ class Client(Person):
             if birth_date:
                 fields.append("birth_date = ?")
                 values.append(birth_date)
-            if celphone:
-                fields.append("celphone = ?")
-                values.append(celphone)
+            if phone:
+                fields.append("phone = ?")
+                values.append(phone)
             if not fields:
                 return  # Nenhum campo para atualizar
 
@@ -87,12 +88,12 @@ class Client(Person):
             query = f"UPDATE clients SET {', '.join(fields)} WHERE id = ?;"
             cursor.execute(query, values)
             conn.commit()
-
+    @staticmethod
     def delete(client_id):
         """
         Função para deletar um cliente do banco de dados.
         """
-        with sqlite3.connect("../database.db") as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("DELETE FROM clients WHERE id = ?;", (client_id,))
             conn.commit()
@@ -100,7 +101,7 @@ class Client(Person):
         
        
     def __str__(self) -> str:
-        return f"Client: {self._name}, CPF: {self._cpf}, Phone: {self._phone}, Address: {self._address}, Birth Date: {self._birth_date}"
+        return f"Client: {self._name}, CPF: {self._cpf}, phone: {self._phone}, Address: {self._address}, Birth Date: {self._birth_date}"
     
     def to_dict(self) -> dict:
         return {

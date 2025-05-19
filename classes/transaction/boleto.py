@@ -14,10 +14,10 @@ class Boleto:
         due_date =  datetime.now() + timedelta(days=3)
         return due_date.strftime("%d/%m/%Y")
     
-    def generate_typeline():
+    def generate_typeline(self):
         return ''.join(str(randint(0, 9)) for _ in range(47))
     
-
+    @staticmethod
     def insert(due_date, typeline, transaction_id):
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
@@ -26,22 +26,21 @@ class Boleto:
                 VALUES (?, ?, ?);
             """, (due_date, typeline, transaction_id))
             conn.commit()
-
+            
+    @staticmethod
     def get_by_transaction(transaction_id):
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM boleto WHERE transaction_id = ?;", (transaction_id,))
             return cursor.fetchone()
-
+        
+    @staticmethod
     def delete_by_transaction(transaction_id):
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
             cursor.execute("DELETE FROM boleto WHERE transaction_id = ?;", (transaction_id,))
             conn.commit()
 
-        
-    
-    
     def to_dict(self):
         return {
             "due_date": self.due_date,

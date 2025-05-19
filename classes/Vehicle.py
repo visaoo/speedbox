@@ -16,11 +16,11 @@ class VehicleType(Enum):
 
 class Vehicle:
 
-    def __init__(self, model: str, mark: str, plate: str, type_vehicle: VehicleType, maximum_load: int = 0):
+    def __init__(self, model: str, mark: str, plate: str, type_vehicle: VehicleType, maximum_distance: int = 0):
         self._model = model
         self._mark = mark
         self._plate = plate
-        self._maximum_load = maximum_load
+        self._maximum_distance = maximum_distance
         self._type_vehicle = type_vehicle
         self._can_add_load = True  # usado internamente
 
@@ -51,13 +51,11 @@ class Vehicle:
         self._plate = value
 
     @property
-    def maximum_load(self):
-        return self._maximum_load
+    def maximum_distance(self):
+        return self._maximum_distance
 
-    @maximum_load.setter
-    def maximum_load(self, value):
-        if value < 0:
-            raise ValueError("Carga máxima não pode ser negativa.")
+    @maximum_distance.setter
+    def maximum_distance(self, value):
         self._maximum_load = value
 
     @property
@@ -120,27 +118,32 @@ class Vehicle:
             return 1000
         return 0
 
-    def insert(model, mark, plate, type_vehicle, maximum_distance, delivery_person_id):
+    
+    
+    def insert(self):
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
             cursor.execute("""
-                INSERT INTO vehicle (model, mark, plate, type_vehicle, maximum_distance, delivery_person_id)
-                VALUES (?, ?, ?, ?, ?, ?);
-            """, (model, mark, plate, type_vehicle, maximum_distance, delivery_person_id))
+                INSERT INTO vehicle (model, mark, plate, type_vehicle, maximum_distance)
+                VALUES (?, ?, ?, ?, ?);
+            """, (self.model, self.mark, self.plate, self.type_vehicle, self.maximum_distance))
             conn.commit()
 
+    @staticmethod
     def get_all():
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM vehicle;")
             return cursor.fetchall()
 
+    @staticmethod
     def get_by_id(vehicle_id):
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM vehicle WHERE id = ?;", (vehicle_id,))
             return cursor.fetchone()
 
+    @staticmethod
     def update(vehicle_id, model=None, mark=None, plate=None, type_vehicle=None, maximum_distance=None, delivery_person_id=None):
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
@@ -172,8 +175,9 @@ class Vehicle:
             query = f"UPDATE vehicle SET {', '.join(fields)} WHERE id = ?;"
             cursor.execute(query, values)
             conn.commit()
-
-        def delete(vehicle_id):
+            
+    @staticmethod
+    def delete(vehicle_id):
             with sqlite3.connect("database.db") as conn:
                 cursor = conn.cursor()
                 cursor.execute("DELETE FROM vehicle WHERE id = ?;", (vehicle_id,))
@@ -181,14 +185,14 @@ class Vehicle:
 
         
         
-        def to_dict(self):
-            return {
-                "model": self._model,
-                "mark": self._mark,
-                "plate": self._plate,
-                "maximum_load": self._maximum_load,
-                "type_vehicle": self._type_vehicle.value
-            }
-            
-        def __str__(self):
-            return f'{self._type_vehicle.value} vrum vrum: {self._model} {self._mark} {self._plate} {self._maximum_load}'
+    def to_dict(self):
+        return {
+            "model": self._model,
+            "mark": self._mark,
+            "plate": self._plate,
+            "maximum_load": self._maximum_load,
+            "type_vehicle": self._type_vehicle.value
+        }
+        
+    def __str__(self):
+        return f'{self._type_vehicle.value} vrum vrum: {self._model} {self._mark} {self._plate} {self._maximum_load}'
