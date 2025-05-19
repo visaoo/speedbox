@@ -1,19 +1,16 @@
 from typing import List, Optional
 
-from order import Order
-from person import Person
-from user import User
-from Vehicle import Vehicle
+from classes.order import Order
+from classes.user.person import Person
+from classes.user.user import User
+from classes.Vehicle import Vehicle
 from db.database import get_connection
-from address.address import Address
-
 
 class DeliveryPerson(Person):
     def __init__(
         self,
         name: str,
         cpf: str,
-        address: Address,
         birth_date: str,
         cnh: str,
         available: bool,
@@ -27,7 +24,6 @@ class DeliveryPerson(Person):
         Args:
             name (str): Nome completo.
             cpf (str): CPF.
-            address (Address): Endereço.
             birth_date (str): Data de nascimento.
             cnh (str): Número da CNH.
             available (bool): Disponibilidade.
@@ -35,7 +31,7 @@ class DeliveryPerson(Person):
             user (User): Objeto do usuário vinculado.
             phone (str): Número de telefone.
         """
-        super().__init__(name, cpf, address, birth_date)
+        super().__init__(name, cpf, birth_date)
         self._cnh: str = cnh
         self._available: bool = available
         self._vehicle: Vehicle = vehicle
