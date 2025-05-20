@@ -148,6 +148,21 @@ class Order:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM orders WHERE client_id = ?;", (client_id,))
             return cursor.fetchall()
+        
+    @staticmethod
+    def get_by_id(user_id: int, user_type: str):
+        with get_connection() as conn:
+            cursor = conn.cursor()
+            if user_type == "enterprise":
+                table = 'orders_enterprises'
+            elif user_type == "client":
+                table = 'orders'
+            else:
+                raise ValueError("Tipo de usuário inválido. Use 'enterprise' ou 'client'.")
+
+            cursor.execute(f"SELECT id FROM {table} WHERE id = ?;", (user_id,))
+            return cursor.fetchall()
+
 
     @staticmethod
     def update_delivery_person(user_type: str, order_id: int, delivery_person_id: int) -> None:
