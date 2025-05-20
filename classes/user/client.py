@@ -1,3 +1,4 @@
+from classes import user
 from classes.user.person import Person
 from classes.address.address import Address
 from db.database import get_connection
@@ -6,7 +7,7 @@ from typing import Optional, List, Any
 
 
 class Client(Person):
-    def __init__(self, name: str, cpf: str, phone: str, birth_date: str, address: Address) -> None:
+    def __init__(self, name: str, cpf: str, phone: str, birth_date: str, address: Address, user_id) -> None:
         """
         Inicializa um cliente com nome, CPF, telefone, data de nascimento e endereço.
 
@@ -17,7 +18,7 @@ class Client(Person):
             birth_date (str): Data de nascimento no formato 'YYYY-MM-DD'.
             address (Address): Endereço associado ao cliente.
         """
-        super().__init__(name, cpf, address, birth_date)
+        super().__init__(name, cpf, address, birth_date, user_id)
         self._phone: str = phone
 
     @property
@@ -38,10 +39,10 @@ class Client(Person):
             cursor = conn.cursor()
             cursor.execute(
                 """
-                INSERT INTO clients (name, cpf, birth_date, celphone)
-                VALUES (?, ?, ?, ?);
+                INSERT INTO clients (name, cpf, birth_date, celphone, user_id)
+                VALUES (?, ?, ?, ?, ?);
                 """,
-                (self.name, self.cpf, self.birth_date, self.phone),
+                (self.name, self.cpf, self.birth_date, self.phone, self.user_id),
             )
             conn.commit()
 

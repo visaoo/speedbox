@@ -80,6 +80,8 @@ class Vehicle:
             raise ValueError("Tipo de veículo inválido.")
         self._type_vehicle = value
 
+
+    #Criar lógica para verficar a distância por tipo de veículo
     def calculate_distance(self, origin: str, destination: str) -> Optional[Dict[str, str]]:
         """
         Calcula a distância e duração estimada entre dois endereços utilizando a API OpenRouteService.

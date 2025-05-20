@@ -1,3 +1,4 @@
+from site import USER_BASE
 import time
 from getpass import getpass
 from datetime import datetime
@@ -85,8 +86,9 @@ def register_client():
     city = get_input(f"{Colors.CYAN}Cidade: {Colors.ENDC}", none_word)
     state = get_input(f"{Colors.CYAN}Estado: {Colors.ENDC}", none_word)
         
-    client_id = "101"
-        
+    client_id = ... # criar lógica para pegar o client_id do banco de dados
+    user_id = ... # criar lógica para pegar o user_id do banco de dados
+    
     address = Address(
         street=street,
         city=city,
@@ -96,15 +98,16 @@ def register_client():
         client_id=client_id,
     )
     
-    address.insert_address(type_user='client')
-    
     client = Client(name=name,
                     cpf=cpf,
                     birth_date=birth_date,
                     phone=phone,
                     address=address,
+                    user_id=1
                     )
+    
     client.insert()
+    address.insert_address(type_user='client')
     
     print(f"\n{Colors.GREEN}Cliente {name} cadastrado com sucesso!{Colors.ENDC}")
     input(f"\n{Colors.YELLOW}Pressione Enter para continuar...{Colors.ENDC}")

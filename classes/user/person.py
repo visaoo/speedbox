@@ -1,5 +1,7 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 from typing import Optional
+
+from requests import get
 from classes.address.address import Address
 
 
@@ -14,12 +16,12 @@ class Person(ABC):
         birth_date (str): Data de nascimento da pessoa no formato ISO (YYYY-MM-DD).
     """
 
-    def __init__(self, name: str, cpf: str, address: Address, birth_date: str) -> None:
+    def __init__(self, name: str, cpf: str, address: Address, birth_date: str, user_id) -> None:
         self._name: str = name
         self._cpf: str = cpf
         self._address: Address = address
         self._birth_date: str = birth_date
-
+        self._user_id = user_id
     @property
     def name(self) -> str:
         """Retorna o nome da pessoa."""
@@ -51,3 +53,53 @@ class Person(ABC):
     @birth_date.setter
     def birth_date(self, value: str) -> None:
         self._birth_date = value
+
+    @property
+    def user_id(self) -> Optional[str]:
+        """Retorna o ID do usuário."""
+        return self._user_id
+    
+    @user_id.setter
+    def user_id(self, value: str) -> None:
+        self._user_id = value
+        
+    @abstractmethod
+    def insert(self) -> None:
+        """
+        Método abstrato para inserir a pessoa no banco de dados.
+        Deve ser implementado nas subclasses.
+        """
+        pass
+    
+    @abstractmethod
+    def get_all() -> list:
+        """
+        Método abstrato para obter todas as pessoas do banco de dados.
+        Deve ser implementado nas subclasses.
+        """
+        pass
+    
+    @abstractmethod
+    def get_by_id():
+        """
+        Método abstrato para obter uma pessoa pelo ID.
+        Deve ser implementado nas subclasses.
+        """
+        pass
+    
+    @abstractmethod
+    def update():
+        """
+        Método abstrato para atualizar os dados da pessoa.
+        Deve ser implementado nas subclasses.
+        """
+        pass
+    
+    
+    @abstractmethod
+    def delete():
+        """
+        Método abstrato para deletar a pessoa do banco de dados.
+        Deve ser implementado nas subclasses.
+        """
+        pass

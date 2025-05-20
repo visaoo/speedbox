@@ -1,5 +1,6 @@
 from typing import List, Optional
 
+from classes import address
 from classes.order import Order
 from classes.user.person import Person
 from classes.user.user import User
@@ -16,7 +17,9 @@ class DeliveryPerson(Person):
         available: bool,
         vehicle: Vehicle,
         user: User,
-        phone: str
+        phone: str,
+        address,
+        user_id: int
     ) -> None:
         """
         Inicializa um entregador com informações pessoais, CNH, veículo, usuário e disponibilidade.
@@ -31,7 +34,7 @@ class DeliveryPerson(Person):
             user (User): Objeto do usuário vinculado.
             phone (str): Número de telefone.
         """
-        super().__init__(name, cpf, birth_date)
+        super().__init__(name, cpf, address, birth_date, user_id)
         self._cnh: str = cnh
         self._available: bool = available
         self._vehicle: Vehicle = vehicle
