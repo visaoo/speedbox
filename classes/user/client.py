@@ -38,7 +38,7 @@ class Client(Person):
             cursor = conn.cursor()
             cursor.execute(
                 """
-                INSERT INTO clients (name, cpf, birth_date, phone)
+                INSERT INTO clients (name, cpf, birth_date, celphone)
                 VALUES (?, ?, ?, ?);
                 """,
                 (self.name, self.cpf, self.birth_date, self.phone),
