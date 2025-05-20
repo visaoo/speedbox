@@ -1,46 +1,64 @@
-from site import USER_BASE
-import time
-from classes.resources import *
+from classes.Auth.auth import Authenticator
+from classes.Auth.auth_service import AuthService
 
-from app.register.register_client import register_client
-from app.register.register_enterprise import register_enterprise
-from app.register.register_delivery_person import register_delivery_person
-from app.register.register_menu import register_menu
+from app.utils.get_connection import get_connection
 from app.login.login import login
+from app.dashboards.client_menu import client_menu
+from app.dashboards.enterprise_menu import enterprise_menu
+from app.dashboards.delivery_person_menu import delivery_person_menu
+from app.utils.get_connection import get_connection
 
+from app.register.register_user import register_user
 
+# Menu principal
 def main():
-    """
-    Função principal do aplicativo SpeedBox.
-
-    Exibe uma mensagem de boas-vindas e entra em um loop para apresentar o menu principal,
-    permitindo que o usuário escolha entre fazer login, registrar um novo usuário
-    (cliente, empresa ou entregador) ou sair do aplicativo.
-    """
-    welcome_message()
-    
+    authenticator = Authenticator(AuthService(db_path="database.db"))
     while True:
-        choice = main_menu()
-        # Login
+        print("\n=== Sistema de Delivery ===")
+        print("1. Login")
+        print("2. Cadastrar Cliente")
+        print("3. Cadastrar Entregador")
+        print("4. Cadastrar Empresa")
+        print("5. Sair")
+        choice = input("Escolha uma opção: ").strip()
         if choice == "1":
-            login()
-        # Register
+            user_id, user_type = login(authenticator)
+            if user_id:
+                # Obter o ID correto com base no tipo de usuário
+                with get_connection() as conn:
+                    cursor = conn.cursor()
+                    if user_type == "client":
+                        cursor.execute("SELECT id FROM clients WHERE user_id = ?", (user_id,))
+                        entity_id = cursor.fetchone()
+                        if entity_id:
+                            client_menu(entity_id[0])
+                        else:
+                            print("Erro: Cliente não encontrado.")
+                    elif user_type == "delivery_person":
+                        cursor.execute("SELECT id FROM delivery_person WHERE user_id = ?", (user_id,))
+                        entity_id = cursor.fetchone()
+                        if entity_id:
+                            delivery_person_menu(entity_id[0])
+                        else:
+                            print("Erro: Entregador não encontrado.")
+                    elif user_type == "enterprise":
+                        cursor.execute("SELECT id FROM enterprises WHERE user_id = ?", (user_id,))
+                        entity_id = cursor.fetchone()
+                        if entity_id:
+                            enterprise_menu(entity_id[0])
+                        else:
+                            print("Erro: Empresa não encontrado.")
         elif choice == "2":
-            register_choice = register_menu()
-            if register_choice == "1":
-                register_client()
-            elif register_choice == "2":
-                register_enterprise()
-            elif register_choice == "3":
-                register_delivery_person()
-        #Exit
+            register_user(authenticator, "client")
         elif choice == "3":
-            clear_screen()
-            display_logo()
-            print(f"\n{Colors.GREEN}Obrigado por usar o SpeedBox! Até logo!{Colors.ENDC}")
-            time.sleep(1.5)
-            clear_screen()
+            register_user(authenticator, "delivery_person")
+        elif choice == "4":
+            register_user(authenticator, "enterprise")
+        elif choice == "5":
+            print("Saindo...")
             break
+        else:
+            print("Opção inválida!")
 
 if __name__ == "__main__":
     main()
