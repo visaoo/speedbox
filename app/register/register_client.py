@@ -25,9 +25,9 @@ def register_client():
     
     print(f"\n{Colors.BOLD}INFORMAÇÕES PESSOAIS{Colors.ENDC}")
     name = get_input(f"{Colors.CYAN}Nome completo: {Colors.ENDC}", none_word)
-    cpf = get_input(f"{Colors.CYAN}CPF: {Colors.ENDC}", is_cpf)
-    phone = get_input(f"{Colors.CYAN}TELEFONE: {Colors.ENDC}", is_phone) # perguntar se is_phone ja valida entrada com args
-    birth_date = get_input(f"{Colors.CYAN}Data de nascimento (YYYY-MM-DD): {Colors.ENDC}", is_date)
+    cpf = get_input(f"{Colors.CYAN}CPF (123.456.789-09): {Colors.ENDC}", is_cpf, errorMensage=f"{Colors.RED}CPF inválido. Tente novamente.{Colors.ENDC}")
+    phone = get_input(f"{Colors.CYAN}TELEFONE (11987654321): {Colors.ENDC}", is_phone, errorMensage=f"{Colors.RED}Telefone inválido. Tente novamente.{Colors.ENDC}")
+    birth_date = get_input(f"{Colors.CYAN}Data de nascimento (DD/MM/YYYY): {Colors.ENDC}", is_date, errorMensage=f"{Colors.RED}Data de nascimento inválida (formato DD/MM/YYYY). Tente novamente.{Colors.ENDC}")
 
     print(f"\n{Colors.BOLD}ENDEREÇO{Colors.ENDC}")
     street = get_input(f"{Colors.CYAN}Rua: {Colors.ENDC}", none_word)

@@ -22,9 +22,9 @@ def register_delivery_person():
     
     print(f"\n{Colors.BOLD}INFORMAÇÕES PESSOAIS{Colors.ENDC}")
     name = get_input(f"{Colors.CYAN}Nome completo: {Colors.ENDC}", none_word)
-    cpf = get_input(f"{Colors.CYAN}CPF: {Colors.ENDC}", is_cpf, errorMensage=f"{Colors.RED}CPF inválido. Tente novamente.{Colors.ENDC}")
-    phone = get_input(f"{Colors.CYAN}TELEFONE: {Colors.ENDC}", is_phone, errorMensage=f"{Colors.RED}Telefone inválido. Tente novamente.{Colors.ENDC}")
-    birth_date = get_input(f"{Colors.CYAN}Data de nascimento (YYYY-MM-DD): {Colors.ENDC}", is_date, errorMensage=f"{Colors.RED}Data de nascimento inválida (formato YYYY-MM-DD). Tente novamente.{Colors.ENDC}")
+    cpf = get_input(f"{Colors.CYAN}CPF (123.456.789-09): {Colors.ENDC}", is_cpf, errorMensage=f"{Colors.RED}CPF inválido. Tente novamente.{Colors.ENDC}")
+    phone = get_input(f"{Colors.CYAN}TELEFONE (11987654321): {Colors.ENDC}", is_phone, errorMensage=f"{Colors.RED}Telefone inválido. Tente novamente.{Colors.ENDC}")
+    birth_date = get_input(f"{Colors.CYAN}Data de nascimento (DD/MM/YYYY): {Colors.ENDC}", is_date, errorMensage=f"{Colors.RED}Data de nascimento inválida (formato DD/MM/YYYY). Tente novamente.{Colors.ENDC}")
     cnh = get_input(f"{Colors.CYAN}CNH: {Colors.ENDC}", none_word)
     
     client_id = "101"
@@ -47,7 +47,7 @@ def register_delivery_person():
 
     print(f"{Colors.YELLOW}1.{Colors.ENDC} Moto")
     print(f"{Colors.YELLOW}2.{Colors.ENDC} Carro")
-    print(f"{Colors.YELLOW}3.{Colors.ENDC} Bicicleta")
+    print(f"{Colors.YELLOW}3.{Colors.ENDC} Caminhao")
 
     while True:
         vehicle_choice_str = input(f"{Colors.CYAN}Escolha o tipo de veículo (1/2/3): {Colors.ENDC}")
@@ -56,7 +56,7 @@ def register_delivery_person():
         else:
             print(f"{Colors.RED}Opção inválida. Por favor, escolha 1, 2 ou 3.{Colors.ENDC}")
 
-    vehicle_map = {"1": "moto", "2": "carro", "3": "bicicleta"}
+    vehicle_map = {"1": "moto", "2": "carro", "3": "caminhao"}
     type_vehicle = vehicle_map[vehicle_choice_str]
 
     vehicle = Vehicle(model=model,
@@ -81,10 +81,10 @@ def register_delivery_person():
     print(f"\n{Colors.BOLD}INFORMAÇÕES DO VEÍCULO{Colors.ENDC}")
     print(f"{Colors.YELLOW}1.{Colors.ENDC} Moto")
     print(f"{Colors.YELLOW}2.{Colors.ENDC} Carro")
-    print(f"{Colors.YELLOW}3.{Colors.ENDC} Bicicleta")
+    print(f"{Colors.YELLOW}3.{Colors.ENDC} Caminhao")
     
     vehicle_choice = input(f"{Colors.CYAN}Escolha o tipo de veículo (1/2/3): {Colors.ENDC}")
-    vehicle_map = {"1": VehicleType.MOTO, "2": VehicleType.CARRO, "3": VehicleType.BICICLETA}
+    vehicle_map = {"1": VehicleType.MOTO, "2": VehicleType.CARRO, "3": VehicleType.CAMINHAO}
     type_vehicle = vehicle_map[vehicle_choice_str]
     
     vehicle_type = type_vehicle
