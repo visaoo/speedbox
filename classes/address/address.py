@@ -9,13 +9,19 @@ class Address:
         number: str,
         neighborhood: str,
         city: str,
-        state: str
+        state: str,
+        client_id=None, 
+        enterprise_id=None, 
+        delivery_person_id=None
     ) -> None:
         self._street = street
         self._number = number
         self._neighborhood = neighborhood
         self._city = city
         self._state = state
+        self._client_id = client_id
+        self._enterprise_id = enterprise_id
+        self._delivery_person_id = delivery_person_id
 
     @property
     def street(self) -> str:
@@ -67,20 +73,20 @@ class Address:
             raise ValueError("State must be a non-empty string")
         self._state = value
 
-    def insert_address(self, type_user):
+    def insert_address(self, type_user, client_id=None):
         with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
             if type_user.lower() == 'enterprise':
                 cursor.execute("""
                     INSERT INTO addresses_enterprises (street, city, state)
-                    VALUES (?, ?, ?, ?);
+                    VALUES (?, ?, ?);
                 """, (self.street, self.city, self.state))
                 conn.commit()
             elif type_user.lower() == 'client':
                 cursor.execute("""
-                    INSERT INTO addresses_clients (street, city, state)
-                    VALUES (?, ?, ?, ?);
-                """, (self.street, self.city, self.state))
+                    INSERT INTO addresses_clients (street, number, neighborhood, city, state, client_id)
+                VALUES (?, ?, ?, ?, ?);
+                """, (self.street, self.number, self.neighborhood, self.city, self.state, client_id))
                 conn.commit()
             else:
                 raise ValueError("Invalid type_user. Must be 'enterprise' or 'client'.")

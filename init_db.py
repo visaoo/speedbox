@@ -72,15 +72,16 @@ def create_tables():
         """
         )
         # Criando a tabela `addresses_clients`
-        cursor.execute(
-            """
-            CREATE TABLE IF NOT EXISTS addresses_clients (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            street TEXT NOT NULL,
-            city TEXT NOT NULL,
-            state TEXT NOT NULL,
-            client_id INTEGER NOT NULL,
-            FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS addresses_clients (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        street TEXT NOT NULL,
+        number TEXT NOT NULL,
+        neighborhood TEXT NOT NULL,
+        city TEXT NOT NULL,
+        state TEXT NOT NULL,
+        client_id INTEGER NOT NULL,
+        FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
         );
         """
         )
