@@ -9,6 +9,8 @@ from openrouteservice import Client
 from db.database import get_connection
 
 
+class MaxDistance(Enum):
+    ...
 class VehicleType(Enum):
     """Enumeração para os tipos de veículos."""
     MOTO = "moto"
@@ -140,16 +142,21 @@ class Vehicle:
         elif self.type_vehicle == VehicleType.CAMINHAO:
             return 1000
         return 0
+    def insert(self, delivery_person_id: int) -> None:
+        """
+        Insere o veículo no banco de dados com o delivery_person_id.
 
-    def insert(self) -> None:
-        """Insere o veículo no banco de dados."""
-        with get_connection() as conn:
+        Args:
+            delivery_person_id (int): ID do entregador associado ao veículo.
+        """
+        with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
             cursor.execute("""
-                INSERT INTO vehicle (model, mark, plate, type_vehicle, maximum_distance)
-                VALUES (?, ?, ?, ?, ?);
-            """, (self.model, self.mark, self.plate, self.type_vehicle.value, self.maximum_distance))
+                INSERT INTO vehicle (model, mark, plate, type_vehicle, maximum_distance, delivery_person_id)
+                VALUES (?, ?, ?, ?, ?, ?);
+            """, (self.model, self.mark, self.plate, self.type_vehicle.value, self.maximum_distance, delivery_person_id))
             conn.commit()
+
 
     @staticmethod
     def get_all() -> list:
