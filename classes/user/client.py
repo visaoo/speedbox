@@ -153,3 +153,5 @@ class Client(Person):
             "address": self._address.to_dict(),
             "birth_date": self._birth_date
         }
+
+
