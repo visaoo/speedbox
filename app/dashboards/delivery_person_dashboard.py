@@ -8,6 +8,9 @@ def delivery_person_dashboard(username):
     Args:
         username (str): O nome de usuário do entregador logado.
     """
+    
+    # adicionar Visualizar pedido em aberto
+    # Histórico de pedidos 
     while True:
         clear_screen()
         display_logo()

@@ -78,8 +78,8 @@ class Address:
             cursor = conn.cursor()
             if type_user.lower() == 'enterprise':
                 cursor.execute("""
-                    INSERT INTO addresses_enterprises (street, city, state)
-                    VALUES (?, ?, ?);
+                    INSERT INTO addresses_enterprises (street, number, neighborhood, city, state, ,enterprise_id)
+                    VALUES (?, ?, ?, ?, ?, ?);
                 """, (self.street, self.city, self.state))
                 conn.commit()
             elif type_user.lower() == 'client':

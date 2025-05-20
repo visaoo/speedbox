@@ -1,9 +1,10 @@
 from enum import Enum
 from uuid import uuid4
+from classes import user
 from classes.address.address import Address
 from db.database import get_connection
 from typing import Optional, List
-
+import sqlite3
 
 class TypeKeyPix(Enum):
     EMAIL = 'email'
@@ -14,7 +15,7 @@ class TypeKeyPix(Enum):
 
 
 class Enterprise:
-    def __init__(self, name: str, cnpj: str, address: Address) -> None:
+    def __init__(self, name: str, cnpj: str, address: Address, user_id) -> None:
         """
         Inicializa uma empresa com nome, CNPJ e endereço.
 
@@ -28,7 +29,7 @@ class Enterprise:
         self._address: Address = address
         self._type_key_pix: TypeKeyPix = TypeKeyPix.CNPJ
         self._pix_key: str = self._cnpj
-
+        self.user_id = user_id
     @property
     def name(self) -> str:
         """Retorna o nome da empresa."""
@@ -93,19 +94,17 @@ class Enterprise:
             self._pix_key = value
         else:
             raise ValueError("Tipo de chave Pix inválido.")
-
+        
     def insert(self) -> None:
         """
         Insere a empresa no banco de dados.
-
-        Obs: endereço e chave Pix não estão sendo salvos atualmente.
         """
-        with get_connection() as conn:
+        with sqlite3.connect("database.db") as conn:
             cursor = conn.cursor()
             cursor.execute("""
-                INSERT INTO enterprises (name, cnpj)
-                VALUES (?, ?);
-            """, (self.name, self.cnpj))
+                INSERT INTO enterprises (name, cnpj, user_id)
+                VALUES (?, ?, ?);
+            """, (self.name, self.cnpj, self.user_id))
             conn.commit()
 
     @staticmethod
