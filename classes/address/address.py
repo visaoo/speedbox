@@ -1,4 +1,6 @@
 import sqlite3
+from db.database import get_connection
+
 
 class Address:
     def __init__(
@@ -92,7 +94,7 @@ class Address:
             
     @staticmethod
     def get_all(type_user):
-        with sqlite3.connect("database.db") as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             if type_user.lower() == 'enterprise':
                 cursor.execute("SELECT * FROM addresses_enterprises;")
@@ -105,7 +107,7 @@ class Address:
    
     @staticmethod        
     def get_address_by_id(id, type_user):
-        with sqlite3.connect("database.db") as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             if type_user.lower() == 'enterprise':    
                 cursor.execute("SELECT * FROM addresses_enterprises WHERE id = ?;", (id,))
@@ -116,7 +118,7 @@ class Address:
     
     @staticmethod
     def update_enterprise(id, type_user,street=None, city=None, state=None):
-        with sqlite3.connect("database.db") as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             fields, values = [], []
 
@@ -142,7 +144,7 @@ class Address:
 
     @staticmethod
     def delete_enterprise(id, type_user):
-        with sqlite3.connect("database.db") as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             if type_user.lower() == 'enterprise':
                 cursor.execute("DELETE FROM addresses_enterprises WHERE id = ?;", (id,))

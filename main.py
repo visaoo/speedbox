@@ -1,3 +1,4 @@
+from site import USER_BASE
 import time
 from classes.resources import *
 
