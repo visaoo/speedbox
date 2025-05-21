@@ -1,6 +1,6 @@
 from classes.address.address import Address
 
-def get_address_from_input(type_user, client_id=None, enterprise_id=None):
+def get_address_from_input(type_user, client_id=None, enterprise_id=None) -> Address:
     while True:
         street = input("Digite a rua: ").strip()
         if not street:
