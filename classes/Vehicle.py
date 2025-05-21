@@ -1,3 +1,4 @@
+from email.headerregistry import Address
 import os
 from enum import Enum
 from typing import Optional, Dict, Any
@@ -84,7 +85,8 @@ class Vehicle:
 
 
     #Criar lógica para verficar a distância por tipo de veículo
-    def calculate_distance(self, origin: str, destination: str) -> Optional[Dict[str, str]]:
+    @staticmethod
+    def calculate_distance(origin: str, destination: str, profile):
         """
         Calcula a distância e duração estimada entre dois endereços utilizando a API OpenRouteService.
         """
@@ -96,10 +98,11 @@ class Vehicle:
             return None
 
         client = Client(key=api_key)
-
-        profile = "driving-car"
-        if self.type_vehicle == VehicleType.CAMINHAO:
+        if profile == "driving-car":
+            profile = "driving-car"
+        if profile == "driving-hgv":
             profile = "driving-hgv"
+        
 
         def geocode(address: str):
             try:

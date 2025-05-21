@@ -15,26 +15,13 @@ def make_order_client(client_id):
     
     # Calcular distância (se API estiver configurada)
     try:
-        with get_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute("SELECT id FROM vehicle WHERE delivery_person_id IS NULL LIMIT 1")
-            vehicle_id = cursor.fetchone()
-            if vehicle_id:
-                vehicle = Vehicle.get_by_id(vehicle_id[0])
-                if vehicle:
-                    vehicle_obj = Vehicle(
-                        model=vehicle[1],
-                        mark=vehicle[2],
-                        plate=vehicle[3],
-                        type_vehicle=VehicleType(vehicle[4]),
-                        maximum_distance=vehicle[5]
-                    )
-                    distance_info = vehicle_obj.calculate_distance(str(origem), str(destino))
-                    if distance_info:
-                        print(f"Distância: {distance_info['distancia_km']} km, Duração: {distance_info['duracao_horas']} horas")
-                        order.value_total = float(distance_info['distancia_km']) * 2.0  # Exemplo de cálculo
+        car = Vehicle.calculate_distance(origem.__str__(), destino.__str__(), 'driving-car')
+        truck = Vehicle.calculate_distance(origem.__str__(), destino.__str__(), 'driving-hgv')
     except Exception as e:
         print(f"Erro ao calcular distância: {e}")
+    finally:
+        print(f'Carro: {car}')
+        print(f'Caminhão: {truck}')
     
     # Inserir pedido com client_id
     order.insert("client", client_id=client_id)
