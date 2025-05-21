@@ -1,3 +1,5 @@
+from validations.validations import get_input, none_word
+
 from classes.Auth.auth import Authenticator
 from classes.Auth.auth_service import AuthService
 
@@ -20,7 +22,7 @@ def main():
         print("3. Cadastrar Entregador")
         print("4. Cadastrar Empresa")
         print("5. Sair")
-        choice = input("Escolha uma opção: ").strip()
+        choice = get_input("Escolha uma opção: ", none_word).strip()
         if choice == "1":
             user_id, user_type = login(authenticator)
             if user_id:

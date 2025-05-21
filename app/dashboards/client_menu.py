@@ -1,8 +1,10 @@
+from validations.validations import get_input, none_word
+
 from app.orders.view_order_history_client import view_order_history_client
 from app.orders.make_order_client import make_order_client
 from app.orders.view_open_orders_client import view_open_orders_client
 
-# Menus
+
 def client_menu(client_id):
     while True:
         print("\n=== Menu do Cliente ===")
@@ -10,7 +12,7 @@ def client_menu(client_id):
         print("2. Fazer um pedido")
         print("3. Ver pedidos em aberto")
         print("4. Sair")
-        choice = input("Escolha uma opção: ").strip()
+        choice = get_input("Escolha uma opção: ", none_word).strip()
         if choice == "1":
             view_order_history_client(client_id)
         elif choice == "2":

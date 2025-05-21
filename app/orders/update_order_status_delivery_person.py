@@ -1,10 +1,13 @@
+from validations.validations import get_input, none_word
+
 from classes.order import Order, OrderStatus
 from app.utils.get_connection import get_connection
 
+
 def update_order_status_delivery_person(delivery_person_id):
-    order_type = input("Digite o tipo de pedido (client/enterprise): ").strip()
-    order_id = input("Digite o ID do pedido: ").strip()
-    new_status = input("Digite o novo status (completed/canceled): ").strip()
+    order_type = get_input("Digite o tipo de pedido (client/enterprise): ", none_word).strip()
+    order_id = get_input("Digite o ID do pedido: ", none_word).strip()
+    new_status = get_input("Digite o novo status (completed/canceled): ", none_word).strip()
     try:
         order_id = int(order_id)
         new_status = OrderStatus[new_status.upper()]

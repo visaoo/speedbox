@@ -1,24 +1,26 @@
+from validations.validations import get_input, none_word, is_num
 from classes.address.address import Address
+
 
 def get_address_from_input(type_user, client_id=None, enterprise_id=None) -> Address:
     while True:
-        street = input("Digite a rua: ").strip()
+        street = get_input("Digite a rua: ", none_word).strip()
         if not street:
             print("Rua não pode ser vazia!")
             continue
-        number = input("Digite o número: ").strip()
+        number = get_input("Digite o número: ", is_num).strip()
         if not number:
             print("Número não pode ser vazio!")
             continue
-        neighborhood = input("Digite o bairro: ").strip()
+        neighborhood = get_input("Digite o bairro: ", none_word).strip()
         if not neighborhood and type_user == "client":
             print("Bairro não pode ser vazio para clientes!")
             continue
-        city = input("Digite a cidade: ").strip()
+        city = get_input("Digite a cidade: ", none_word).strip()
         if not city:
             print("Cidade não pode ser vazia!")
             continue
-        state = input("Digite o estado: ").strip()
+        state = get_input("Digite o estado: ", none_word).strip()
         if not state:
             print("Estado não pode ser vazio!")
             continue

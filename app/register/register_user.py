@@ -1,3 +1,5 @@
+from validations.validations import get_input, none_word, is_valid_plate, is_email, is_phone, is_cpf, is_date
+
 from app.utils.get_connection import get_connection
 from app.utils.validate_cpf import validate_cpf
 from app.utils.validate_date import validate_date
@@ -12,12 +14,11 @@ from classes.Vehicle import Vehicle, VehicleType
 from classes.user.enterprise import Enterprise
 
 
-# Cadastro de usuários
 def register_user(authenticator, user_type):
     print(f"\n=== Cadastro de {user_type} ===")
-    username = input("Digite o nome de usuário: ").strip()
-    email = input("Digite o email: ").strip()
-    password = input("Digite a senha: ").strip()
+    username = get_input("Digite o nome de usuário: ", none_word).strip()
+    email = get_input("Digite o email: ", is_email).strip()
+    password = get_input("Digite a senha: ", none_word).strip()
 
     # Verificar se usuário já existe
     with get_connection() as conn:
@@ -39,16 +40,16 @@ def register_user(authenticator, user_type):
         user_id = cursor.fetchone()[0]
 
     if user_type == "client":
-        name = input("Digite o nome: ").strip()
-        cpf = input("Digite o CPF (11 dígitos): ").strip()
+        name = get_input("Digite o nome: ", none_word).strip()
+        cpf = get_input("Digite o CPF (11 dígitos): ", is_cpf).strip()
         if not validate_cpf(cpf):
             print("CPF inválido!")
             return
-        birth_date = input("Digite a data de nascimento (YYYY-MM-DD): ").strip()
+        birth_date = get_input("Digite a data de nascimento (YYYY-MM-DD): ", is_date).strip()
         if not validate_date(birth_date):
             print("Data inválida!")
             return
-        phone = input("Digite o telefone: ").strip()
+        phone = get_input("Digite o telefone: ", is_phone).strip()
         address = get_address_from_input("client")
         
         client = Client(name, cpf, phone, birth_date, address, user_id)
@@ -75,17 +76,17 @@ def register_user(authenticator, user_type):
         print("Cliente cadastrado com sucesso!")
 
     elif user_type == "delivery_person":
-        name = input("Digite o nome: ").strip()
-        cpf = input("Digite o CPF (11 dígitos): ").strip()
+        name = get_input("Digite o nome: ", none_word).strip()
+        cpf = get_input("Digite o CPF (11 dígitos): ", is_cpf).strip()
         if not validate_cpf(cpf):
             print("CPF inválido!")
             return
-        cnh = input("Digite a CNH: ").strip()
-        birth_date = input("Digite a data de nascimento (YYYY-MM-DD): ").strip()
+        cnh = get_input("Digite a CNH: ").strip()
+        birth_date = get_input("Digite a data de nascimento (YYYY-MM-DD): ", is_date).strip()
         if not validate_date(birth_date):
             print("Data inválida!")
             return
-        phone = input("Digite o telefone: ").strip()
+        phone = get_input("Digite o telefone: ", is_phone).strip()
         address = get_address_from_input("client")
         
         # Criar entregador primeiro
@@ -103,15 +104,15 @@ def register_user(authenticator, user_type):
             delivery_person_id = delivery_person_id[0]
         
         # Cadastro de veículo com delivery_person_id
-        model = input("Digite o modelo do veículo: ").strip()
-        mark = input("Digite a marca do veículo: ").strip()
-        plate = input("Digite a placa do veículo (7 caracteres): ").strip()
-        type_vehicle = input("Digite o tipo de veículo (moto/carro/caminhao): ").strip()
+        model = get_input("Digite o modelo do veículo: ", none_word).strip()
+        mark = get_input("Digite a marca do veículo: ", none_word).strip()
+        plate = get_input("Digite a placa do veículo (7 caracteres): ",  is_valid_plate).strip()
+        type_vehicle = get_input("Digite o tipo de veículo (moto/carro/caminhao): ", none_word).strip()
         if type_vehicle not in [VehicleType.MOTO.value, VehicleType.CARRO.value, VehicleType.CAMINHAO.value]:
             print("Tipo de veículo inválido!")
             return
         type_vehicle = VehicleType(type_vehicle)
-        max_distance = input("Digite a distância máxima (municipal/estadual/inter_estadual): ").strip()
+        max_distance = get_input("Digite a distância máxima (municipal/estadual/inter_estadual): ").strip()
         if max_distance not in [MaxDistance.MUNICIPAL, MaxDistance.ESTADUAL, MaxDistance.INTER_ESTADUAL]:
             print("Distância máxima inválida!")
             return
@@ -131,8 +132,8 @@ def register_user(authenticator, user_type):
         print("Entregador cadastrado com sucesso!")
 
     elif user_type == "enterprise":
-        name = input("Digite o nome da empresa: ").strip()
-        cnpj = input("Digite o CNPJ (14 dígitos): ").strip()
+        name = get_input("Digite o nome da empresa: ").strip()
+        cnpj = get_input("Digite o CNPJ (14 dígitos): ").strip()
         if not validate_cnpj(cnpj):
             print("CNPJ inválido!")
             return

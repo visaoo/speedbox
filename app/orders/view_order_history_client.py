@@ -1,6 +1,6 @@
 from classes.order import Order
 
-# Funcionalidades do Cliente
+
 def view_order_history_client(client_id):
     orders = Order.get_by_client(client_id)
     if not orders:

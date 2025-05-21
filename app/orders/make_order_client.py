@@ -1,3 +1,5 @@
+from validations.validations import get_input, none_word
+
 from classes.order import Order, OrderStatus
 from classes.Vehicle import Vehicle, VehicleType
 from app.utils.get_address_from_input import get_address_from_input
@@ -5,7 +7,7 @@ from app.utils.get_connection import get_connection
 
 
 def make_order_client(client_id):
-    description = input("Digite a descrição do pedido: ").strip()
+    description = get_input("Digite a descrição do pedido: ", none_word).strip()
     print("Endereço de origem:")
     origem = get_address_from_input("client")
     print("Endereço de destino:")

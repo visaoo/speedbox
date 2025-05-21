@@ -1,6 +1,6 @@
 from classes.order import Order
 
-# Funcionalidades da Empresa
+
 def view_order_history_enterprise(enterprise_id):
     orders = Order.get_by_enterprise(enterprise_id)
     if not orders:

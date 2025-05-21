@@ -1,9 +1,11 @@
+from validations.validations import get_input, none_word
+
 from app.utils.get_connection import get_connection
 
-# Login
+
 def login(authenticator):
-    username = input("Digite o nome de usuário: ").strip()
-    password = input("Digite a senha: ").strip()
+    username = get_input("Digite o nome de usuário: ", none_word).strip()
+    password = get_input("Digite a senha: ", none_word).strip()
     user = authenticator.authenticate(username, password)
     if user:
         with get_connection() as conn:

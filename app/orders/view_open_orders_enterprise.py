@@ -1,5 +1,6 @@
 from app.utils.get_connection import get_connection
 
+
 def view_open_orders_enterprise(enterprise_id):
     with get_connection() as conn:
         cursor = conn.cursor()

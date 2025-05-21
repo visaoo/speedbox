@@ -1,6 +1,6 @@
 from app.utils.get_connection import get_connection
 
-# Funcionalidades do Entregador
+
 def view_orders_delivery_person(delivery_person_id):
     with get_connection() as conn:
         cursor = conn.cursor()
