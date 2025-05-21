@@ -1,11 +1,18 @@
 class User:
+
     def __init__(
-        self, username: str, email: str, senha: str, user_type: str = "client"
+        self,
+        username: str,
+        email: str,
+        senha: str,
+        id: int,
+        user_type: str = "client",
     ) -> None:
         """
         Inicializa um objeto User com as informações fornecidas.
         :param username: Nome de usuário
         :param email: Email do usuário
+        :param id: ID do usuário
         :param senha: Senha do usuário
         :param user_type: Tipo de usuário (ex: cliente, entregador, empresa)
         """
@@ -13,6 +20,8 @@ class User:
             raise ValueError("Username must be a non-empty string.")
         if not isinstance(email, str) or not email:
             raise ValueError("Email must be a non-empty string.")
+        if not isinstance(id, int) or id <= 0:
+            raise ValueError("ID must be a positive integer.")
         if not isinstance(senha, str) or not senha:
             raise ValueError("Password must be a non-empty string.")
         if not isinstance(user_type, str) or not user_type:
@@ -26,6 +35,15 @@ class User:
         self._email = email
         self._senha = senha
         self._user_type = user_type
+        self._id = id
+
+    @property
+    def id(self):
+        return self._id
+
+    @id.setter
+    def id(self, value):
+        self._id = value
 
     @property
     def username(self) -> str:
@@ -101,6 +119,7 @@ class User:
             "email": self.email,
             "senha": self.senha,
             "user_type": self.user_type,
+            "id": self.id,
         }
 
     def __str__(self) -> str:

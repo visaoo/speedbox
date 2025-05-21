@@ -1,5 +1,15 @@
 from classes.Auth.auth_service import AuthService
 from classes.user.user import User
+from enum import Enum
+
+
+class EnumUserType(Enum):
+    """
+    Enumeração para os tipos de usuário.
+    """
+    CLIENT = "client"
+    DELIVERY_PERSON = "delivery_person"
+    ENTERPRISE = "enterprise"
 
 
 class Authenticator:
@@ -21,7 +31,7 @@ class Authenticator:
         return user
 
     def register(
-        self, username: str, email: str, password: str, user_type: str
+        self, username: str, email: str, password: str, user_type: EnumUserType
     ) -> bool:
         """
         Registra um novo usuário no banco de dados.
@@ -33,7 +43,7 @@ class Authenticator:
         """
         return self.auth_service.register_user(username, email, password, user_type)
 
-    def login(self, username: str, password: str) -> bool:
+    def login(self, username: str, password: str) -> bool | dict:
         """
         Realiza o login do usuário com as credenciais fornecidas.
         param username: Nome de usuário
@@ -44,7 +54,7 @@ class Authenticator:
             return False
         user = self.authenticate(username, password)
         if user:
-            return True
+            return user.to_dict()
         return False
 
     def logout(self) -> bool:

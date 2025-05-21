@@ -32,11 +32,12 @@ class AuthService:
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
             cursor.execute(
-                'SELECT username, email, password FROM users WHERE username = ? AND password = ?',
-                (username, hashed)
+                "SELECT username, email, password, id FROM users WHERE username = ? AND password = ?",
+                (username, hashed),
             )
             row = cursor.fetchone()
             if row:
+                print(f"Usuário encontrado: {row}")
                 user = User(*row)  # usando destructuring
                 self.current_user = user
                 return user
@@ -63,6 +64,7 @@ class AuthService:
         param user_type: Tipo de usuário (ex: client, delivery_person, enterprise)
         return: True se o registro for bem-sucedido, False caso contrário.
         """
+        user_type = user_type.value
         hashed = self._hash_password(password)
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
@@ -78,3 +80,20 @@ class AuthService:
                 return True
             except sqlite3.IntegrityError:
                 return False
+
+    def find_user_by_id(self, user_id: int) -> User | None:
+        """
+        Encontra um usuário pelo ID.
+        param user_id: ID do usuário
+        return: Um objeto User se o usuário for encontrado, None caso contrário.
+        """
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                "SELECT username, email, password, id FROM users WHERE id = ?",
+                (user_id,),
+            )
+            row = cursor.fetchone()
+            if row:
+                return User(*row)
+        return None
