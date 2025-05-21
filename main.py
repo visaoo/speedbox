@@ -1,4 +1,4 @@
-from validations.validations import get_input, none_word
+from classes.resources import *
 
 from classes.Auth.auth import Authenticator
 from classes.Auth.auth_service import AuthService
@@ -16,13 +16,11 @@ from app.register.register_user import register_user
 def main():
     authenticator = Authenticator(AuthService(db_path="database.db"))
     while True:
-        print("\n=== Sistema de Delivery ===")
-        print("1. Login")
-        print("2. Cadastrar Cliente")
-        print("3. Cadastrar Entregador")
-        print("4. Cadastrar Empresa")
-        print("5. Sair")
-        choice = get_input("Escolha uma opção: ", none_word).strip()
+        clear_screen()
+        display_logo()
+        welcome_message()
+
+        choice = main_menu()
         if choice == "1":
             user_id, user_type = login(authenticator)
             if user_id:
@@ -35,21 +33,23 @@ def main():
                         if entity_id:
                             client_menu(entity_id[0])
                         else:
-                            print("Erro: Cliente não encontrado.")
+                            print(f"{Colors.RED}Erro: Cliente não encontrado.{Colors.RED}")
                     elif user_type == "delivery_person":
                         cursor.execute("SELECT id FROM delivery_person WHERE user_id = ?", (user_id,))
                         entity_id = cursor.fetchone()
                         if entity_id:
                             delivery_person_menu(entity_id[0])
                         else:
-                            print("Erro: Entregador não encontrado.")
+                            print(f"{Colors.RED}Erro: Entregador não encontrado.{Colors.RED}")
+                            
                     elif user_type == "enterprise":
                         cursor.execute("SELECT id FROM enterprises WHERE user_id = ?", (user_id,))
                         entity_id = cursor.fetchone()
                         if entity_id:
                             enterprise_menu(entity_id[0])
                         else:
-                            print("Erro: Empresa não encontrado.")
+                            print(f"{Colors.RED}Erro: Empresa não encontrado.{Colors.RED}")
+                            
         elif choice == "2":
             register_user(authenticator, "client")
         elif choice == "3":
@@ -57,10 +57,11 @@ def main():
         elif choice == "4":
             register_user(authenticator, "enterprise")
         elif choice == "5":
-            print("Saindo...")
+            print(f"{Colors.YELLOW}Saindo...{Colors.YELLOW}")
             break
         else:
-            print("Opção inválida!")
+            print(f"{Colors.RED}Opção inválida!{Colors.RED}")
+            input(f"\n{Colors.YELLOW}Pressione Enter para continuar...{Colors.ENDC}")
 
 if __name__ == "__main__":
     main()

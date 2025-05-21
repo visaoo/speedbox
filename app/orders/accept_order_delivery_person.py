@@ -1,17 +1,26 @@
+from classes.resources import *
+
 from validations.validations import get_input, none_word
 
 from classes.order import Order, OrderStatus
 
 
 def accept_order_delivery_person(delivery_person_id):
-    order_type = get_input("Digite o tipo de pedido (client/enterprise): ", none_word).strip()
-    order_id = get_input("Digite o ID do pedido: ", none_word).strip()
+    order_type = get_input(f"{Colors.YELLOW}Nenhum pedido encontrado.{Colors.YELLOW},none_word").strip()
+    
+    order_id = get_input(f"\n{Colors.YELLOW}Digite o ID do pedido:{Colors.ENDC}", none_word).strip()
+    
     try:
         order_id = int(order_id)
         Order.update_delivery_person(order_type, order_id, delivery_person_id)
         Order.update_status(order_id, OrderStatus.PENDING, order_type)  # Mantém 'pending' após aceitação
-        print("Pedido aceito com sucesso!")
+        print(f"\n{Colors.GREEN}Pedido aceito com sucesso!{Colors.GREEN}")
+        input(f"\n{Colors.YELLOW}Pressione Enter para continuar...{Colors.ENDC}")
+        
     except ValueError:
-        print("ID do pedido deve ser um número!")
+        print(f"\n{Colors.RED}ID do pedido deve ser um número!{Colors.RED}")
+        input(f"\n{Colors.YELLOW}Pressione Enter para continuar...{Colors.ENDC}")
     except Exception as e:
-        print(f"Erro ao aceitar pedido: {e}")
+        print(f"\n{Colors.RED}Erro ao aceitar pedido: {e}{Colors.RED}")
+        input(f"\n{Colors.YELLOW}Pressione Enter para continuar...{Colors.ENDC}")
+        

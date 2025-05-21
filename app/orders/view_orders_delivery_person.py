@@ -1,3 +1,5 @@
+from classes.resources import *
+
 from app.utils.get_connection import get_connection
 
 
@@ -10,11 +12,26 @@ def view_orders_delivery_person(delivery_person_id):
         enterprise_orders = cursor.fetchall()
     
     if not (client_orders or enterprise_orders):
-        print("Nenhum pedido disponível.")
+        print(f"{Colors.YELLOW}Nenhum pedido disponível.{Colors.YELLOW}")
+        input(f"\n{Colors.YELLOW}Pressione Enter para continuar...{Colors.ENDC}")
         return
-    print("\nPedidos de Clientes:")
+    print(f"\n{Colors.BOLD}PEDIDOS DE CLIENTES{Colors.ENDC}")
+    
     for order in client_orders:
-        print(f"ID: {order[0]}, Total: {order[1]}, Data: {order[2]}, Descrição: {order[3]}, Status: {order[4]}, Origem: {order[5]}, Destino: {order[6]}")
+        print(f"{Colors.BOLD}{Colors.HEADER}ID:{Colors.ENDC} {Colors.CYAN}{order[0]}{Colors.ENDC}, "
+        f"{Colors.BOLD}{Colors.HEADER}Total:{Colors.ENDC} {Colors.GREEN}{order[1]}{Colors.ENDC}, "
+        f"{Colors.BOLD}{Colors.HEADER}Data:{Colors.ENDC} {Colors.YELLOW}{order[2]}{Colors.ENDC}, "
+        f"{Colors.BOLD}{Colors.HEADER}Descrição:{Colors.ENDC} {Colors.BLUE}{order[3]}{Colors.ENDC}, "
+        f"{Colors.BOLD}{Colors.HEADER}Status:{Colors.ENDC} {Colors.RED}{order[4]}{Colors.ENDC}, "
+        f"{Colors.BOLD}{Colors.HEADER}Origem:{Colors.ENDC} {Colors.CYAN}{order[5]}{Colors.ENDC}, "
+        f"{Colors.BOLD}{Colors.HEADER}Destino:{Colors.ENDC} {Colors.CYAN}{order[6]}{Colors.ENDC}\n")
     print("\nPedidos de Empresas:")
     for order in enterprise_orders:
-        print(f"ID: {order[0]}, Total: {order[1]}, Data: {order[2]}, Descrição: {order[3]}, Status: {order[4]}, Origem: {order[5]}, Destino: {order[6]}")
+        print(f"{Colors.BOLD}{Colors.HEADER}ID:{Colors.ENDC} {Colors.CYAN}{order[0]}{Colors.ENDC}, "
+        f"{Colors.BOLD}{Colors.HEADER}Total:{Colors.ENDC} {Colors.GREEN}{order[1]}{Colors.ENDC}, "
+        f"{Colors.BOLD}{Colors.HEADER}Data:{Colors.ENDC} {Colors.YELLOW}{order[2]}{Colors.ENDC}, "
+        f"{Colors.BOLD}{Colors.HEADER}Descrição:{Colors.ENDC} {Colors.BLUE}{order[3]}{Colors.ENDC}, "
+        f"{Colors.BOLD}{Colors.HEADER}Status:{Colors.ENDC} {Colors.RED}{order[4]}{Colors.ENDC}, "
+        f"{Colors.BOLD}{Colors.HEADER}Origem:{Colors.ENDC} {Colors.CYAN}{order[5]}{Colors.ENDC}, "
+        f"{Colors.BOLD}{Colors.HEADER}Destino:{Colors.ENDC} {Colors.CYAN}{order[6]}{Colors.ENDC}\n")
+    input(f"\n{Colors.YELLOW}Pressione Enter para continuar...{Colors.ENDC}")

@@ -1,4 +1,4 @@
-from validations.validations import get_input, none_word
+from classes.resources import *
 
 from app.orders.view_orders_delivery_person import view_orders_delivery_person
 from app.orders.accept_order_delivery_person import accept_order_delivery_person
@@ -7,12 +7,13 @@ from app.orders.update_order_status_delivery_person import update_order_status_d
 
 def delivery_person_menu(delivery_person_id):
     while True:
-        print("\n=== Menu do Entregador ===")
-        print("1. Visualizar pedidos disponíveis")
-        print("2. Aceitar um pedido")
-        print("3. Alterar status de um pedido")
-        print("4. Sair")
-        choice = get_input("Escolha uma opção: ", none_word).strip()
+        print(f"\n{Colors.BOLD}DASHBOARD DO ENTREGADOR{Colors.ENDC}")
+        print(f"\n{Colors.YELLOW}1.{Colors.ENDC} Visualizar pedidos disponíveis")
+        print(f"{Colors.YELLOW}2.{Colors.ENDC} Aceitar um pedido")
+        print(f"{Colors.YELLOW}3.{Colors.ENDC} Alterar status de um pedido")
+        print(f"{Colors.YELLOW}4.{Colors.ENDC} Sair")
+        
+        choice = input(f"\n{Colors.GREEN}Escolha uma opção: {Colors.ENDC}").strip()     
         if choice == "1":
             view_orders_delivery_person(delivery_person_id)
         elif choice == "2":

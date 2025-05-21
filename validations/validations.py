@@ -156,6 +156,27 @@ def is_cpf(cpf):
     return digito1 == int(cpf[9]) and digito2 == int(cpf[10])
 
 
+
+import re
+
+def is_cnh(cnh):
+    """
+    Valida se uma string contém apenas os 11 dígitos de uma CNH,
+    removendo quaisquer caracteres não numéricos.
+    Parâmetros:
+        cnh (str): String que representa a CNH, pode conter pontuação.
+
+    Retorna:
+        bool: True se a string, após a limpeza, contiver exatamente 11 dígitos,
+              False caso contrário.
+    """
+    cnh_clean = re.sub(r'\D', '', cnh)
+
+    return len(cnh_clean) == 11
+
+def is_cnpj(cnpj):
+    return bool(re.match(r"^\d{14}$", cnpj))
+
 def is_valid_plate(placa):
     """
     Valida se uma placa de veículo segue os padrões antigo ou Mercosul,

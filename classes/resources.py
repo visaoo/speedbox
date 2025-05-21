@@ -27,7 +27,7 @@ def display_logo():
     ███████║██║     ███████╗███████╗██████╔╝██████╔╝╚██████╔╝██╔╝ ██╗
     ╚══════╝╚═╝     ╚══════╝╚══════╝╚═════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝
     {Colors.ENDC}
-    {Colors.CYAN}Your fast and secure delivery system!{Colors.ENDC}
+    {Colors.CYAN}Seu sistema de entrega rápido e seguro!{Colors.ENDC}
     """
     print(logo)
 
@@ -40,9 +40,9 @@ def welcome_message():
     """
     clear_screen()
     display_logo()
-    print(f"\n{Colors.GREEN}{Colors.BOLD}Welcome to SpeedBox!{Colors.ENDC}")
-    print(f"{Colors.CYAN}The delivery system that connects customers, businesses, and couriers.{Colors.ENDC}")
-    print("\nLoading system", end="")
+    print(f"\n{Colors.GREEN}{Colors.BOLD}Bem vindos a SpeedBox!{Colors.ENDC}")
+    print(f"{Colors.CYAN}O sistema de entrega que conecta clientes, empresas e entregadores.{Colors.ENDC}")
+    print("\nCarregando o sistema", end="")
     for _ in range(3):
         time.sleep(0.5)
         print(".", end="", flush=True)
@@ -61,9 +61,11 @@ def main_menu():
     """
     clear_screen()
     display_logo()
-    print(f"\n{Colors.BOLD}MAIN MENU{Colors.ENDC}")
+    print(f"\n{Colors.BOLD}MENU PRINCIPAL{Colors.ENDC}")
     print(f"{Colors.YELLOW}1.{Colors.ENDC} Login")
-    print(f"{Colors.YELLOW}2.{Colors.ENDC} Register")
-    print(f"{Colors.YELLOW}3.{Colors.ENDC} Exit")
+    print(f"{Colors.YELLOW}2.{Colors.ENDC} Cadastrar Cliente")
+    print(f"{Colors.YELLOW}3.{Colors.ENDC} Cadastrar Entregador")
+    print(f"{Colors.YELLOW}4.{Colors.ENDC} Cadastrar Empresa")
+    print(f"{Colors.YELLOW}5.{Colors.ENDC} Sair")
     
-    return input(f"\n{Colors.GREEN}Choose an option: {Colors.ENDC}")
+    return input(f"\n{Colors.GREEN}Escolha uma opção: {Colors.ENDC}")

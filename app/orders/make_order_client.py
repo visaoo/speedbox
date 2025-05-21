@@ -1,16 +1,18 @@
+from classes.resources import *
+
 from validations.validations import get_input, none_word
 
 from classes.order import Order, OrderStatus
-from classes.Vehicle import Vehicle, VehicleType
+from classes.Vehicle import Vehicle
 from app.utils.get_address_from_input import get_address_from_input
-from app.utils.get_connection import get_connection
-
 
 def make_order_client(client_id):
     description = get_input("Digite a descrição do pedido: ", none_word).strip()
-    print("Endereço de origem:")
+    print(f"{Colors.CYAN}Endereço de origem:{Colors.CYAN}")
+    
     origem = get_address_from_input("client")
-    print("Endereço de destino:")
+    print(f"{Colors.CYAN}Endereço de destino:{Colors.CYAN}")
+    
     destino = get_address_from_input("client")
     
     order = Order(origem, destino, description, OrderStatus.PENDING)
@@ -20,11 +22,14 @@ def make_order_client(client_id):
         car = Vehicle.calculate_distance(origem.__str__(), destino.__str__(), 'driving-car')
         truck = Vehicle.calculate_distance(origem.__str__(), destino.__str__(), 'driving-hgv')
     except Exception as e:
-        print(f"Erro ao calcular distância: {e}")
+        print(f"{Colors.RED}Erro ao calcular distância: {e}{Colors.RED}")
+        
     finally:
-        print(f'Carro: {car}')
-        print(f'Caminhão: {truck}')
+        print(f'{Colors.CYAN}Carro: {car}{Colors.CYAN}')
+        print(f'{Colors.CYAN}Caminhão: {truck}{Colors.CYAN}')
     
     # Inserir pedido com client_id
     order.insert("client", client_id=client_id)
-    print("Pedido criado com sucesso!")
+    print(f"\n{Colors.GREEN}Pedido criado com sucesso!{Colors.GREEN}")
+    input(f"\n{Colors.YELLOW}Pressione Enter para continuar...{Colors.ENDC}")
+    
