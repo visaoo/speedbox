@@ -83,7 +83,7 @@ def register_user(user_type):
         address = get_address_from_input("delivery_person")
         
         # Criar entregador primeiro
-        delivery_person = DeliveryPerson(name, cpf, birth_date, cnh, True, None, User(username, email, password, user_type), phone, address, user_id)
+        delivery_person = DeliveryPerson(name, cpf, birth_date, cnh, True, None, phone=phone, address=address, user_id= user_id)
         delivery_person.insert()
         
         # Obter o delivery_person_id recém-criado

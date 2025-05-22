@@ -5,7 +5,7 @@ from classes.user.user import User
 
 
 class AuthService:
-    def __init__(self, db_path='speedbox.db') -> None:
+    def __init__(self, db_path='database.db') -> None:
         """
         Inicializa o serviço de autenticação com o caminho do banco de dados.
         param db_path: Caminho do banco de dados SQLite.
@@ -32,7 +32,7 @@ class AuthService:
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
             cursor.execute(
-                "SELECT username, email, password, id FROM users WHERE username = ? AND password = ?",
+                "SELECT username, email, password, id, user_type FROM users WHERE username = ? AND password = ?",
                 (username, hashed),
             )
             row = cursor.fetchone()
@@ -71,7 +71,7 @@ class AuthService:
             try:
                 cursor.execute(
                     'INSERT INTO users (username, email, password, user_type) VALUES (?, ?, ?, ?)',
-                    (username, email, hashed, user_type.value)
+                    (username, email, hashed, user_type)
                 )
                 conn.commit()
 

@@ -61,8 +61,6 @@ class Vehicle:
 
     @plate.setter
     def plate(self, value: str) -> None:
-        if not isinstance(value, str) or len(value) != 7:
-            raise ValueError("Placa deve ter exatamente 7 caracteres.")
         self._plate = value
 
     @property
