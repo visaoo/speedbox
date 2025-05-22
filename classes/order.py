@@ -1,4 +1,5 @@
 from enum import Enum
+import re
 import sqlite3
 from datetime import datetime
 from classes.address.address import Address
@@ -10,14 +11,15 @@ class OrderStatus(Enum):
     CANCELED = "canceled"
 
 class Order:
-    def __init__(self, origem: Address, destino: Address, description: str, status: OrderStatus, value_total: float = 15.0) -> None:
+    def __init__(self, origem: Address, destino: Address, description: str, status: OrderStatus, distance=0) -> None:
         self.origem: Address = origem
         self.destino: Address = destino
         self.description: str = description
         self.date: datetime = datetime.now()
         self.status: OrderStatus = status
-        self.value_total: float = value_total
-
+        self.value_total: float = round(10 + (float(distance) * 0.5), 2)  # Valor base de 15 + valor por km
+        
+         
     def insert(self, type_user: str, client_id = None, enterprise_id = None) -> None:
         """
         Insere o pedido no banco de dados de acordo com o tipo de usuário.
@@ -103,7 +105,7 @@ class Order:
         
     @staticmethod
     def get_by_id(user_id: int, user_type: str):
-        with get_connection() as conn:
+        with sqlite3.connect('database.db') as conn:
             cursor = conn.cursor()
             if user_type == "enterprise":
                 table = 'orders_enterprises'
@@ -126,3 +128,7 @@ class Order:
                 WHERE enterprise_id = ?;
             """, (enterprise_id,))
             return cursor.fetchall()
+        
+        
+    def __str__(self):
+        return f"Order({self.origem}, {self.destino}, {self.description}, {self.status}, {self.value_total})"

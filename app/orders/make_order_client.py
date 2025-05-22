@@ -1,3 +1,5 @@
+import dis
+from turtle import distance
 from classes.resources import *
 
 from validations.validations import get_input, none_word
@@ -15,8 +17,6 @@ def make_order_client(client_id):
     
     destino = get_address_from_input("client")
     
-    order = Order(origem, destino, description, OrderStatus.PENDING)
-    
     # Calcular distância (se API estiver configurada)
     try:
         car = Vehicle.calculate_distance(origem.__str__(), destino.__str__(), 'driving-car')
@@ -25,9 +25,11 @@ def make_order_client(client_id):
         print(f"{Colors.RED}Erro ao calcular distância: {e}{Colors.RED}")
         
     finally:
+        distance = car['distancia_km']
         print(f'{Colors.CYAN}Carro: {car}{Colors.CYAN}')
         print(f'{Colors.CYAN}Caminhão: {truck}{Colors.CYAN}')
-    
+        
+    order = Order(origem, destino, description, OrderStatus.PENDING, distance)
     # Inserir pedido com client_id
     order.insert("client", client_id=client_id)
     print(f"\n{Colors.GREEN}Pedido criado com sucesso!{Colors.GREEN}")

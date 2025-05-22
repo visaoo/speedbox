@@ -1,6 +1,7 @@
 from email.headerregistry import Address
 import os
 from enum import Enum
+from tkinter import NO
 from typing import Optional, Dict, Any
 
 import sqlite3
@@ -31,7 +32,7 @@ class Vehicle:
         maximum_distance (int): Distância máxima suportada.
     """
 
-    def __init__(self, model: str, mark: str, plate: str, type_vehicle: VehicleType, maximum_distance: int = 0):
+    def __init__(self, model: str, mark: str, plate: str, type_vehicle: VehicleType, maximum_distance: str):
         self._model = model
         self._mark = mark
         self.plate = plate  # setter com validação
@@ -64,11 +65,11 @@ class Vehicle:
         self._plate = value
 
     @property
-    def maximum_distance(self) -> int:
+    def maximum_distance(self) -> str:
         return self._maximum_distance
 
     @maximum_distance.setter
-    def maximum_distance(self, value: int) -> None:
+    def maximum_distance(self, value: str) -> None:
         self._maximum_distance = value
 
     @property
@@ -84,7 +85,7 @@ class Vehicle:
 
     #Criar lógica para verficar a distância por tipo de veículo
     @staticmethod
-    def calculate_distance(origin: str, destination: str, profile):
+    def calculate_distance(origin: str, destination: str, profile) -> dict:
         """
         Calcula a distância e duração estimada entre dois endereços utilizando a API OpenRouteService.
         """

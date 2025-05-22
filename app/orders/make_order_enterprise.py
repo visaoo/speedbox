@@ -14,7 +14,6 @@ def make_order_enterprise(enterprise_id):
     print(f"{Colors.CYAN}Endereço de destino:{Colors.CYAN}") 
     destino = get_address_from_input("enterprise")
     
-    order = Order(origem, destino, description, OrderStatus.PENDING)
 
     # Calcular distância (se API estiver configurada)
     try:
@@ -24,8 +23,11 @@ def make_order_enterprise(enterprise_id):
         print(f"{Colors.RED}Erro ao calcular distância: {e}{Colors.RED}")
         
     finally:
+        distance = car['distancia_km']
         print(f'{Colors.CYAN}Carro: {car}{Colors.CYAN}')
         print(f'{Colors.CYAN}Caminhão: {truck}{Colors.CYAN}')
+        
+    order = Order(origem, destino, description, OrderStatus.PENDING, distance)
     
     # Inserir pedido com enterprise_id
     order.insert("enterprise", enterprise_id=enterprise_id)
