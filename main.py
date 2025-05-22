@@ -16,9 +16,7 @@ from app.register.register_user import register_user
 def main():
     authenticator = Authenticator(AuthService(db_path="database.db"))
     while True:
-        # clear_screen()
-        # display_logo()
-        # welcome_message()
+        welcome_message()
 
         choice = main_menu()
         if choice == "1":

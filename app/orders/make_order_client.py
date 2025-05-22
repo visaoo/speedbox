@@ -1,5 +1,3 @@
-import dis
-from turtle import distance
 from classes.resources import *
 
 from validations.validations import get_input, none_word
