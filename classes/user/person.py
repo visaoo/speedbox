@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from requests import get
 from classes.address.address import Address
 
 

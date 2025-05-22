@@ -8,7 +8,6 @@ from app.utils.max_distance import MaxDistance
 
 from classes.user.client import Client
 from classes.user.delivery_person import DeliveryPerson
-from classes.user.user import User
 from classes.Vehicle import Vehicle, VehicleType
 from classes.user.enterprise import Enterprise
 

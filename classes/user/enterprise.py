@@ -1,6 +1,5 @@
 from enum import Enum
 from uuid import uuid4
-from classes import user
 from classes.address.address import Address
 from db.database import get_connection
 from typing import Optional, List

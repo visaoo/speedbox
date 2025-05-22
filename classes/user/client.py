@@ -1,4 +1,3 @@
-from classes import user
 from classes.user.person import Person
 from classes.address.address import Address
 from db.database import get_connection

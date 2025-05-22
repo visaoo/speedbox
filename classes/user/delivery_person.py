@@ -1,6 +1,5 @@
 import sqlite3
 from typing import Optional
-from classes.user.user import User
 from classes.Vehicle import Vehicle
 from classes.address.address import Address
 
