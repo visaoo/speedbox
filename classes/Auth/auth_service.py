@@ -64,7 +64,7 @@ class AuthService:
         param user_type: Tipo de usuário (ex: client, delivery_person, enterprise)
         return: True se o registro for bem-sucedido, False caso contrário.
         """
-        user_type = user_type.value
+        # user_type = user_type.value
         hashed = self._hash_password(password)
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()

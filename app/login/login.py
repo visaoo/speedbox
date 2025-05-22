@@ -16,6 +16,3 @@ def login():
     else:
         print("Usuário ou senha inválidos!")
         return None, None
-
-
-login()

@@ -16,13 +16,13 @@ from app.register.register_user import register_user
 def main():
     authenticator = Authenticator(AuthService(db_path="database.db"))
     while True:
-        clear_screen()
-        display_logo()
-        welcome_message()
+        # clear_screen()
+        # display_logo()
+        # welcome_message()
 
         choice = main_menu()
         if choice == "1":
-            user_id, user_type = login(authenticator)
+            user_id, user_type = login()
             if user_id:
                 # Obter o ID correto com base no tipo de usuário
                 with get_connection() as conn:
@@ -30,6 +30,7 @@ def main():
                     if user_type == "client":
                         cursor.execute("SELECT id FROM clients WHERE user_id = ?", (user_id,))
                         entity_id = cursor.fetchone()
+                        print(entity_id)
                         if entity_id:
                             client_menu(entity_id[0])
                         else:
@@ -51,11 +52,11 @@ def main():
                             print(f"{Colors.RED}Erro: Empresa não encontrado.{Colors.RED}")
                             
         elif choice == "2":
-            register_user(authenticator, "client")
+            register_user("client")
         elif choice == "3":
-            register_user(authenticator, "delivery_person")
+            register_user("delivery_person")
         elif choice == "4":
-            register_user(authenticator, "enterprise")
+            register_user("enterprise")
         elif choice == "5":
             print(f"{Colors.YELLOW}Saindo...{Colors.YELLOW}")
             break

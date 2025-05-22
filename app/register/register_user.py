@@ -12,8 +12,12 @@ from classes.user.user import User
 from classes.Vehicle import Vehicle, VehicleType
 from classes.user.enterprise import Enterprise
 
+from classes.Auth.auth import Authenticator
+from classes.Auth.auth_service import AuthService
 
-def register_user(authenticator, user_type):
+
+def register_user(user_type):
+    auth = Authenticator(AuthService())
     print(f"\n{Colors.BOLD}CADASTRO DE {user_type.upper()} {Colors.ENDC}")
     
     username = get_input(f"{Colors.CYAN}Nome de usuário: {Colors.ENDC}", none_word).strip()
@@ -30,7 +34,7 @@ def register_user(authenticator, user_type):
             return
 
     # Registrar usuário na tabela users
-    if not authenticator.register(username, email, password, user_type):
+    if not auth.register(username, email, password, user_type):
         print(f"{Colors.RED}Erro ao cadastrar usuário!{Colors.RED}")
         return
 
