@@ -155,10 +155,6 @@ def is_cpf(cpf):
 
     return digito1 == int(cpf[9]) and digito2 == int(cpf[10])
 
-
-
-import re
-
 def is_cnh(cnh):
     """
     Valida se uma string contém apenas os 11 dígitos de uma CNH,
