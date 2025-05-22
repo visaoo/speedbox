@@ -16,10 +16,12 @@ for i in range(1):
             none_word,
         ).strip()
     )
-    auth_response = auth.register(username, email, password, user_type)
 
-    if auth_response:
-        print(auth_response)
-        break
-    else:
-        print("Email ou senha inválidos. Tente novamente.")
+    # Verifica se o usuário já está registrado
+    registered = auth.is_user_registered(username, email)
+    if registered:
+        print(registered)
+        print(f"Pressione Enter para tentar novamente...")
+        continue
+
+    auth_response = auth.register(username, email, password, user_type)

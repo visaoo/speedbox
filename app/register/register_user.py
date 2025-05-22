@@ -23,15 +23,12 @@ def register_user(user_type):
     username = get_input(f"{Colors.CYAN}Nome de usuário: {Colors.ENDC}", none_word).strip()
     email = get_input(f"{Colors.CYAN}Email: {Colors.ENDC}", is_email).strip()
     password = get_input(f"{Colors.CYAN}Senha: {Colors.ENDC}",).strip()
-
-    # Verificar se usuário já existe
-    with get_connection() as conn:
-        cursor = conn.cursor()
-        cursor.execute("SELECT id FROM users WHERE username = ? OR email = ?", (username, email))
-        if cursor.fetchone():
-            print(f"\n{Colors.RED}Erro: Nome de usuário ou email já existe!{Colors.RED}")
-            input(f"{Colors.YELLOW}Pressione Enter para tentar novamente...{Colors.ENDC}")
-            return
+        
+    registered = auth.is_user_registered(username, email)
+    if registered:
+        print(f"\n{Colors.RED}Erro: Nome de usuário ou email já existe!{Colors.RED}")
+        input(f"{Colors.YELLOW}Pressione Enter para tentar novamente...{Colors.ENDC}")
+        return
 
     # Registrar usuário na tabela users
     if not auth.register(username, email, password, user_type):

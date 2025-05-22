@@ -71,7 +71,7 @@ class AuthService:
             try:
                 cursor.execute(
                     'INSERT INTO users (username, email, password, user_type) VALUES (?, ?, ?, ?)',
-                    (username, email, hashed, user_type)
+                    (username, email, hashed, user_type.value)
                 )
                 conn.commit()
 
@@ -97,3 +97,18 @@ class AuthService:
             if row:
                 return User(*row)
         return None
+
+    def is_user_registered(self, username: str, email) -> bool:
+        """
+        Verifica se um usuário já existe no banco de dados.
+        param username: Nome de usuário
+        param email: Email do usuário
+        return: True se o usuário existir, False caso contrário.
+        """
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                "SELECT id FROM users WHERE username = ? OR email = ?",
+                (username, email),
+            )
+            return cursor.fetchone() is not None
