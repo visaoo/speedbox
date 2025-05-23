@@ -4,12 +4,11 @@ from validations.validations import get_input, none_word, is_valid_plate, is_ema
 
 from app.utils.get_connection import get_connection
 from app.utils.get_address_from_input import get_address_from_input
-from app.utils.max_distance import MaxDistance
 
 from classes.user.client import Client
 from classes.user.delivery_person import DeliveryPerson
 from classes.user.user import User
-from classes.Vehicle import Vehicle, VehicleType
+from classes.Vehicle import Vehicle, VehicleType, MaxDistance
 from classes.user.enterprise import Enterprise
 
 

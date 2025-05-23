@@ -2,6 +2,7 @@ from enum import Enum
 import sqlite3
 from datetime import datetime
 from classes.address.address import Address
+from app.utils.get_connection import get_connection
 
 class OrderStatus(Enum):
     PAYMENT_PENDING = "payment_pending"
