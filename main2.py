@@ -1,22 +1,25 @@
+import re
 import sqlite3
 from datetime import datetime
-import re
 from enum import Enum
-from classes.user.user import User
-from classes.user.client import Client
-from classes.user.delivery_person import DeliveryPerson
-from classes.user.enterprise import Enterprise
-from classes.Vehicle import Vehicle, VehicleType
-from classes.order import Order
+
 from classes.address.address import Address
 from classes.Auth.auth import Authenticator
 from classes.Auth.auth_service import AuthService
+from classes.order import Order
+from classes.user.client import Client
+from classes.user.delivery_person import DeliveryPerson
+from classes.user.enterprise import Enterprise
+from classes.user.user import User
+from classes.Vehicle import Vehicle, VehicleType
+
 
 # Enum para MaxDistance
 class MaxDistance:
     MUNICIPAL = "municipal"
     ESTADUAL = "estadual"
     INTER_ESTADUAL = "inter_estadual"
+
 
 # Enum para OrderStatus (alinhado com o CHECK do banco)
 class OrderStatus(Enum):
@@ -25,18 +28,22 @@ class OrderStatus(Enum):
     COMPLETED = "completed"
     CANCELED = "canceled"
 
+
 # Função auxiliar para conexão com o banco
 def get_connection():
     conn = sqlite3.connect("database.db")
     conn.execute("PRAGMA foreign_keys = ON")
     return conn
 
+
 # Funções de validação
 def validate_cpf(cpf):
     return bool(re.match(r"^\d{11}$", cpf))
 
+
 def validate_cnpj(cnpj):
     return bool(re.match(r"^\d{14}$", cnpj))
+
 
 def validate_date(date_str):
     try:
@@ -44,6 +51,7 @@ def validate_date(date_str):
         return True
     except ValueError:
         return False
+
 
 def get_address_from_input(type_user, client_id=None, enterprise_id=None):
     while True:
@@ -72,6 +80,7 @@ def get_address_from_input(type_user, client_id=None, enterprise_id=None):
         except ValueError as e:
             print(f"Erro: {e}")
             continue
+
 
 # Cadastro de usuários
 def register_user(authenticator, user_type):
@@ -111,10 +120,10 @@ def register_user(authenticator, user_type):
             return
         phone = input("Digite o telefone: ").strip()
         address = get_address_from_input("client")
-        
+
         client = Client(name, cpf, phone, birth_date, address, user_id)
         client.insert()
-        
+
         # Obter o client_id recém-criado
         with get_connection() as conn:
             cursor = conn.cursor()
@@ -124,7 +133,7 @@ def register_user(authenticator, user_type):
                 print("Erro: Não foi possível recuperar o ID do cliente!")
                 return
             client_id = client_id[0]
-        
+
         # Inserir endereço com o client_id correto
         with get_connection() as conn:
             cursor = conn.cursor()
@@ -148,11 +157,11 @@ def register_user(authenticator, user_type):
             return
         phone = input("Digite o telefone: ").strip()
         address = get_address_from_input("client")
-        
+
         # Criar entregador primeiro
         delivery_person = DeliveryPerson(name, cpf, birth_date, cnh, True, None, User(username, email, password, user_type), phone, address, user_id)
         delivery_person.insert()
-        
+
         # Obter o delivery_person_id recém-criado
         with get_connection() as conn:
             cursor = conn.cursor()
@@ -162,7 +171,7 @@ def register_user(authenticator, user_type):
                 print("Erro: Não foi possível recuperar o ID do entregador!")
                 return
             delivery_person_id = delivery_person_id[0]
-        
+
         # Cadastro de veículo com delivery_person_id
         model = input("Digite o modelo do veículo: ").strip()
         mark = input("Digite a marca do veículo: ").strip()
@@ -176,10 +185,10 @@ def register_user(authenticator, user_type):
         if max_distance not in [MaxDistance.MUNICIPAL, MaxDistance.ESTADUAL, MaxDistance.INTER_ESTADUAL]:
             print("Distância máxima inválida!")
             return
-        
+
         vehicle = Vehicle(model, mark, plate, type_vehicle, max_distance)
         vehicle.insert(delivery_person_id=delivery_person_id)
-        
+
         # Inserir endereço com o delivery_person_id como client_id
         with get_connection() as conn:
             cursor = conn.cursor()
@@ -188,7 +197,7 @@ def register_user(authenticator, user_type):
                 VALUES (?, ?, ?, ?, ?, ?);
             """, (address.street, address.number, address.neighborhood, address.city, address.state, delivery_person_id))
             conn.commit()
-        
+
         print("Entregador cadastrado com sucesso!")
 
     elif user_type == "enterprise":
@@ -198,10 +207,10 @@ def register_user(authenticator, user_type):
             print("CNPJ inválido!")
             return
         address = get_address_from_input("enterprise")
-        
+
         enterprise = Enterprise(name, cnpj, address, user_id)
         enterprise.insert()
-        
+
         # Obter o enterprise_id recém-criado
         with get_connection() as conn:
             cursor = conn.cursor()
@@ -211,7 +220,7 @@ def register_user(authenticator, user_type):
                 print("Erro: Não foi possível recuperar o ID da empresa!")
                 return
             enterprise_id = enterprise_id[0]
-        
+
         # Inserir endereço com o enterprise_id correto
         with get_connection() as conn:
             cursor = conn.cursor()
@@ -220,8 +229,9 @@ def register_user(authenticator, user_type):
                 VALUES (?, ?, ?, ?, ?, ?);
             """, (address.street, address.number, address.neighborhood, address.city, address.state, enterprise_id))
             conn.commit()
-        
+
         print("Empresa cadastrada com sucesso!")
+
 
 # Login
 def login(authenticator):
@@ -238,6 +248,7 @@ def login(authenticator):
     print("Usuário ou senha inválidos!")
     return None, None
 
+
 # Funcionalidades do Cliente
 def view_order_history_client(client_id):
     orders = Order.get_by_client(client_id)
@@ -246,6 +257,7 @@ def view_order_history_client(client_id):
         return
     for order in orders:
         print(f"ID: {order[0]}, Total: {order[1]}, Data: {order[2]}, Descrição: {order[3]}, Status: {order[4]}, Origem: {order[5]}, Destino: {order[6]}")
+
 
 def view_open_orders_client(client_id):
     with get_connection() as conn:
@@ -260,15 +272,16 @@ def view_open_orders_client(client_id):
         # print(f"ID: {order[0]}, Total: {order[1]}, Data: {order[2]}, Descrição: {order[3]}, Status: {order[4]}, Origem: {order[5]}, Destino: {order[6]}")
         ...
 
+
 def make_order_client(client_id):
     description = input("Digite a descrição do pedido: ").strip()
     print("Endereço de origem:")
     origem = get_address_from_input("client")
     print("Endereço de destino:")
     destino = get_address_from_input("client")
-    
+
     order = Order(origem, destino, description, OrderStatus.PENDING)
-    
+
     # Calcular distância (se API estiver configurada)
     try:
         with get_connection() as conn:
@@ -291,10 +304,11 @@ def make_order_client(client_id):
                         order.value_total = float(distance_info['distancia_km']) * 2.0  # Exemplo de cálculo
     except Exception as e:
         print(f"Erro ao calcular distância: {e}")
-    
+
     # Inserir pedido com client_id
     order.insert("client", client_id=client_id)
     print("Pedido criado com sucesso!")
+
 
 # Funcionalidades da Empresa
 def view_order_history_enterprise(enterprise_id):
@@ -304,6 +318,7 @@ def view_order_history_enterprise(enterprise_id):
         return
     for order in orders:
         print(f"ID: {order[0]}, Total: {order[1]}, Data: {order[2]}, Descrição: {order[3]}, Status: {order[4]}, Origem: {order[5]}, Destino: {order[6]}")
+
 
 def view_open_orders_enterprise(enterprise_id):
     with get_connection() as conn:
@@ -316,15 +331,16 @@ def view_open_orders_enterprise(enterprise_id):
     for order in orders:
         print(f"ID: {order[0]}, Total: {order[1]}, Data: {order[2]}, Descrição: {order[3]}, Status: {order[4]}, Origem: {order[5]}, Destino: {order[6]}")
 
+
 def make_order_enterprise(enterprise_id):
     description = input("Digite a descrição do pedido: ").strip()
     print("Endereço de origem:")
     origem = get_address_from_input("enterprise")
     print("Endereço de destino:")
     destino = get_address_from_input("enterprise")
-    
+
     order = Order(origem, destino, description, OrderStatus.PENDING)
-    
+
     # Calcular distância (se API estiver configurada)
     try:
         with get_connection() as conn:
@@ -347,10 +363,11 @@ def make_order_enterprise(enterprise_id):
                         order.value_total = float(distance_info['distancia_km']) * 2.0  # Exemplo de cálculo
     except Exception as e:
         print(f"Erro ao calcular distância: {e}")
-    
+
     # Inserir pedido com enterprise_id
     order.insert("enterprise", enterprise_id=enterprise_id)
     print("Pedido criado com sucesso!")
+
 
 # Funcionalidades do Entregador
 def view_orders_delivery_person(delivery_person_id):
@@ -360,7 +377,7 @@ def view_orders_delivery_person(delivery_person_id):
         client_orders = cursor.fetchall()
         cursor.execute("SELECT * FROM orders_enterprises WHERE delivery_person_id = ? OR (status = 'pending' AND delivery_person_id IS NULL)", (delivery_person_id,))
         enterprise_orders = cursor.fetchall()
-    
+
     if not (client_orders or enterprise_orders):
         print("Nenhum pedido disponível.")
         return
@@ -370,6 +387,7 @@ def view_orders_delivery_person(delivery_person_id):
     print("\nPedidos de Empresas:")
     for order in enterprise_orders:
         print(f"ID: {order[0]}, Total: {order[1]}, Data: {order[2]}, Descrição: {order[3]}, Status: {order[4]}, Origem: {order[5]}, Destino: {order[6]}")
+
 
 def accept_order_delivery_person(delivery_person_id):
     order_type = input("Digite o tipo de pedido (client/enterprise): ").strip()
@@ -383,6 +401,7 @@ def accept_order_delivery_person(delivery_person_id):
         print("ID do pedido deve ser um número!")
     except Exception as e:
         print(f"Erro ao aceitar pedido: {e}")
+
 
 def update_order_status_delivery_person(delivery_person_id):
     order_type = input("Digite o tipo de pedido (client/enterprise): ").strip()
@@ -408,6 +427,7 @@ def update_order_status_delivery_person(delivery_person_id):
     except Exception as e:
         print(f"Erro ao atualizar status: {e}")
 
+
 # Menus
 def client_menu(client_id):
     while True:
@@ -428,6 +448,7 @@ def client_menu(client_id):
         else:
             print("Opção inválida!")
 
+
 def enterprise_menu(enterprise_id):
     while True:
         print("\n=== Menu da Empresa ===")
@@ -447,6 +468,7 @@ def enterprise_menu(enterprise_id):
         else:
             print("Opção inválida!")
 
+
 def delivery_person_menu(delivery_person_id):
     while True:
         print("\n=== Menu do Entregador ===")
@@ -465,6 +487,7 @@ def delivery_person_menu(delivery_person_id):
             break
         else:
             print("Opção inválida!")
+
 
 # Menu principal
 def main():
@@ -515,6 +538,7 @@ def main():
             break
         else:
             print("Opção inválida!")
+
 
 if __name__ == "__main__":
     main()

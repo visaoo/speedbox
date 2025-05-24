@@ -1,7 +1,9 @@
 import sqlite3
 from typing import Optional
-from classes.Vehicle import Vehicle
+
 from classes.address.address import Address
+from classes.Vehicle import Vehicle
+
 
 class DeliveryPerson:
     def __init__(

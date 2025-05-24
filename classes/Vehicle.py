@@ -1,10 +1,8 @@
-from email.headerregistry import Address
 import os
-from enum import Enum
-from tkinter import NO
-from typing import Optional, Dict, Any
-
 import sqlite3
+from enum import Enum
+from typing import Any, Dict, Optional
+
 from dotenv import load_dotenv
 from openrouteservice import Client
 
@@ -13,6 +11,8 @@ from db.database import get_connection
 
 class MaxDistance(Enum):
     ...
+
+
 class VehicleType(Enum):
     """Enumeração para os tipos de veículos."""
     MOTO = "moto"
@@ -82,8 +82,7 @@ class Vehicle:
             raise ValueError("Tipo de veículo inválido.")
         self._type_vehicle = value
 
-
-    #Criar lógica para verficar a distância por tipo de veículo
+    # Criar lógica para verficar a distância por tipo de veículo
     @staticmethod
     def calculate_distance(origin: str, destination: str, profile) -> dict:
         """
@@ -101,7 +100,6 @@ class Vehicle:
             profile = "driving-car"
         if profile == "driving-hgv":
             profile = "driving-hgv"
-        
 
         def geocode(address: str):
             try:
@@ -144,6 +142,7 @@ class Vehicle:
         elif self.type_vehicle == VehicleType.CAMINHAO:
             return 1000
         return 0
+
     def insert(self, delivery_person_id: int) -> None:
         """
         Insere o veículo no banco de dados com o delivery_person_id.
@@ -158,7 +157,6 @@ class Vehicle:
                 VALUES (?, ?, ?, ?, ?, ?);
             """, (self.model, self.mark, self.plate, self.type_vehicle.value, self.maximum_distance, delivery_person_id))
             conn.commit()
-
 
     @staticmethod
     def get_all() -> list:
@@ -177,8 +175,8 @@ class Vehicle:
             return cursor.fetchone()
 
     @staticmethod
-    def update(vehicle_id: int, model= None, mark= None, plate= None,
-               type_vehicle = None, maximum_distance = None, delivery_person_id = None) -> None:
+    def update(vehicle_id: int, model=None, mark=None, plate=None,
+               type_vehicle=None, maximum_distance=None, delivery_person_id=None) -> None:
         """
         Atualiza os dados de um veículo com base nos parâmetros fornecidos.
         """

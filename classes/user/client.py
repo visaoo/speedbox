@@ -1,8 +1,8 @@
-from classes.user.person import Person
-from classes.address.address import Address
-from db.database import get_connection
+from typing import Any, List, Optional
 
-from typing import Optional, List, Any
+from classes.address.address import Address
+from classes.user.person import Person
+from db.database import get_connection
 
 
 class Client(Person):
@@ -153,5 +153,3 @@ class Client(Person):
             "address": self._address.to_dict(),
             "birth_date": self._birth_date
         }
-
-

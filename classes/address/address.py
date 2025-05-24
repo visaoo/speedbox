@@ -1,4 +1,5 @@
 import sqlite3
+
 from db.database import get_connection
 
 
@@ -10,8 +11,8 @@ class Address:
         neighborhood: str,
         city: str,
         state: str,
-        client_id=None, 
-        enterprise_id=None, 
+        client_id=None,
+        enterprise_id=None,
         delivery_person_id=None
     ) -> None:
         self._street = street
@@ -90,8 +91,7 @@ class Address:
                 conn.commit()
             else:
                 raise ValueError("Invalid type_user. Must be 'enterprise' or 'client'.")
-            
-            
+
     @staticmethod
     def get_all(type_user):
         with get_connection() as conn:
@@ -104,20 +104,20 @@ class Address:
                 return cursor.fetchall()
             else:
                 raise ValueError("Invalid type_user. Must be 'enterprise' or 'client'.")
-   
-    @staticmethod        
+
+    @staticmethod
     def get_address_by_id(id, type_user):
         with get_connection() as conn:
             cursor = conn.cursor()
-            if type_user.lower() == 'enterprise':    
+            if type_user.lower() == 'enterprise':
                 cursor.execute("SELECT * FROM addresses_enterprises WHERE id = ?;", (id,))
                 return cursor.fetchone()
             elif type_user.lower() == 'client':
                 cursor.execute("SELECT * FROM addresses_clients WHERE id = ?;", (id,))
                 return cursor.fetchone()
-    
+
     @staticmethod
-    def update_enterprise(id, type_user,street=None, city=None, state=None):
+    def update_enterprise(id, type_user, street=None, city=None, state=None):
         with get_connection() as conn:
             cursor = conn.cursor()
             fields, values = [], []

@@ -1,5 +1,5 @@
 import sqlite3 as sql
-import populate
+
 
 # Criando nossas tabelitas
 def create_tables():

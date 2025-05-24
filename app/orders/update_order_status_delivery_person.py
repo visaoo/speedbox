@@ -1,9 +1,7 @@
-from classes.resources import *
-
-from validations.validations import get_input, none_word
-
-from classes.order import Order, OrderStatus
 from app.utils.get_connection import get_connection
+from classes.order import Order, OrderStatus
+from classes.resources import *
+from validations.validations import get_input, none_word
 
 
 def update_order_status_delivery_person(delivery_person_id):
@@ -11,7 +9,7 @@ def update_order_status_delivery_person(delivery_person_id):
     order_id = get_input(f"\n{Colors.YELLOW}Digite o ID do pedido:{Colors.ENDC}", none_word).strip()
 
     new_status = get_input(f"{Colors.CYAN}Digite o novo status (completed/canceled): {Colors.ENDC}", none_word).strip()
-    
+
     try:
         order_id = int(order_id)
         new_status = OrderStatus[new_status.upper()]
@@ -24,7 +22,7 @@ def update_order_status_delivery_person(delivery_person_id):
                 Order.update_status(order_id, new_status, order_type)
                 print(f"\n{Colors.GREEN}Status atualizado com sucesso!{Colors.GREEN}")
                 input(f"\n{Colors.YELLOW}Pressione Enter para continuar...{Colors.ENDC}")
-                
+
             else:
                 print(f"\n{Colors.RED}Erro: Você não é o entregador responsável por este pedido ou o pedido não existe.{Colors.RED}")
                 input(f"\n{Colors.YELLOW}Pressione Enter para continuar...{Colors.ENDC}")

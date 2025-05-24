@@ -1,9 +1,11 @@
+import sqlite3
 from enum import Enum
+from typing import List, Optional
 from uuid import uuid4
+
 from classes.address.address import Address
 from db.database import get_connection
-from typing import Optional, List
-import sqlite3
+
 
 class TypeKeyPix(Enum):
     EMAIL = 'email'
@@ -29,6 +31,7 @@ class Enterprise:
         self._type_key_pix: TypeKeyPix = TypeKeyPix.CNPJ
         self._pix_key: str = self._cnpj
         self.user_id = user_id
+
     @property
     def name(self) -> str:
         """Retorna o nome da empresa."""
@@ -93,7 +96,7 @@ class Enterprise:
             self._pix_key = value
         else:
             raise ValueError("Tipo de chave Pix inválido.")
-        
+
     def insert(self) -> None:
         """
         Insere a empresa no banco de dados.

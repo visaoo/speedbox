@@ -1,15 +1,6 @@
-from ast import Add
-from http import client
-from os import name
-from pydoc import cli
 
-from psutil import cpu_freq
-from requests import get
-from classes import address, user
-from classes.address.address import  Address
 from classes.user.client import Client
 from validations.validations import *
-
 
 # name = get_input("Digite seu nome: ", none_word)
 # cpf = get_input("Digite seu CPF: ", none_word)
@@ -38,7 +29,6 @@ from validations.validations import *
 # cliente.insert()
 # a = Client.get_all()
 # print(a)
-
 
 
 a = Client.get_by_id(1)

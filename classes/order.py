@@ -1,14 +1,16 @@
-from enum import Enum
-import re
 import sqlite3
 from datetime import datetime
+from enum import Enum
+
 from classes.address.address import Address
+
 
 class OrderStatus(Enum):
     PAYMENT_PENDING = "payment_pending"
     PENDING = "pending"
     COMPLETED = "completed"
     CANCELED = "canceled"
+
 
 class Order:
     def __init__(self, origem: Address, destino: Address, description: str, status: OrderStatus, distance=0) -> None:
@@ -18,9 +20,8 @@ class Order:
         self.date: datetime = datetime.now()
         self.status: OrderStatus = status
         self.value_total: float = round(10 + (float(distance) * 0.5), 2)  # Valor base de 15 + valor por km
-        
-         
-    def insert(self, type_user: str, client_id = None, enterprise_id = None) -> None:
+
+    def insert(self, type_user: str, client_id=None, enterprise_id=None) -> None:
         """
         Insere o pedido no banco de dados de acordo com o tipo de usuário.
 
@@ -102,7 +103,7 @@ class Order:
                 WHERE client_id = ?;
             """, (client_id,))
             return cursor.fetchall()
-        
+
     @staticmethod
     def get_by_id(user_id: int, user_type: str):
         with sqlite3.connect('database.db') as conn:
@@ -117,7 +118,6 @@ class Order:
             cursor.execute(f"SELECT id FROM {table} WHERE id = ?;", (user_id,))
             return cursor.fetchall()
 
-
     @staticmethod
     def get_by_enterprise(enterprise_id: int):
         with sqlite3.connect("database.db") as conn:
@@ -128,7 +128,6 @@ class Order:
                 WHERE enterprise_id = ?;
             """, (enterprise_id,))
             return cursor.fetchall()
-        
-        
+
     def __str__(self):
         return f"Order({self.origem}, {self.destino}, {self.description}, {self.status}, {self.value_total})"

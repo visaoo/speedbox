@@ -1,8 +1,11 @@
-from classes.resources import *
-
+from app.orders.accept_order_delivery_person import (
+    accept_order_delivery_person,
+)
+from app.orders.update_order_status_delivery_person import (
+    update_order_status_delivery_person,
+)
 from app.orders.view_orders_delivery_person import view_orders_delivery_person
-from app.orders.accept_order_delivery_person import accept_order_delivery_person
-from app.orders.update_order_status_delivery_person import update_order_status_delivery_person
+from classes.resources import *
 
 
 def delivery_person_menu(delivery_person_id):
@@ -12,8 +15,8 @@ def delivery_person_menu(delivery_person_id):
         print(f"{Colors.YELLOW}2.{Colors.ENDC} Aceitar um pedido")
         print(f"{Colors.YELLOW}3.{Colors.ENDC} Alterar status de um pedido")
         print(f"{Colors.YELLOW}4.{Colors.ENDC} Sair")
-        
-        choice = input(f"\n{Colors.GREEN}Escolha uma opção: {Colors.ENDC}").strip()     
+
+        choice = input(f"\n{Colors.GREEN}Escolha uma opção: {Colors.ENDC}").strip()
         if choice == "1":
             view_orders_delivery_person(delivery_person_id)
         elif choice == "2":

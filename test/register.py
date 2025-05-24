@@ -1,7 +1,5 @@
 from classes.Auth.auth import Authenticator, EnumUserType
 from classes.Auth.auth_service import AuthService
-from classes.user.client import Client
-from classes.address.address import Address
 from validations.validations import get_input, is_email, none_word
 
 auth = Authenticator(AuthService("database.db"))
@@ -21,7 +19,7 @@ for i in range(1):
     registered = auth.is_user_registered(username, email)
     if registered:
         print(registered)
-        print(f"Pressione Enter para tentar novamente...")
+        print("Pressione Enter para tentar novamente...")
         continue
 
     auth_response = auth.register(username, email, password, user_type)

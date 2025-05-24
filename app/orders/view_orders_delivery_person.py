@@ -1,6 +1,5 @@
-from classes.resources import *
-
 from app.utils.get_connection import get_connection
+from classes.resources import *
 
 
 def view_orders_delivery_person(delivery_person_id):
@@ -10,13 +9,13 @@ def view_orders_delivery_person(delivery_person_id):
         client_orders = cursor.fetchall()
         cursor.execute("SELECT * FROM orders_enterprises WHERE delivery_person_id = ? OR (status = 'pending' AND delivery_person_id IS NULL)", (delivery_person_id,))
         enterprise_orders = cursor.fetchall()
-    
+
     if not (client_orders or enterprise_orders):
         print(f"{Colors.YELLOW}Nenhum pedido disponível.{Colors.YELLOW}")
         input(f"\n{Colors.YELLOW}Pressione Enter para continuar...{Colors.ENDC}")
         return
     print(f"\n{Colors.BOLD}PEDIDOS DE CLIENTES{Colors.ENDC}")
-    
+
     for order in client_orders:
         print(f"{Colors.BOLD}{Colors.HEADER}ID:{Colors.ENDC} {Colors.CYAN}{order[0]}{Colors.ENDC}, "
         f"{Colors.BOLD}{Colors.HEADER}Total:{Colors.ENDC} {Colors.GREEN}{order[1]}{Colors.ENDC}, "

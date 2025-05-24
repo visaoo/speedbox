@@ -1,10 +1,8 @@
-from classes.resources import *
-
-from validations.validations import get_input, none_word
-
-from app.orders.view_order_history_client import view_order_history_client
 from app.orders.make_order_client import make_order_client
 from app.orders.view_open_orders_client import view_open_orders_client
+from app.orders.view_order_history_client import view_order_history_client
+from classes.resources import *
+from validations.validations import get_input, none_word
 
 
 def client_menu(client_id):
@@ -16,7 +14,7 @@ def client_menu(client_id):
         print(f"{Colors.YELLOW}2.{Colors.ENDC} Fazer um pedido")
         print(f"{Colors.YELLOW}3.{Colors.ENDC} Ver pedidos em aberto")
         print(f"{Colors.YELLOW}4.{Colors.ENDC} Sair")
-        
+
         choice = get_input(f"{Colors.GREEN}Escolha uma opção: {Colors.ENDC}", none_word).strip()
         if choice == "1":
             view_order_history_client(client_id)

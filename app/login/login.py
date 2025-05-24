@@ -1,9 +1,9 @@
-from validations.validations import get_input, none_word
-from app.utils.get_connection import get_connection
 from classes.Auth.auth import Authenticator
 from classes.Auth.auth_service import AuthService
+from validations.validations import get_input, none_word
 
 auth = Authenticator(AuthService(db_path="database.db"))
+
 
 def login():
     username = get_input("Digite o nome de usuário: ", none_word).strip()

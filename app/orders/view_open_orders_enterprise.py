@@ -1,6 +1,5 @@
-from classes.resources import *
-
 from app.utils.get_connection import get_connection
+from classes.resources import *
 
 
 def view_open_orders_enterprise(enterprise_id):

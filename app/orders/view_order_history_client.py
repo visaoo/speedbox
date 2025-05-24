@@ -1,6 +1,5 @@
-from classes.resources import *
-
 from classes.order import Order
+from classes.resources import *
 
 
 def view_order_history_client(client_id):
@@ -17,7 +16,5 @@ def view_order_history_client(client_id):
         f"{Colors.BOLD}{Colors.HEADER}Status:{Colors.ENDC} {Colors.RED}{order[4]}{Colors.ENDC}, "
         f"{Colors.BOLD}{Colors.HEADER}Origem:{Colors.ENDC} {Colors.CYAN}{order[5]}{Colors.ENDC}, "
         f"{Colors.BOLD}{Colors.HEADER}Destino:{Colors.ENDC} {Colors.CYAN}{order[6]}{Colors.ENDC}\n")
-        
-    input(f"\n{Colors.YELLOW}Pressione Enter para continuar...{Colors.ENDC}")
-        
 
+    input(f"\n{Colors.YELLOW}Pressione Enter para continuar...{Colors.ENDC}")

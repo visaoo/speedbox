@@ -1,9 +1,11 @@
-import qrcode
 import sqlite3
 from typing import Optional
+
+import qrcode
+from crcmod import mkCrcFun
+
 from classes.order import Order
 from classes.user.enterprise import Enterprise
-from crcmod import mkCrcFun
 
 
 class PixQrcode:
