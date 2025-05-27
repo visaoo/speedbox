@@ -1,6 +1,8 @@
 import os
 import time
+
 from classes.colors import *
+
 
 # Function to clear the screen
 def clear_screen():
@@ -10,6 +12,7 @@ def clear_screen():
     It works on both Windows and Unix systems.
     """
     os.system('cls' if os.name == 'nt' else 'clear')
+
 
 # Function to show the logo
 def display_logo():
@@ -31,6 +34,7 @@ def display_logo():
     """
     print(logo)
 
+
 # Function to show a welcome message
 def welcome_message():
     """
@@ -48,6 +52,7 @@ def welcome_message():
         print(".", end="", flush=True)
     print("\n")
     time.sleep(0.5)
+
 
 # Function to show the main menu
 def main_menu():
@@ -67,5 +72,5 @@ def main_menu():
     print(f"{Colors.YELLOW}3.{Colors.ENDC} Cadastrar Entregador")
     print(f"{Colors.YELLOW}4.{Colors.ENDC} Cadastrar Empresa")
     print(f"{Colors.YELLOW}5.{Colors.ENDC} Sair")
-    
+
     return input(f"\n{Colors.GREEN}Escolha uma opção: {Colors.ENDC}")

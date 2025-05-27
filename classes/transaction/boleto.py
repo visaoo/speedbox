@@ -1,12 +1,7 @@
-from dataclasses import dataclass
-from random import randint
-from datetime import datetime, timedelta
-
-import sqlite3
-
 import sqlite3
 from datetime import datetime, timedelta
 from random import randint
+
 
 class Boleto:
     def __init__(self) -> None:
@@ -22,7 +17,7 @@ class Boleto:
         """
         due_date: datetime = datetime.now() + timedelta(days=3)
         return due_date.strftime("%d/%m/%Y")
-    
+
     def generate_typeline(self) -> str:
         """Gera a linha digitável do boleto.
 
@@ -30,7 +25,7 @@ class Boleto:
             str: Linha digitável composta por 47 dígitos aleatórios.
         """
         return ''.join(str(randint(0, 9)) for _ in range(47))
-    
+
     def insert(self) -> None:
         """Insere o boleto no banco de dados.
         
@@ -43,7 +38,7 @@ class Boleto:
                 VALUES (?, ?);
             """, (self.due_date, self.typeline))
             conn.commit()
-            
+
     @staticmethod
     def get_by_transaction(transaction_id: str) -> tuple | None:
         """Obtém um boleto associado a uma transação específica.
@@ -58,7 +53,7 @@ class Boleto:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM boleto WHERE transaction_id = ?;", (transaction_id,))
             return cursor.fetchone()
-        
+
     @staticmethod
     def delete_by_transaction(transaction_id: str) -> None:
         """Remove um boleto associado a uma transação específica do banco de dados.
@@ -81,7 +76,7 @@ class Boleto:
             "due_date": self.due_date,
             "typeline": self.typeline
         }
-    
+
     def __str__(self) -> str:
         """Retorna a representação textual do objeto Boleto.
 

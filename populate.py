@@ -1,8 +1,10 @@
-import sqlite3 as sql
 import random
+import sqlite3 as sql
+
 from faker import Faker
 
 fake = Faker("pt_BR")
+
 
 def insert_data_faker(max_rows=100):
     with sql.connect("database.db") as conn:
@@ -116,6 +118,7 @@ def insert_data_faker(max_rows=100):
             )
 
         conn.commit()
+
 
 if __name__ == "__main__":
     qtd = int(input("Quantas linhas deseja inserir no banco? "))

@@ -1,6 +1,7 @@
+import sqlite3
 from datetime import datetime
 from enum import Enum
-import sqlite3
+
 
 class CardFlag(Enum):
     VISA = 'Visa'

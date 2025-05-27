@@ -1,7 +1,7 @@
+import sqlite3
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-import sqlite3
 from typing import Optional
 
 from classes.order import Order

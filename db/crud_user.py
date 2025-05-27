@@ -1,5 +1,6 @@
 import sqlite3
 
+
 def get_all():
     """
     Retorna todos os usuários cadastrados.
@@ -9,6 +10,7 @@ def get_all():
         cursor.execute("SELECT * FROM users;")
         return cursor.fetchall()
 
+
 def get_by_id(user_id):
     """
     Retorna um usuário pelo ID.
@@ -17,6 +19,7 @@ def get_by_id(user_id):
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM users WHERE id = ?;", (user_id,))
         return cursor.fetchone()
+
 
 def update(user_id, email=None, username=None, password=None):
     """
@@ -43,6 +46,7 @@ def update(user_id, email=None, username=None, password=None):
         query = f"UPDATE users SET {', '.join(fields)} WHERE id = ?;"
         cursor.execute(query, values)
         conn.commit()
+
 
 def delete(user_id):
     """

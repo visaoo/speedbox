@@ -1,6 +1,7 @@
-import phonenumbers
 import re
 from datetime import datetime
+
+import phonenumbers
 
 
 def get_input(prompt, validation=None, errorMensage='Entrada invalida, por favor tente novamente'):
@@ -156,9 +157,6 @@ def is_cpf(cpf):
     return digito1 == int(cpf[9]) and digito2 == int(cpf[10])
 
 
-
-import re
-
 def is_cnh(cnh):
     """
     Valida se uma string contém apenas os 11 dígitos de uma CNH,
@@ -174,8 +172,10 @@ def is_cnh(cnh):
 
     return len(cnh_clean) == 11
 
+
 def is_cnpj(cnpj):
     return bool(re.match(r"^\d{14}$", cnpj))
+
 
 def is_valid_plate(placa):
     """

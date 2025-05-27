@@ -1,10 +1,10 @@
-from classes.resources import *
-
-from validations.validations import get_input, none_word
-
-from app.orders.view_order_history_enterprise import view_order_history_enterprise
 from app.orders.make_order_enterprise import make_order_enterprise
 from app.orders.view_open_orders_enterprise import view_open_orders_enterprise
+from app.orders.view_order_history_enterprise import (
+    view_order_history_enterprise,
+)
+from classes.resources import *
+from validations.validations import get_input, none_word
 
 
 def enterprise_menu(enterprise_id):

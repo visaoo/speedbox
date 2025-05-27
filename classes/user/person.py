@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from requests import get
 from classes.address.address import Address
 
 
@@ -22,6 +21,7 @@ class Person(ABC):
         self._address: Address = address
         self._birth_date: str = birth_date
         self._user_id = user_id
+
     @property
     def name(self) -> str:
         """Retorna o nome da pessoa."""
@@ -58,11 +58,11 @@ class Person(ABC):
     def user_id(self) -> Optional[str]:
         """Retorna o ID do usuário."""
         return self._user_id
-    
+
     @user_id.setter
     def user_id(self, value: str) -> None:
         self._user_id = value
-        
+
     @abstractmethod
     def insert(self) -> None:
         """
@@ -70,7 +70,7 @@ class Person(ABC):
         Deve ser implementado nas subclasses.
         """
         pass
-    
+
     @abstractmethod
     def get_all() -> list:
         """
@@ -78,7 +78,7 @@ class Person(ABC):
         Deve ser implementado nas subclasses.
         """
         pass
-    
+
     @abstractmethod
     def get_by_id():
         """
@@ -86,7 +86,7 @@ class Person(ABC):
         Deve ser implementado nas subclasses.
         """
         pass
-    
+
     @abstractmethod
     def update():
         """
@@ -94,8 +94,7 @@ class Person(ABC):
         Deve ser implementado nas subclasses.
         """
         pass
-    
-    
+
     @abstractmethod
     def delete():
         """

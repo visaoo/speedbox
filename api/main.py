@@ -1,14 +1,12 @@
 import os
 
-from fastapi import FastAPI, Form
+from database import insert_client, insert_delivery, insert_enterprise
+from fastapi import FastAPI, Form, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from starlette.requests import Request
 from passlib.context import CryptContext
-from fastapi import Request
-from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 #from database import insert_client, insert_delivery, insert_enterprise
@@ -23,28 +21,32 @@ templates = Jinja2Templates(directory=os.path.join(os.path.dirname(__file__), "t
 # Monta a pasta "static" para servir arquivos estáticos
 app.mount("/static", StaticFiles(directory=os.path.join(os.path.dirname(__file__), "static")), name="static")
 
+
 # Rota que renderiza o index
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
+
 
 # Rota para a página de login
 @app.get("/login", response_class=HTMLResponse)
 async def login_page(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
 
+
 # Rota para a página de cadastro
 @app.get("/register", response_class=HTMLResponse)
 async def register_page(request: Request):
     return templates.TemplateResponse("register.html", {"request": request})
 
-# CORS 
+# CORS
+
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # vercel.com
-    allow_methods=["*"],  #get e post
-    allow_headers=["*"], 
+    allow_origins=["*"],  # vercel.com
+    allow_methods=["*"],  # get e post
+    allow_headers=["*"],
 )
 
 """
@@ -53,8 +55,10 @@ app.add_middleware(
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
+
 
 @app.post("/api/register-client")
 async def register_client(
@@ -63,12 +67,12 @@ async def register_client(
     client_phone: str = Form(...),
     client_birth: str = Form(...),
     client_email: str = Form(...),
-    client_password: str = Form(...),    
+    client_password: str = Form(...),
     client_address: str = Form(...),
     client_neighborhood: str = Form(...),
     client_city: str = Form(...),
     client_state: str = Form(...),
-): 
+):
     try:
         hashed_password = hash_password(client_password)
         insert_client({
@@ -100,6 +104,7 @@ async def register_client(
         }
     except Exception as e:
         return {"error": f"Erro ao salvar: {str(e)}"}
+
 
 @app.post("/api/register-delivery")
 async def register_delivery(
@@ -139,6 +144,7 @@ async def register_delivery(
         }
     except Exception as e:
         return {"error": f"Erro ao salvar: {str(e)}"}
+
 
 @app.post("/api/register-enterprise")
 async def register_enterprise(
@@ -185,9 +191,11 @@ async def register_enterprise(
     except Exception as e:
         return {"error": f"Erro ao salvar: {str(e)}"}
 
+
 class LoginData(BaseModel):
     email: str
     password: str
+
 
 @app.post("/login")
 async def login(data: LoginData):

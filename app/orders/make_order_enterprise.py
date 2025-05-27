@@ -1,20 +1,16 @@
-from classes.resources import *
-
-from validations.validations import get_input, none_word
-
-from classes.order import Order, OrderStatus
-from classes.Vehicle import Vehicle
 from app.utils.get_address_from_input import get_address_from_input
+from classes.order import Order, OrderStatus
+from classes.resources import *
+from classes.Vehicle import Vehicle
+from validations.validations import get_input, none_word
 
 
 def make_order_enterprise(enterprise_id):
     description = get_input(f"{Colors.CYAN}Digite a descrição do pedido: {Colors.ENDC} ", none_word).strip()
     print(f"{Colors.CYAN}Endereço de origem:{Colors.CYAN}")
     origem = get_address_from_input("enterprise")
-    print(f"{Colors.CYAN}Endereço de destino:{Colors.CYAN}") 
+    print(f"{Colors.CYAN}Endereço de destino:{Colors.CYAN}")
     destino = get_address_from_input("enterprise")
-    
-    order = Order(origem, destino, description, OrderStatus.PENDING)
 
     # Calcular distância (se API estiver configurada)
     try:
@@ -22,11 +18,14 @@ def make_order_enterprise(enterprise_id):
         truck = Vehicle.calculate_distance(origem.__str__(), destino.__str__(), 'driving-hgv')
     except Exception as e:
         print(f"{Colors.RED}Erro ao calcular distância: {e}{Colors.RED}")
-        
+
     finally:
+        distance = car['distancia_km']
         print(f'{Colors.CYAN}Carro: {car}{Colors.CYAN}')
         print(f'{Colors.CYAN}Caminhão: {truck}{Colors.CYAN}')
-    
+
+    order = Order(origem, destino, description, OrderStatus.PENDING, distance)
+
     # Inserir pedido com enterprise_id
     order.insert("enterprise", enterprise_id=enterprise_id)
     print(f"\n{Colors.GREEN}Pedido criado com sucesso!{Colors.GREEN}")

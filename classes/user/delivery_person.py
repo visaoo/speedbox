@@ -1,8 +1,9 @@
 import sqlite3
 from typing import Optional
-from classes.user.user import User
-from classes.Vehicle import Vehicle
+
 from classes.address.address import Address
+from classes.Vehicle import Vehicle
+
 
 class DeliveryPerson:
     def __init__(
@@ -13,7 +14,6 @@ class DeliveryPerson:
         cnh: str,
         availability: bool,
         vehicle: Optional[Vehicle],
-        user: User,
         phone: str,
         address: Address,
         user_id: int
@@ -24,7 +24,7 @@ class DeliveryPerson:
         self.cnh: str = cnh
         self.availability: bool = availability
         self.vehicle: Optional[Vehicle] = vehicle
-        self.user: User = user
+        # self.user: User
         self.phone: str = phone
         self.address: Address = address
         self.user_id: int = user_id

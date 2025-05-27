@@ -1,4 +1,4 @@
-__all__ = [ # Usamos isso para importar todos os arquivos de uma vez, dinamicamente
+__all__ = [  # Usamos isso para importar todos os arquivos de uma vez, dinamicamente
     "crud_address_client",
     "crud_address_enterprise",
     "crud_boleto",
