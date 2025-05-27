@@ -1,24 +1,10 @@
 from app.utils.get_address_from_input import get_address_from_input
-from app.utils.get_connection import get_connection
-from app.utils.max_distance import MaxDistance
-from classes.Auth.auth import Authenticator
-from classes.Auth.auth_service import AuthService
-from classes.resources import *
+
 from classes.user.client import Client
 from classes.user.delivery_person import DeliveryPerson
+from classes.user.user import User
+from classes.Vehicle import Vehicle, VehicleType, MaxDistance
 from classes.user.enterprise import Enterprise
-from classes.Vehicle import Vehicle, VehicleType
-from validations.validations import (
-    get_input,
-    is_cnh,
-    is_cnpj,
-    is_cpf,
-    is_date,
-    is_email,
-    is_phone,
-    is_valid_plate,
-    none_word,
-)
 
 
 def register_user(user_type):

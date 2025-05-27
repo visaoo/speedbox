@@ -8,7 +8,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from passlib.context import CryptContext
 from pydantic import BaseModel
-from starlette.requests import Request
+
+#from database import insert_client, insert_delivery, insert_enterprise
 
 # criar insert no banco
 
@@ -47,6 +48,8 @@ app.add_middleware(
     allow_methods=["*"],  # get e post
     allow_headers=["*"],
 )
+
+"""
 
 # API para registrar usuário
 
@@ -212,9 +215,5 @@ async def login(data: LoginData):
     except Exception as e:
         return JSONResponse(status_code=500, content={"detail": f"Erro interno: {str(e)}"})
 
-    # lista de atividades para amanhã
-
-    # fazer conexão e armazenar no banco
-    # agora deve manter a página e de preferencia devo colocar validação de input msg/modal de confirmação e erro,
-    # a pessoa vai poder logar na sua conta (se der tempo)
-    # aí eu acho que iria precisar de uma rota get para poder pegar os dados validados no banco
+  
+"""

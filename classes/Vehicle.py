@@ -10,15 +10,15 @@ from db.database import get_connection
 
 
 class MaxDistance(Enum):
-    ...
-
-
+    MUNICIPAL = "municipal"
+    ESTADUAL = "estadual"
+    INTER_ESTADUAL = "inter_estadual"
+    
 class VehicleType(Enum):
     """Enumeração para os tipos de veículos."""
     MOTO = "moto"
     CARRO = "carro"
     CAMINHAO = "caminhao"
-
 
 class Vehicle:
     """

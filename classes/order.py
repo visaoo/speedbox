@@ -3,6 +3,7 @@ from datetime import datetime
 from enum import Enum
 
 from classes.address.address import Address
+from app.utils.get_connection import get_connection
 
 
 class OrderStatus(Enum):
