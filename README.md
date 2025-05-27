@@ -131,4 +131,4 @@ Abaixo uma prévia da aplicação rodando no terminal:
 
 ## 📜 Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](./LICENSE) para mais detalhes.
+Este projeto está licenciado sob a Licença Pública Geral GNU, versão 3 (GPLv3). Veja o arquivo [LICENSE](./LICENSE) para mais detalhes.
