@@ -11,7 +11,7 @@ from fastapi import Request
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
-from database import insert_client, insert_delivery, insert_enterprise
+#from database import insert_client, insert_delivery, insert_enterprise
 
 # criar insert no banco
 
@@ -46,6 +46,8 @@ app.add_middleware(
     allow_methods=["*"],  #get e post
     allow_headers=["*"], 
 )
+
+"""
 
 # API para registrar usuário
 
@@ -206,9 +208,4 @@ async def login(data: LoginData):
         return JSONResponse(status_code=500, content={"detail": f"Erro interno: {str(e)}"})
 
   
-    # lista de atividades para amanhã
-    
-    # fazer conexão e armazenar no banco
-    # agora deve manter a página e de preferencia devo colocar validação de input msg/modal de confirmação e erro,
-    # a pessoa vai poder logar na sua conta (se der tempo)
-    # aí eu acho que iria precisar de uma rota get para poder pegar os dados validados no banco
+"""
