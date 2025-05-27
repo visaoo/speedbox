@@ -1,7 +1,7 @@
 from classes.order import Order, OrderStatus
 from classes.resources import *
 from validations.validations import get_input, none_word
-from open_orders import view_open_orders
+from .open_orders import view_open_orders
 
 def accept_order_delivery_person(delivery_person_id):
     print(f"\n{Colors.YELLOW}Pedido de empresas:{Colors.ENDC}")

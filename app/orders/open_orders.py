@@ -24,5 +24,3 @@ def view_open_orders(client_enterprise):
         f"{Colors.BOLD}{Colors.HEADER}Status:{Colors.ENDC} {Colors.RED}{order[8]}{Colors.ENDC}\n")
 
     input(f"\n{Colors.YELLOW}Pressione Enter para continuar...{Colors.ENDC}")
-    
-view_open_orders('client')
