@@ -86,7 +86,17 @@ class Vehicle:
     @staticmethod
     def calculate_distance(origin: str, destination: str, profile) -> dict:
         """
-        Calcula a distância e duração estimada entre dois endereços utilizando a API OpenRouteService.
+        Calcula a distância e a duração estimada entre dois endereços
+        utilizando a API do OpenRouteService.
+        
+        Parâmetros:
+        - origin (str): Endereço de origem.
+        - destination (str): Endereço de destino.
+        - profile: Perfil do tipo de transporte (ex: 'driving-car', 'driving-hgv').
+
+        Retorna:
+        - dict: Um dicionário contendo a distância (em km) e a duração (em horas),
+                ou None em caso de erro.
         """
         load_dotenv(dotenv_path='.env')
         api_key = os.getenv("API_KEY")
