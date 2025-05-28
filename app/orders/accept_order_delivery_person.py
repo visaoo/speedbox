@@ -3,13 +3,23 @@ from classes.resources import *
 from validations.validations import get_input, none_word
 from .open_orders import view_open_orders
 
-def accept_order_delivery_person(delivery_person_id):
-    print(f"\n{Colors.YELLOW}Pedido de empresas:{Colors.ENDC}")
-    view_open_orders('enterprise')
-    print(f"\n{Colors.YELLOW}Pedido de clientes:{Colors.ENDC}")
-    view_open_orders('client')
-    order_type = get_input(f"{Colors.YELLOW}Nenhum pedido encontrado.{Colors.YELLOW},none_word").strip()
-
+def accept_order_delivery_person(delivery_person_id: int) -> None:
+    _ = True
+    while _:
+        try:
+            order_type = get_input(f"{Colors.YELLOW}Ver pedidos de clientes ou empresas? {Colors.YELLOW}",none_word).strip()
+            if order_type.lower() in ('empresa', 'enterprise'):
+                _ = False
+                print(f"\n{Colors.YELLOW}Pedido de empresas:{Colors.ENDC}")
+                view_open_orders('enterprise')
+            elif order_type.lower() in ('client', 'cliente'):
+                _ = False
+                print(f"\n{Colors.YELLOW}Pedido de clientes:{Colors.ENDC}")
+                view_open_orders('client')
+            else:
+                raise ValueError('Digite cliente ou empresa') 
+        except:
+            continue
     order_id = get_input(f"\n{Colors.YELLOW}Digite o ID do pedido:{Colors.ENDC}", none_word).strip()
 
     try:

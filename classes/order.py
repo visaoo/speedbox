@@ -31,7 +31,7 @@ class Order:
             client_id (int, optional): ID do cliente para pedidos de cliente
             enterprise_id (int, optional): ID da empresa para pedidos de empresa
         """
-        with sqlite3.connect("database.db") as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
 
             if type_user == "enterprise":
@@ -73,7 +73,7 @@ class Order:
     @staticmethod
     def update_delivery_person(type_user: str, order_id: int, delivery_person_id: int) -> None:
         table = "orders" if type_user == "client" else "orders_enterprises"
-        with sqlite3.connect("database.db") as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute(f"""
                 UPDATE {table}
@@ -85,7 +85,7 @@ class Order:
     @staticmethod
     def update_status(order_id: int, status: OrderStatus, type_user: str) -> None:
         table = "orders" if type_user == "client" else "orders_enterprises"
-        with sqlite3.connect("database.db") as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute(f"""
                 UPDATE {table}
@@ -96,7 +96,7 @@ class Order:
 
     @staticmethod
     def get_by_client(client_id: int):
-        with sqlite3.connect("database.db") as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("""
                 SELECT id, total, date, description, status, addrss_initial, addrss_final
@@ -121,7 +121,7 @@ class Order:
 
     @staticmethod
     def get_by_enterprise(enterprise_id: int):
-        with sqlite3.connect("database.db") as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("""
                 SELECT id, total, date, description, status, addrss_initial, addrss_final

@@ -8,7 +8,7 @@ def view_open_orders(client_enterprise):
         if client_enterprise == 'client':
             cursor.execute("SELECT * FROM orders WHERE status IN ('payment_pending', 'pending')")
         if client_enterprise == 'enterprise':
-            cursor.execute("SELECT * FROM orders_enterprise WHERE status IN ('payment_pending', 'pending')")
+            cursor.execute("SELECT * FROM orders_enterprises WHERE status IN ('payment_pending', 'pending')")
         orders = cursor.fetchall()
     if not orders:
         print(f"{Colors.YELLOW}Nenhum pedido em aberto.{Colors.YELLOW}")
