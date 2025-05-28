@@ -6,7 +6,15 @@ from db.database import get_connection
 
 
 class Client(Person):
-    def __init__(self, name: str, cpf: str, phone: str, birth_date: str, address: Address, user_id) -> None:
+    def __init__(
+        self,
+        name: str,
+        cpf: str,
+        phone: str,
+        birth_date: str,
+        address: Address,
+        user_id,
+    ) -> None:
         """
         Inicializa um cliente com nome, CPF, telefone, data de nascimento e endereço.
 
@@ -151,5 +159,5 @@ class Client(Person):
             "cpf": self._cpf,
             "phone": self._phone,
             "address": self._address.to_dict(),
-            "birth_date": self._birth_date
+            "birth_date": self._birth_date,
         }

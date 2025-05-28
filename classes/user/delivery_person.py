@@ -1,5 +1,5 @@
 import sqlite3
-from typing import Optional
+from typing import Optional, Self
 
 from classes.address.address import Address
 from classes.Vehicle import Vehicle
@@ -24,7 +24,6 @@ class DeliveryPerson:
         self.cnh: str = cnh
         self.availability: bool = availability
         self.vehicle: Optional[Vehicle] = vehicle
-        # self.user: User
         self.phone: str = phone
         self.address: Address = address
         self.user_id: int = user_id
@@ -57,3 +56,9 @@ class DeliveryPerson:
                 (id,)
             )
             return cursor.fetchone()
+
+
+    def __str__(self) -> str:
+        return (f'Entregador: {self.name}' f'CNH: {self.cnh}' 
+                f'data de nascimento: {self.birth_date}'
+                f'CPF: {self.cpf}' f'telefone: {self.phone}')

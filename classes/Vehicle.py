@@ -35,9 +35,9 @@ class Vehicle:
     def __init__(self, model: str, mark: str, plate: str, type_vehicle: VehicleType, maximum_distance: str):
         self._model = model
         self._mark = mark
-        self.plate = plate  # setter com validação
+        self._plate = plate 
         self._maximum_distance = maximum_distance
-        self.type_vehicle = type_vehicle  # setter com validação
+        self.type_vehicle = type_vehicle 
         self._can_add_load = True
 
     @property
