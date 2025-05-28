@@ -1,22 +1,17 @@
 import os
 
-from database import insert_client, insert_delivery, insert_enterprise
 from fastapi import FastAPI, Form, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse 
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from passlib.context import CryptContext
-from pydantic import BaseModel
-
-#from database import insert_client, insert_delivery, insert_enterprise
 
 # criar insert no banco
 
 app = FastAPI()
 
 # Defina o diretório dos templates, ajustando o caminho para a pasta "api/templates"
-templates = Jinja2Templates(directory=os.path.join(os.path.dirname(__file__), "templates"))
+templates = Jinja2Templates(directory=os.path.join(os.path.dirname(__file__), "templates")) 
 
 # Monta a pasta "static" para servir arquivos estáticos
 app.mount("/static", StaticFiles(directory=os.path.join(os.path.dirname(__file__), "static")), name="static")
@@ -41,24 +36,15 @@ async def register_page(request: Request):
 
 # CORS
 
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # vercel.com
     allow_methods=["*"],  # get e post
-    allow_headers=["*"],
 )
 
 """
 
 # API para registrar usuário
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
-def hash_password(password: str) -> str:
-    return pwd_context.hash(password)
-
 
 @app.post("/api/register-client")
 async def register_client(
@@ -190,30 +176,5 @@ async def register_enterprise(
         }
     except Exception as e:
         return {"error": f"Erro ao salvar: {str(e)}"}
-
-
-class LoginData(BaseModel):
-    email: str
-    password: str
-
-
-@app.post("/login")
-async def login(data: LoginData):
-    try:
-        # buscar no banco o usuário pelo email
-        user = get_user_by_email(data.email)  # criar funcao amanhã
-
-        if user is None:
-            return JSONResponse(status_code=401, content={"detail": "Usuário não encontrado"})
-
-        # Verifica se a senha bate com o hash
-        if not pwd_context.verify(data.password, user["password"]):
-            return JSONResponse(status_code=401, content={"detail": "Senha incorreta"})
-
-        return {"user_type": user["user_type"]}
-
-    except Exception as e:
-        return JSONResponse(status_code=500, content={"detail": f"Erro interno: {str(e)}"})
-
   
 """
