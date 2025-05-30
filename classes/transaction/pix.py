@@ -136,7 +136,7 @@ class PixQrcode:
         """
         Insere os dados do PIX no banco de dados.
         """
-        with sqlite3.connect("database.db") as conn:
+        with sqlite3.connect("speedbox.db") as conn:
             cursor = conn.cursor()
             cursor.execute(
                 """
@@ -158,7 +158,7 @@ class PixQrcode:
         Retorna:
             Optional[tuple]: Tupla com os dados do PIX, se encontrado.
         """
-        with sqlite3.connect("database.db") as conn:
+        with sqlite3.connect("speedbox.db") as conn:
             cursor = conn.cursor()
             cursor.execute(
                 "SELECT * FROM pix WHERE transaction_id = ?;", (transaction_id,)
@@ -173,7 +173,7 @@ class PixQrcode:
         Args:
             transaction_id (str): ID da transação.
         """
-        with sqlite3.connect("database.db") as conn:
+        with sqlite3.connect("speedbox.db") as conn:
             cursor = conn.cursor()
             cursor.execute(
                 "DELETE FROM pix WHERE transaction_id = ?;", (transaction_id,)

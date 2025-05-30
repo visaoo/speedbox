@@ -13,12 +13,14 @@ class MaxDistance(Enum):
     MUNICIPAL = "municipal"
     ESTADUAL = "estadual"
     INTER_ESTADUAL = "inter_estadual"
-    
+
+
 class VehicleType(Enum):
     """Enumeração para os tipos de veículos."""
     MOTO = "moto"
     CARRO = "carro"
     CAMINHAO = "caminhao"
+
 
 class Vehicle:
     """
@@ -35,9 +37,9 @@ class Vehicle:
     def __init__(self, model: str, mark: str, plate: str, type_vehicle: VehicleType, maximum_distance: str):
         self._model = model
         self._mark = mark
-        self._plate = plate 
+        self._plate = plate
         self._maximum_distance = maximum_distance
-        self.type_vehicle = type_vehicle 
+        self.type_vehicle = type_vehicle
         self._can_add_load = True
 
     @property
@@ -160,7 +162,7 @@ class Vehicle:
         Args:
             delivery_person_id (int): ID do entregador associado ao veículo.
         """
-        with sqlite3.connect("database.db") as conn:
+        with sqlite3.connect("speedbox.db") as conn:
             cursor = conn.cursor()
             cursor.execute("""
                 INSERT INTO vehicle (model, mark, plate, type_vehicle, maximum_distance, delivery_person_id)

@@ -7,7 +7,7 @@ fake = Faker("pt_BR")
 
 
 def insert_data_faker(max_rows=100):
-    with sql.connect("database.db") as conn:
+    with sql.connect("speedbox.db") as conn:
         conn.execute("PRAGMA foreign_keys = ON")
         cursor = conn.cursor()
 

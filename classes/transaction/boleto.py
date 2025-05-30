@@ -31,7 +31,7 @@ class Boleto:
         
         A tabela 'boleto' deve possuir as colunas: due_date, typeline.
         """
-        with sqlite3.connect("database.db") as conn:
+        with sqlite3.connect("speedbox.db") as conn:
             cursor = conn.cursor()
             cursor.execute("""
                 INSERT INTO boleto (due_date, typeline)
@@ -49,7 +49,7 @@ class Boleto:
         Retorna:
             tuple | None: Dados do boleto encontrado ou None se não houver resultado.
         """
-        with sqlite3.connect("database.db") as conn:
+        with sqlite3.connect("speedbox.db") as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM boleto WHERE transaction_id = ?;", (transaction_id,))
             return cursor.fetchone()
@@ -61,7 +61,7 @@ class Boleto:
         Args:
             transaction_id (str): ID da transação associada ao boleto.
         """
-        with sqlite3.connect("database.db") as conn:
+        with sqlite3.connect("speedbox.db") as conn:
             cursor = conn.cursor()
             cursor.execute("DELETE FROM boleto WHERE transaction_id = ?;", (transaction_id,))
             conn.commit()

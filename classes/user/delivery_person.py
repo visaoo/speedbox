@@ -1,5 +1,5 @@
 import sqlite3
-from typing import Optional, Self
+from typing import Optional
 
 from classes.address.address import Address
 from classes.Vehicle import Vehicle
@@ -32,7 +32,7 @@ class DeliveryPerson:
         """
         Insere o entregador no banco de dados.
         """
-        with sqlite3.connect("database.db") as conn:
+        with sqlite3.connect("speedbox.db") as conn:
             cursor = conn.cursor()
             cursor.execute(
                 """
@@ -45,7 +45,7 @@ class DeliveryPerson:
 
     @staticmethod
     def get_by_id(id: int):
-        with sqlite3.connect("database.db") as conn:
+        with sqlite3.connect("speedbox.db") as conn:
             cursor = conn.cursor()
             cursor.execute(
                 """
@@ -57,8 +57,7 @@ class DeliveryPerson:
             )
             return cursor.fetchone()
 
-
     def __str__(self) -> str:
-        return (f'Entregador: {self.name}' f'CNH: {self.cnh}' 
+        return (f'Entregador: {self.name}' f'CNH: {self.cnh}'
                 f'data de nascimento: {self.birth_date}'
                 f'CPF: {self.cpf}' f'telefone: {self.phone}')

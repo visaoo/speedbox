@@ -1,6 +1,6 @@
 import sqlite3
 
-DB_PATH = "database.db"
+DB_PATH = "speedbox.db"
 
 
 def get_connection():

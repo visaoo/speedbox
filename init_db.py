@@ -3,7 +3,7 @@ import sqlite3 as sql
 
 # Criando nossas tabelitas
 def create_tables():
-    with sql.connect("database.db") as conn:
+    with sql.connect("speedbox.db") as conn:
         cursor = conn.cursor()
 
         cursor.execute("PRAGMA foreign_keys = ON")

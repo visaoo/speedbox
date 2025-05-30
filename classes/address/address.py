@@ -75,7 +75,7 @@ class Address:
         self._state = value
 
     def insert_address(self, type_user, client_id=None):
-        with sqlite3.connect("database.db") as conn:
+        with sqlite3.connect("speedbox.db") as conn:
             cursor = conn.cursor()
             if type_user.lower() == 'enterprise':
                 cursor.execute("""

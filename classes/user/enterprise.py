@@ -101,7 +101,7 @@ class Enterprise:
         """
         Insere a empresa no banco de dados.
         """
-        with sqlite3.connect("database.db") as conn:
+        with sqlite3.connect("speedbox.db") as conn:
             cursor = conn.cursor()
             cursor.execute("""
                 INSERT INTO enterprises (name, cnpj, user_id)

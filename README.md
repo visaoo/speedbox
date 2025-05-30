@@ -46,7 +46,7 @@ Abaixo uma prévia da aplicação rodando no terminal:
 ├── validations/         # Validações auxiliares
 ├── init_db.py           # Script para inicializar o banco de dados
 ├── populate.py          # Script para popular dados iniciais
-├── database.db          # Banco de dados SQLite
+├── speedbox.db          # Banco de dados SQLite
 ├── pyproject.toml       # Gerenciador de dependências (Poetry)
 ```
 

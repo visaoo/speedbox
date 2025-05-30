@@ -2,7 +2,8 @@ from classes.Auth.auth import Authenticator
 from classes.Auth.auth_service import AuthService
 from validations.validations import get_input, none_word
 
-auth = Authenticator(AuthService(db_path="database.db"))
+auth_service = AuthService()
+auth = Authenticator(auth_service)
 
 
 def login():

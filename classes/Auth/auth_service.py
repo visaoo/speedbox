@@ -5,7 +5,7 @@ from classes.user.user import User
 
 
 class AuthService:
-    def __init__(self, db_path='database.db') -> None:
+    def __init__(self, db_path='speedbox.db') -> None:
         """
         Inicializa o serviço de autenticação com o caminho do banco de dados.
         param db_path: Caminho do banco de dados SQLite.

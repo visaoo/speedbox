@@ -74,7 +74,7 @@ class Transaction:
         """
         Insere a transação no banco de dados.
         """
-        with sqlite3.connect("database.db") as conn:
+        with sqlite3.connect("speedbox.db") as conn:
             cursor = conn.cursor()
             cursor.execute(
                 """
@@ -100,7 +100,7 @@ class Transaction:
         Retorna:
             Optional[tuple]: Tupla com os dados da transação, se encontrada.
         """
-        with sqlite3.connect("database.db") as conn:
+        with sqlite3.connect("speedbox.db") as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM transactions WHERE id = ?;", (transaction_id,))
             return cursor.fetchone()
@@ -114,7 +114,7 @@ class Transaction:
             transaction_id (int): ID da transação.
             status (Status): Novo status a ser definido.
         """
-        with sqlite3.connect("database.db") as conn:
+        with sqlite3.connect("speedbox.db") as conn:
             cursor = conn.cursor()
             cursor.execute(
                 "UPDATE transactions SET status = ? WHERE id = ?;",
@@ -130,7 +130,7 @@ class Transaction:
         Args:
             transaction_id (int): ID da transação a ser deletada.
         """
-        with sqlite3.connect("database.db") as conn:
+        with sqlite3.connect("speedbox.db") as conn:
             cursor = conn.cursor()
             cursor.execute("DELETE FROM transactions WHERE id = ?;", (transaction_id,))
             conn.commit()

@@ -161,7 +161,7 @@ class Card:
 
     def insert(self) -> None:
         """Insere os dados do cartão no banco de dados."""
-        with sqlite3.connect("database.db") as conn:
+        with sqlite3.connect("speedbox.db") as conn:
             cursor = conn.cursor()
             cursor.execute("""
                 INSERT INTO card (name, number, validity, cvc, flag)
@@ -179,7 +179,7 @@ class Card:
         Retorna:
             tuple | None: Tupla com os dados do cartão ou None.
         """
-        with sqlite3.connect("database.db") as conn:
+        with sqlite3.connect("speedbox.db") as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM card WHERE transaction_id = ?;", (transaction_id,))
             return cursor.fetchone()
@@ -191,7 +191,7 @@ class Card:
         Args:
             transaction_id (str): ID da transação.
         """
-        with sqlite3.connect("database.db") as conn:
+        with sqlite3.connect("speedbox.db") as conn:
             cursor = conn.cursor()
             cursor.execute("DELETE FROM card WHERE transaction_id = ?;", (transaction_id,))
             conn.commit()

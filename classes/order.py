@@ -2,8 +2,8 @@ import sqlite3
 from datetime import datetime
 from enum import Enum
 
-from classes.address.address import Address
 from app.utils.get_connection import get_connection
+from classes.address.address import Address
 
 
 class OrderStatus(Enum):
@@ -107,7 +107,7 @@ class Order:
 
     @staticmethod
     def get_by_id(user_id: int, user_type: str):
-        with sqlite3.connect('database.db') as conn:
+        with sqlite3.connect('speedbox.db') as conn:
             cursor = conn.cursor()
             if user_type == "enterprise":
                 table = 'orders_enterprises'

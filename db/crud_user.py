@@ -5,7 +5,7 @@ def get_all():
     """
     Retorna todos os usuários cadastrados.
     """
-    with sqlite3.connect("database.db") as conn:
+    with sqlite3.connect("speedbox.db") as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM users;")
         return cursor.fetchall()
@@ -15,7 +15,7 @@ def get_by_id(user_id):
     """
     Retorna um usuário pelo ID.
     """
-    with sqlite3.connect("database.db") as conn:
+    with sqlite3.connect("speedbox.db") as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM users WHERE id = ?;", (user_id,))
         return cursor.fetchone()
@@ -25,7 +25,7 @@ def update(user_id, email=None, username=None, password=None):
     """
     Atualiza dados de um usuário.
     """
-    with sqlite3.connect("database.db") as conn:
+    with sqlite3.connect("speedbox.db") as conn:
         cursor = conn.cursor()
         fields = []
         values = []
@@ -52,7 +52,7 @@ def delete(user_id):
     """
     Deleta um usuário do banco de dados.
     """
-    with sqlite3.connect("database.db") as conn:
+    with sqlite3.connect("speedbox.db") as conn:
         cursor = conn.cursor()
         cursor.execute("DELETE FROM users WHERE id = ?;", (user_id,))
         conn.commit()

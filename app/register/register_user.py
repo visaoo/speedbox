@@ -1,15 +1,13 @@
 from app.utils.get_address_from_input import get_address_from_input
-
+from app.utils.get_connection import get_connection
 from classes.Auth.auth import Authenticator
-from classes.Auth.auth_service import AuthService 
+from classes.Auth.auth_service import AuthService
 from classes.colors import Colors
 from classes.user.client import Client
 from classes.user.delivery_person import DeliveryPerson
-from classes.Vehicle import Vehicle, VehicleType, MaxDistance
 from classes.user.enterprise import Enterprise
+from classes.Vehicle import MaxDistance, Vehicle, VehicleType
 from validations.validations import *
-from app.utils.get_connection import get_connection
-
 
 
 def register_user(user_type):
