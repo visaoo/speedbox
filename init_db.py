@@ -30,12 +30,13 @@ def create_tables():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             total REAL NOT NULL,
             date TEXT NOT NULL,
-            description TEXT NOT NULL,
+            product_id INTEGER NOT NULL,
             client_id INTEGER NOT NULL,
             delivery_person_id INTEGER,
             addrss_final TEXT NOT NULL,
             addrss_initial TEXT NOT NULL,
-            status TEXT DEFAULT 'pending' CHECK(status IN ('payment_pending', 'pending', 'completed', 'canceled')),
+            status TEXT DEFAULT 'pending' CHECK(status IN ('acepted', 'pending', 'completed', 'canceled')),
+            FOREIGN KEY (product_id) REFERENCES produto(id),
             FOREIGN KEY (delivery_person_id) REFERENCES delivery_person(id),
             FOREIGN KEY (client_id) REFERENCES clients(id)
         );
@@ -48,12 +49,13 @@ def create_tables():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             total REAL NOT NULL,
             date TEXT NOT NULL,
-            description TEXT NOT NULL,
+            product_id INTEGER NOT NULL,
             enterprise_id INTEGER NOT NULL,
             delivery_person_id INTEGER,
             addrss_final TEXT NOT NULL,
             addrss_initial TEXT NOT NULL,
             status TEXT DEFAULT 'pending' CHECK(status IN ('acepted', 'pending', 'completed', 'canceled')),
+            FOREIGN KEY (product_id) REFERENCES produto(id),
             FOREIGN KEY (delivery_person_id) REFERENCES delivery_person(id),
             FOREIGN KEY (enterprise_id) REFERENCES enterprises(id)
         );
@@ -198,6 +200,18 @@ def create_tables():
             FOREIGN KEY (delivery_person_id) REFERENCES delivery_person(id) ON DELETE CASCADE
         );
         """
+        )
+        # Criando a tabela 'Produto'
+        cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS produto(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                nome TEXT NOT NULL,
+                descricao TEXT NOT NULL,
+                peso REAL,
+                tamanho REAL
+            )
+            """
         )
 
 
