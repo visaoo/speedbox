@@ -82,6 +82,14 @@ class Authenticator:
         return: Um objeto User se o ID for válido, None caso contrário.
         """
         return self.auth_service.find_user_by_id(id)
+    
+    def find_user_by_username(self, username: str) -> User | None:
+        """
+        Encontra um usuário pelo nome de usuário.
+        param username: Nome de usuário
+        return: Um objeto User se o nome de usuário for válido, None caso contrário.
+        """
+        return self.auth_service.find_user_by_username(username)
 
     def is_user_registered(self, username: str, email: str) -> bool:
         """

@@ -37,7 +37,7 @@ class AuthService:
             )
             row = cursor.fetchone()
             if row:
-                print(f"Usuário encontrado: {row}")
+                # print(f"Usuário encontrado: {row}")
                 user = User(*row)  # usando destructuring
                 self.current_user = user
                 return user
@@ -85,13 +85,30 @@ class AuthService:
         """
         Encontra um usuário pelo ID.
         param user_id: ID do usuário
-        return: Um objeto User se o usuário for encontrado, None caso contrário.
+        return: Faz uma requisicao no banco de dados e retorna um objeto User se o usuário for encontrado, None caso contrário.
         """
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
             cursor.execute(
                 "SELECT username, email, password, id FROM users WHERE id = ?",
                 (user_id,),
+            )
+            row = cursor.fetchone()
+            if row:
+                return User(*row)
+        return None
+    
+    def find_user_by_username(self, username: str) -> User | None:
+        """
+        Encontra um usuário pelo nome de usuário.
+        param username: Nome de usuário
+        return: Faz uma requisicao no banco de dados e retorna um objeto User se o usuário for encontrado, None caso contrário.
+        """
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                "SELECT username, email, password, id FROM users WHERE username = ?",
+                (username,),
             )
             row = cursor.fetchone()
             if row:

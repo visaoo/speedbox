@@ -25,15 +25,16 @@ def register_user(user_type):
         return
 
     # Registrar usuário na tabela users
-    if not auth.register(username, email, password, user_type):
-        print(f"{Colors.RED}Erro ao cadastrar usuário!{Colors.RED}")
-        return
+    auth.register(username, email, password, user_type)
 
     # Obter o user_id recém-criado
-    with get_connection() as conn:
-        cursor = conn.cursor()
-        cursor.execute("SELECT id FROM users WHERE username = ?", (username,))
-        user_id = cursor.fetchone()[0]
+    find_user = auth.find_user_by_username(username)
+    
+    if not find_user:
+        print(f"{Colors.RED}Erro: Não foi possível recuperar o ID do usuário!{Colors.RED}")
+        return
+    
+    user_id = find_user.id
 
     if user_type == "client":
         print(f"\n{Colors.BOLD}INFORMAÇÕES PESSOAIS{Colors.ENDC}")
