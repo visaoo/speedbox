@@ -10,6 +10,8 @@ from classes.resources import *
 
 def delivery_person_menu(delivery_person_id):
     while True:
+        clear_screen()
+        display_logo()
         print(f"\n{Colors.BOLD}DASHBOARD DO ENTREGADOR{Colors.ENDC}")
         print(f"\n{Colors.YELLOW}1.{Colors.ENDC} Visualizar pedidos disponíveis")
         print(f"{Colors.YELLOW}2.{Colors.ENDC} Aceitar um pedido")

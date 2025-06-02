@@ -2,7 +2,7 @@ import hashlib
 import sqlite3
 
 from classes.user.user import User
-
+from db.database import get_connection
 
 class AuthService:
     def __init__(self, db_path='speedbox.db') -> None:
@@ -29,7 +29,7 @@ class AuthService:
         return: Um objeto User se as credenciais forem válidas, None caso contrário.
         """
         hashed = self._hash_password(password)
-        with sqlite3.connect(self.db_path) as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute(
                 "SELECT username, email, password, id, user_type FROM users WHERE username = ? AND password = ?",
@@ -66,7 +66,7 @@ class AuthService:
         """
         # user_type = user_type.value
         hashed = self._hash_password(password)
-        with sqlite3.connect(self.db_path) as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             try:
                 cursor.execute(
@@ -87,7 +87,7 @@ class AuthService:
         param user_id: ID do usuário
         return: Faz uma requisicao no banco de dados e retorna um objeto User se o usuário for encontrado, None caso contrário.
         """
-        with sqlite3.connect(self.db_path) as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute(
                 "SELECT username, email, password, id FROM users WHERE id = ?",
@@ -104,7 +104,7 @@ class AuthService:
         param username: Nome de usuário
         return: Faz uma requisicao no banco de dados e retorna um objeto User se o usuário for encontrado, None caso contrário.
         """
-        with sqlite3.connect(self.db_path) as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute(
                 "SELECT username, email, password, id FROM users WHERE username = ?",
@@ -122,7 +122,7 @@ class AuthService:
         param email: Email do usuário
         return: True se o usuário existir, False caso contrário.
         """
-        with sqlite3.connect(self.db_path) as conn:
+        with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute(
                 "SELECT id FROM users WHERE username = ? OR email = ?",

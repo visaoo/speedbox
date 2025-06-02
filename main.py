@@ -3,14 +3,13 @@ from app.dashboards.delivery_person_menu import delivery_person_menu
 from app.dashboards.enterprise_menu import enterprise_menu
 from app.login.login import login
 from app.register.register_user import register_user
-from classes.Auth.auth import Authenticator
+from classes.Auth.auth import Authenticator, EnumUserType
 from classes.Auth.auth_service import AuthService
 from classes.resources import *
 
 
 # Menu principal
 def main():
-    authenticator = Authenticator(AuthService(db_path="speedbox.db"))
     while True:
         welcome_message()
 
@@ -18,20 +17,19 @@ def main():
         if choice == "1":
             user_id, user_type = login()
             if user_id:
-                # Obter o ID correto com base no tipo de usuário
-                    if user_type == "client":
-                        client_menu(user_id)
-                    elif user_type == "delivery_person":
-                        delivery_person_menu(user_id)
-                    elif user_type == "enterprise":
-                        enterprise_menu(user_id)
+                if user_type == EnumUserType.CLIENT.value:
+                    client_menu(user_id)
+                elif user_type == EnumUserType.DELIVERY_PERSON.value:
+                    delivery_person_menu(user_id)
+                elif user_type == EnumUserType.ENTERPRISE.value:
+                    enterprise_menu(user_id)
 
         elif choice == "2":
-            register_user("client")
+            register_user(EnumUserType.CLIENT.value)
         elif choice == "3":
-            register_user("delivery_person")
+            register_user(EnumUserType.DELIVERY_PERSON.value)
         elif choice == "4":
-            register_user("enterprise")
+            register_user(EnumUserType.ENTERPRISE.value)
         elif choice == "5":
             print(f"{Colors.YELLOW}Saindo...{Colors.YELLOW}")
             break

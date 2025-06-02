@@ -9,6 +9,8 @@ from validations.validations import get_input, none_word
 
 def enterprise_menu(enterprise_id):
     while True:
+        clear_screen()
+        display_logo()
         print(f"\n{Colors.BOLD}DASHBOARD DA EMPRESA{Colors.ENDC}")
         print(f"\n{Colors.YELLOW}1.{Colors.ENDC} Visualizar histórico de pedidos")
         print(f"{Colors.YELLOW}2.{Colors.ENDC} Fazer um pedido")

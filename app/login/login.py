@@ -5,7 +5,6 @@ from validations.validations import get_input, none_word
 auth_service = AuthService()
 auth = Authenticator(auth_service)
 
-
 def login():
     username = get_input("Digite o nome de usuário: ", none_word).strip()
     password = get_input("Digite a senha: ", none_word).strip()
