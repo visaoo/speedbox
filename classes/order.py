@@ -22,16 +22,13 @@ class Order:
         self.value_total: float = round(10 + (float(distance) * 0.5), 2)  # Valor base de 15 + valor por km
 
     def insert(self, type_user: str, client_id=None, enterprise_id=None) -> None:
-        """
-        Insere o pedido no banco de dados de acordo com o tipo de usuário.
-
-        Args:
-            type_user (str): "enterprise" ou "client"
-            client_id (int, optional): ID do cliente para pedidos de cliente
-            enterprise_id (int, optional): ID da empresa para pedidos de empresa
-        """
         with get_connection() as conn:
             cursor = conn.cursor()
+            cursor.execute("PRAGMA foreign_keys = ON;")
+
+            # Certifique-se que self.origem e self.destino são do tipo Address e suportam str()
+            origem = str(self.origem)
+            destino = str(self.destino)
 
             if type_user == "enterprise":
                 if enterprise_id is None:
@@ -42,8 +39,8 @@ class Order:
                 """, (
                     self.value_total,
                     self.date.isoformat(),
-                    str(self.destino),
-                    str(self.origem),
+                    destino,
+                    origem,
                     self.status.value,
                     enterprise_id
                 ))
@@ -57,15 +54,14 @@ class Order:
                 """, (
                     self.value_total,
                     self.date.isoformat(),
-                    str(self.destino),
-                    str(self.origem),
+                    destino,
+                    origem,
                     self.status.value,
                     client_id
                 ))
             else:
                 raise ValueError("Tipo de usuário inválido. Use 'enterprise' ou 'client'.")
 
-            conn.commit()
 
     @staticmethod
     def update_delivery_person(type_user: str, order_id: int, delivery_person_id: int) -> None:

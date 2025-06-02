@@ -36,6 +36,7 @@ def make_order_enterprise(enterprise_id):
 
     order = Order(origem, destino, OrderStatus.PENDING, distance)
     # Inserir pedido com enterprise_id
+    print(enterprise_id)
     order.insert("enterprise", enterprise_id=enterprise_id)
     id_order = order.get_id('enterprise')
     product.insert('enterprise', id_order)

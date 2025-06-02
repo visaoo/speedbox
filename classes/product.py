@@ -48,23 +48,22 @@ class Product:
             order_id(int): id do pedido para salvar no banco.
         """
         try:
-            if tipo_user == 'client':
-                with get_connection() as conn:
+            with get_connection() as conn:
+                if tipo_user == 'client':
+                        cursor = conn.cursor()
+                        cursor.execute("""
+                            INSERT INTO produto_client (nome, descricao, peso, tamanho, order_id)
+                            VALUES (?, ?, ?, ?);
+                        """, (order_id, self.name, self.description, self.weight, self.size))
+                elif tipo_user == 'enterprise':
                     cursor = conn.cursor()
                     cursor.execute("""
-                        INSERT INTO produto_client (nome, descricao, peso, tamanho, order_id)
+                        INSERT INTO produto_enterpise (nome, descricao, peso, tamanho, order_id)
                         VALUES (?, ?, ?, ?);
                     """, (order_id, self.name, self.description, self.weight, self.size))
-                    conn.commit()
-            elif tipo_user == 'enterprise':
-                cursor = conn.cursor()
-                cursor.execute("""
-                    INSERT INTO produto_enterpise (nome, descricao, peso, tamanho, order_id)
-                    VALUES (?, ?, ?, ?);
-                """, (order_id, self.name, self.description, self.weight, self.size))
+                else:
+                    raise 
                 conn.commit()
-            else:
-                raise 
         except Exception as e:
             print(f'Erro: [{e}]')
         
