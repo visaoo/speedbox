@@ -3,10 +3,10 @@ from classes.order import Order, OrderStatus
 from classes.resources import *
 from classes.Vehicle import Vehicle
 from validations.validations import get_input, none_word
-
+from app.utils.get_product_from_input import get_product_input
 
 def make_order_enterprise(enterprise_id):
-    description = get_input(f"{Colors.CYAN}Digite a descrição do pedido: {Colors.ENDC} ", none_word).strip()
+    product = get_product_input()
     print(f"{Colors.CYAN}Endereço de origem:{Colors.CYAN}")
     origem = get_address_from_input("enterprise")
     print(f"{Colors.CYAN}Endereço de destino:{Colors.CYAN}")
@@ -24,9 +24,20 @@ def make_order_enterprise(enterprise_id):
         print(f'{Colors.CYAN}Carro: {car}{Colors.CYAN}')
         print(f'{Colors.CYAN}Caminhão: {truck}{Colors.CYAN}')
 
-    order = Order(origem, destino, description, OrderStatus.PENDING, distance)
+    confirm = get_input('Deseja confirmar esse pedido? ', none_word)
+    match confirm.lower():
+        case 'n':
+            return #MD implementa isso ae plz
+        case 'não':
+            return #MD implementa isso ae plz
+        case 'nao':
+            return #MD implementa isso ae plz
 
+
+    order = Order(origem, destino, OrderStatus.PENDING, distance)
     # Inserir pedido com enterprise_id
     order.insert("enterprise", enterprise_id=enterprise_id)
+    id_order = order.get_id('enterprise')
+    product.insert('enterprise', id_order)
     print(f"\n{Colors.GREEN}Pedido criado com sucesso!{Colors.GREEN}")
     input(f"\n{Colors.YELLOW}Pressione Enter para continuar...{Colors.ENDC}")

@@ -7,7 +7,6 @@ class Product:
         self._weight = weight
         self._size = size
         
-
     @property
     def name(self):
         return self._name
@@ -40,23 +39,38 @@ class Product:
     def size(self, value):
         self._size = value
 
-    def insert(self) -> None:
+    def insert(self, tipo_user:str, order_id:int) -> None:
         """
-        Insere o veículo no banco de dados com o delivery_person_id.
+        Insere o produto no banco de dados com o order_id.
 
         Args:
-            delivery_person_id (int): ID do entregador associado ao veículo.
+            tipo_user(str): tipo de usuario para salvar no banco.
+            order_id(int): id do pedido para salvar no banco.
         """
-        with get_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute("""
-                INSERT INTO produto (name, descricao, peso, tamanho)
-                VALUES (?, ?, ?, ?);
-            """, (self.name, self.description, self.weight, self.size))
-            conn.commit()
-
-
-
+        try:
+            if tipo_user == 'client':
+                with get_connection() as conn:
+                    cursor = conn.cursor()
+                    cursor.execute("""
+                        INSERT INTO produto_client (nome, descricao, peso, tamanho, order_id)
+                        VALUES (?, ?, ?, ?);
+                    """, (order_id, self.name, self.description, self.weight, self.size))
+                    conn.commit()
+            elif tipo_user == 'enterprise':
+                cursor = conn.cursor()
+                cursor.execute("""
+                    INSERT INTO produto_enterpise (nome, descricao, peso, tamanho, order_id)
+                    VALUES (?, ?, ?, ?);
+                """, (order_id, self.name, self.description, self.weight, self.size))
+                conn.commit()
+            else:
+                raise 
+        except Exception as e:
+            print(f'Erro: [{e}]')
+        
+        
+        
+        
     def __str__(self):
         return (f'Produto:{self.name};'
                 f'Descrição:{self.description}'
