@@ -12,7 +12,7 @@ from validations.validations import *
 
 def register_user(user_type):
     auth = Authenticator(AuthService())
-    print(f"\n{Colors.BOLD}CADASTRO DE {user_type.value.upper()} {Colors.ENDC}")
+    print(f"\n{Colors.BOLD}CADASTRO DE {user_type.upper()} {Colors.ENDC}")
 
     # Registrar usuário
     user_id = register_base_user(auth, user_type)
@@ -37,7 +37,7 @@ def register_base_user(auth, user_type):
         input(f"{Colors.YELLOW}Pressione Enter para tentar novamente...{Colors.ENDC}")
         return None
 
-    auth.register(username, email, password, user_type.value)
+    auth.register(username, email, password, user_type)
     user = auth.find_user_by_username(username)
     if not user:
         print(f"{Colors.RED}Erro: Não foi possível recuperar o ID do usuário!{Colors.RED}")
@@ -74,7 +74,7 @@ def register_delivery_person(user_id):
     model = get_input(f"{Colors.CYAN}Modelo do veículo: {Colors.ENDC}").strip()
     mark = get_input(f"{Colors.CYAN}Marca do veículo: {Colors.ENDC}").strip()
     plate = get_input(f"{Colors.CYAN}Placa do veículo: {Colors.ENDC}", is_valid_plate).strip()
-    type_vehicle = get_input(f"{Colors.CYAN}Tipo de veículo: {Colors.ENDC}").strip()
+    type_vehicle = get_input(f"{Colors.CYAN}Tipo de veículo: {Colors.ENDC}", lambda x: in_enum(x, VehicleType)).strip()
     max_distance = get_input(f"{Colors.CYAN}Distância máxima: {Colors.ENDC}").strip()
     
     vehicle = Vehicle(model, mark, plate, VehicleType(type_vehicle), MaxDistance(max_distance))

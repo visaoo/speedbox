@@ -215,3 +215,24 @@ def is_valid_state(state: str) -> bool:
     """
     valid_states = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"]
     return state.upper() in valid_states
+
+
+def in_enum(entrada_usuario, enum_classe):
+    """
+    Verifica se a entrada do usuário corresponde a um valor de um Enum.
+
+    Parâmetros:
+        entrada_usuario (str): A entrada fornecida pelo usuário.
+        enum_classe (Enum): A classe Enum contra a qual validar.
+
+    Retorna:
+        bool: True se a entrada for um valor válido do Enum, False caso contrário.
+    """
+    try:
+        # Tenta converter a entrada para um membro do Enum pelo valor
+        # Ou verifica se a entrada (como string) é um dos valores do Enum
+        return entrada_usuario in [item.value for item in enum_classe]
+    except ValueError:
+        return False
+    except Exception: # Captura outras possíveis exceções ao acessar enum_classe.value
+        return False

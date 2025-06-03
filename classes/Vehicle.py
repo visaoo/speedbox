@@ -168,7 +168,7 @@ class Vehicle:
                 cursor.execute("""
                     INSERT INTO vehicle (model, mark, plate, type_vehicle, maximum_distance, delivery_person_id)
                     VALUES (?, ?, ?, ?, ?, ?);
-                """, (self.model, self.mark, self.plate, self.type_vehicle.value, self.maximum_distance, delivery_person_id))
+                """, (self.model, self.mark, self.plate, self.type_vehicle.value, self.maximum_distance.value, delivery_person_id))
                 conn.commit()
         except Exception as e:
             print(f"[Erro ao inserir veículo] {e}")
