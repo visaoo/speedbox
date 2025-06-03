@@ -8,9 +8,9 @@ from app.utils.get_product_from_input import get_product_input
 def make_order_enterprise(enterprise_id):
     product = get_product_input()
     print(f"{Colors.CYAN}Endereço de origem:{Colors.CYAN}")
-    origem = get_address_from_input("enterprise")
+    origem = get_address_from_input()
     print(f"{Colors.CYAN}Endereço de destino:{Colors.CYAN}")
-    destino = get_address_from_input("enterprise")
+    destino = get_address_from_input()
 
     # Calcular distância (se API estiver configurada)
     try:

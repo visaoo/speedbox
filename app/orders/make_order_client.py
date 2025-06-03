@@ -10,10 +10,10 @@ def make_order_client(client_id):
     product = get_product_input()
     print(f"{Colors.CYAN}Endereço de origem:{Colors.CYAN}")
 
-    origem = get_address_from_input("client")
+    origem = get_address_from_input()
     print(f"{Colors.CYAN}Endereço de destino:{Colors.CYAN}")
 
-    destino = get_address_from_input("client")
+    destino = get_address_from_input()
 
     # Calcular distância (se API estiver configurada)
     try:

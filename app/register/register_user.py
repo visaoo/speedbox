@@ -56,6 +56,7 @@ def register_client(user_id):
     client = Client(name, cpf, phone, birth_date, address, user_id)
     client.insert()
     print(f"\n{Colors.GREEN}Cliente {name} cadastrado com sucesso!{Colors.ENDC}")
+    input(f"{Colors.YELLOW}Pressione Enter para continuar...{Colors.ENDC}")
 
 
 def register_delivery_person(user_id):
@@ -80,6 +81,7 @@ def register_delivery_person(user_id):
     vehicle = Vehicle(model, mark, plate, VehicleType(type_vehicle), MaxDistance(max_distance))
     vehicle.insert(delivery_person_id=delivery_person.user_id)
     print(f"\n{Colors.GREEN}Entregador {name} cadastrado com sucesso!{Colors.ENDC}")
+    input(f"{Colors.YELLOW}Pressione Enter para continuar...{Colors.ENDC}")
 
 
 def register_enterprise(user_id):
@@ -91,3 +93,4 @@ def register_enterprise(user_id):
     enterprise = Enterprise(name, cnpj, address, user_id)
     enterprise.insert()
     print(f"\n{Colors.GREEN}Empresa {name} cadastrada com sucesso!{Colors.ENDC}")
+    input(f"{Colors.YELLOW}Pressione Enter para continuar...{Colors.ENDC}")
