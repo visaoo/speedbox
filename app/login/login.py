@@ -6,6 +6,12 @@ auth_service = AuthService()
 auth = Authenticator(auth_service)
 
 def login():
+    """
+    Função para realizar o login do usuário.
+    Retorna o ID do usuário e o tipo de usuário se o login for bem-sucedido,
+    ou None se o login falhar.
+    :return: Tuple (user_id, user_type) ou (None, None) se falhar
+    """
     username = get_input("Digite o nome de usuário: ", none_word).strip()
     password = get_input("Digite a senha: ", none_word).strip()
 

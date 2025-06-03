@@ -206,3 +206,12 @@ def is_valid_plate(placa):
             return False
 
     return True
+
+def is_valid_state(state: str) -> bool:
+    """
+    Verifica se a sigla do estado é válida.
+    param: state: Sigla do estado (ex: "SP", "RJ").
+    return: True se a sigla for válida, False caso contrário.
+    """
+    valid_states = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"]
+    return state.upper() in valid_states
