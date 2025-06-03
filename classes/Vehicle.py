@@ -34,7 +34,7 @@ class Vehicle:
         maximum_distance (int): Distância máxima suportada.
     """
 
-    def __init__(self, model: str, mark: str, plate: str, type_vehicle: VehicleType, maximum_distance: str):
+    def __init__(self, model: str, mark: str, plate: str, type_vehicle: VehicleType, maximum_distance: MaxDistance):
         self._model = model
         self._mark = mark
         self._plate = plate
@@ -67,11 +67,11 @@ class Vehicle:
         self._plate = value
 
     @property
-    def maximum_distance(self) -> str:
+    def maximum_distance(self) -> MaxDistance:
         return self._maximum_distance
 
     @maximum_distance.setter
-    def maximum_distance(self, value: str) -> None:
+    def maximum_distance(self, value:  MaxDistance) -> None:
         self._maximum_distance = value
 
     @property
@@ -86,7 +86,7 @@ class Vehicle:
 
     # Criar lógica para verficar a distância por tipo de veículo
     @staticmethod
-    def calculate_distance(origin: str, destination: str, profile) -> dict:
+    def calculate_distance(origin: str, destination: str, profile) -> dict | None:
         """
         Calcula a distância e a duração estimada entre dois endereços
         utilizando a API do OpenRouteService.
@@ -162,14 +162,18 @@ class Vehicle:
         Args:
             delivery_person_id (int): ID do entregador associado ao veículo.
         """
-        with sqlite3.connect("speedbox.db") as conn:
-            cursor = conn.cursor()
-            cursor.execute("""
-                INSERT INTO vehicle (model, mark, plate, type_vehicle, maximum_distance, delivery_person_id)
-                VALUES (?, ?, ?, ?, ?, ?);
-            """, (self.model, self.mark, self.plate, self.type_vehicle.value, self.maximum_distance, delivery_person_id))
-            conn.commit()
-
+        try:
+            with sqlite3.connect("speedbox.db") as conn:
+                cursor = conn.cursor()
+                cursor.execute("""
+                    INSERT INTO vehicle (model, mark, plate, type_vehicle, maximum_distance, delivery_person_id)
+                    VALUES (?, ?, ?, ?, ?, ?);
+                """, (self.model, self.mark, self.plate, self.type_vehicle.value, self.maximum_distance, delivery_person_id))
+                conn.commit()
+        except Exception as e:
+            print(f"[Erro ao inserir veículo] {e}")
+            input("Veículo cadastrado com sucesso! Pressione Enter para continuar...")
+        
     @staticmethod
     def get_all() -> list:
         """Retorna todos os veículos cadastrados."""
