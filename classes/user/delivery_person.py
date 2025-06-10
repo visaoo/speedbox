@@ -18,15 +18,91 @@ class DeliveryPerson:
         address: Address,
         user_id: int
     ) -> None:
-        self.name: str = name
-        self.cpf: str = cpf
-        self.birth_date: str = birth_date
-        self.cnh: str = cnh
-        self.availability: bool = availability
-        self.vehicle: Optional[Vehicle] = vehicle
-        self.phone: str = phone
-        self.address: Address = address
-        self.user_id: int = user_id
+        self._name: str = name
+        self._cpf: str = cpf
+        self._birth_date: str = birth_date
+        self._cnh: str = cnh
+        self._availability: bool = availability
+        self._vehicle: Optional[Vehicle] = vehicle
+        self._phone: str = phone
+        self._address: Address = address
+        self._user_id: int = user_id
+
+
+    @property
+    def name(self) -> str:
+        return self._name
+
+    @name.setter
+    def name(self, value: str):
+        self._name = value
+
+    @property
+    def cpf(self) -> str:
+        return self._cpf
+
+    @cpf.setter
+    def cpf(self, value: str):
+        self._cpf = value
+
+    @property
+    def birth_date(self) -> str:
+        return self._birth_date
+
+    @birth_date.setter
+    def birth_date(self, value: str):
+        self._birth_date = value
+
+    @property
+    def cnh(self) -> str:
+        return self._cnh
+
+    @cnh.setter
+    def cnh(self, value: str):
+        self._cnh = value
+
+    @property
+    def availability(self) -> bool:
+        return self._availability
+
+    @availability.setter
+    def availability(self, value: bool):
+        self._availability = value
+
+    @property
+    def vehicle(self) -> Optional['Vehicle']:
+        return self._vehicle
+
+    @vehicle.setter
+    def vehicle(self, value: Optional['Vehicle']):
+        self._vehicle = value
+
+    @property
+    def phone(self) -> str:
+        return self._phone
+
+    @phone.setter
+    def phone(self, value: str):
+        self._phone = value
+
+    @property
+    def address(self) -> 'Address':
+        return self._address
+
+    @address.setter
+    def address(self, value: 'Address'):
+        self._address = value
+
+    @property
+    def user_id(self) -> int:
+        return self._user_id
+
+    @user_id.setter
+    def user_id(self, value: int):
+        self._user_id = value
+
+
+
 
     def insert(self) -> None:
         """

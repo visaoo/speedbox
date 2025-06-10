@@ -15,11 +15,62 @@ class OrderStatus(Enum):
 
 class Order:
     def __init__(self, origem: Address, destino: Address, status: OrderStatus, distance=0) -> None:
-        self.origem: Address = origem
-        self.destino: Address = destino
-        self.date: datetime = datetime.now()
-        self.status: OrderStatus = status
-        self.value_total: float = round(10 + (float(distance) * 0.5), 2)  # Valor base de 15 + valor por km
+        self._origem = origem
+        self._destino  = destino
+        self._date = datetime.now()
+        self._status = status
+        self._value_total = 15  # Valor base do pedido
+        self._distance = distance
+        
+    @property
+    def distance(self):
+        return self._distance
+    
+    @distance.setter
+    def distance(self, value):
+        self._distance = value
+        total = 15 + (value * 2)  # Valor base + R$2 por km
+        self.value_total = total  # Atualiza o valor total com base na distância
+
+    @property
+    def origem(self):
+        return self._origem
+
+    @origem.setter
+    def origem(self, value):
+        self._origem = value
+
+    @property
+    def destino(self):
+        return self._destino
+
+    @destino.setter
+    def destino(self, value):
+        self._destino = value
+
+    @property
+    def date(self):
+        return self._date
+
+    @date.setter
+    def date(self, value):
+        self._date = value
+
+    @property
+    def status(self):
+        return self._status
+
+    @status.setter
+    def status(self, value):
+        self._status = value
+
+    @property
+    def value_total(self):
+        return self._value_total
+    
+    @value_total.setter
+    def value_total(self, value):
+        self._value_total = value
 
     def insert(self, type_user: str, client_id=None, enterprise_id=None) -> None:
         with get_connection() as conn:
@@ -151,4 +202,4 @@ class Order:
     
     
     def __str__(self):
-        return f"Order({self.origem}, {self.destino}, {self.description}, {self.status}, {self.value_total})"
+        return f"Order({self.origem}, {self.destino}, {self.status}, {self.value_total})"

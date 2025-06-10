@@ -39,7 +39,7 @@ class Vehicle:
         self._mark = mark
         self._plate = plate
         self._maximum_distance = maximum_distance
-        self.type_vehicle = type_vehicle
+        self._type_vehicle = type_vehicle
         self._can_add_load = True
 
     @property
