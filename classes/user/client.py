@@ -4,6 +4,7 @@ from classes.address.address import Address
 from classes.user.person import Person
 from db.database import get_connection
 
+import sqlite3
 
 class Client(Person):
     def __init__(
@@ -42,16 +43,19 @@ class Client(Person):
         """
         Insere o cliente no banco de dados.
         """
-        with get_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute(
-                """
-                INSERT INTO clients (name, cpf, birth_date, celphone, user_id)
-                VALUES (?, ?, ?, ?, ?);
-                """,
-                (self.name, self.cpf, self.birth_date, self.phone, self.user_id),
-            )
-            conn.commit()
+        try:
+            with get_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute(
+                    """
+                    INSERT INTO clients (name, cpf, birth_date, celphone, user_id)
+                    VALUES (?, ?, ?, ?, ?);
+                    """,
+                    (self.name, self.cpf, self.birth_date, self.phone, self.user_id),
+                )
+                conn.commit()
+        except sqlite3.IntegrityError as e:
+            print(f'Erro ao inserir cliente: {e}')
 
     @staticmethod
     def get_all() -> List[Any]:

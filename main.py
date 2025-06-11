@@ -6,11 +6,16 @@ from app.register.register_user import register_user
 from classes.Auth.auth import Authenticator, EnumUserType
 from classes.Auth.auth_service import AuthService
 from classes.resources import *
+from db.database import get_connection
 
 
 # Menu principal
 def main():
     while True:
+        # Verificando se o banco de dados está funcional
+        if not check_database_connection():
+            continue
+
         welcome_message()
 
         choice = main_menu()
@@ -36,6 +41,13 @@ def main():
         else:
             print(f"{Colors.RED}Opção inválida!{Colors.RED}")
             input(f"\n{Colors.YELLOW}Pressione Enter para continuar...{Colors.ENDC}")
+
+def check_database_connection():
+    conn = get_connection()
+    if conn is None:
+        print(f"{Colors.RED}Erro ao conectar ao banco de dados!{Colors.RED}")
+        input(f"\n{Colors.YELLOW}Pressione Enter para sair...{Colors.ENDC}")
+        return
 
 
 if __name__ == "__main__":
