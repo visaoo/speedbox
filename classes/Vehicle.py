@@ -247,3 +247,4 @@ class Vehicle:
 
     def __str__(self) -> str:
         return f"{self.type_vehicle.value} vrum vrum: {self.model} {self.mark} {self.plate} {self.maximum_distance} km"
+    
