@@ -3,14 +3,19 @@ from app.dashboards.delivery_person_menu import delivery_person_menu
 from app.dashboards.enterprise_menu import enterprise_menu
 from app.login.login import login
 from app.register.register_user import register_user
-from classes.Auth.auth import Authenticator, EnumUserType
-from classes.Auth.auth_service import AuthService
+from classes.Auth.auth import EnumUserType
 from classes.resources import *
 from db.database import get_connection
 
-
 # Menu principal
-def main():
+def main() -> None:
+    """
+    Função principal que executa o menu do sistema de delivery.
+    Esta função exibe o menu principal, permite que o usuário faça login ou se registre,
+    e direciona o usuário para o menu apropriado com base no tipo de usuário.
+    Além disso, verifica a conexão com o banco de dados antes de prosseguir.
+    :return: None
+    """
     while True:
         # Verificando se o banco de dados está funcional
         if not check_database_connection():

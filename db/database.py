@@ -3,10 +3,10 @@ from sqlite3 import connect, Connection, Error
 DB_PATH = "speedbox.db"
 
 
-def get_connection() -> Connection | None:
+def get_connection() -> Connection:
     """
     Estabelece uma conexão com o banco de dados SQLite.
-    Retorna uma conexão ou None em caso de erro.
+    Retorna uma conexão, levanta uma exceção em caso de erro.
     """
     try:
         conn = connect(DB_PATH)
@@ -14,4 +14,4 @@ def get_connection() -> Connection | None:
         return conn
     except Error as e:
         print(f"Erro ao conectar ao banco de dados: {e}")
-        return None
+        raise e

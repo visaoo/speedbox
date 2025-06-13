@@ -5,7 +5,7 @@ from validations.validations import get_input, none_word
 auth_service = AuthService()
 auth = Authenticator(auth_service)
 
-def login():
+def login() -> tuple[str | None, str | None]:
     """
     Função para realizar o login do usuário.
     Retorna o ID do usuário e o tipo de usuário se o login for bem-sucedido,
