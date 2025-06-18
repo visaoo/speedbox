@@ -3,8 +3,7 @@ from app.dashboards.delivery_person_menu import delivery_person_menu
 from app.dashboards.enterprise_menu import enterprise_menu
 from app.login.login import login
 from app.register.register_user import register_user
-from classes.Auth.auth import Authenticator, EnumUserType
-from classes.Auth.auth_service import AuthService
+from classes.Auth.auth import EnumUserType
 from classes.resources import *
 
 
@@ -16,6 +15,7 @@ def main():
         choice = main_menu()
         if choice == "1":
             user_id, user_type = login()
+            
             if user_id:
                 if user_type == EnumUserType.CLIENT.value:
                     client_menu(user_id)
@@ -23,7 +23,9 @@ def main():
                     delivery_person_menu(user_id)
                 elif user_type == EnumUserType.ENTERPRISE.value:
                     enterprise_menu(user_id)
-
+            else:
+                print(f"{Colors.RED}Erro ao fazer login!{Colors.RED}")
+                input(f"\n{Colors.YELLOW}Pressione Enter para continuar...{Colors.ENDC}")
         elif choice == "2":
             register_user(EnumUserType.CLIENT.value)
         elif choice == "3":

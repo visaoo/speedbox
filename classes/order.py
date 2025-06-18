@@ -26,7 +26,6 @@ class Order:
             cursor = conn.cursor()
             cursor.execute("PRAGMA foreign_keys = ON;")
 
-            # Certifique-se que self.origem e self.destino são do tipo Address e suportam str()
             origem = str(self.origem)
             destino = str(self.destino)
 
@@ -151,4 +150,4 @@ class Order:
     
     
     def __str__(self):
-        return f"Order({self.origem}, {self.destino}, {self.description}, {self.status}, {self.value_total})"
+        return f"Order({self.origem}, {self.destino}, {self.status}, {self.value_total})"
