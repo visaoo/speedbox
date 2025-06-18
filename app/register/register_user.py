@@ -10,7 +10,12 @@ from classes.Vehicle import Vehicle, VehicleType, MaxDistance
 from validations.validations import *
 
 
-def register_user(user_type):
+def register_user(user_type) -> None:
+    """
+    Função para registrar um novo usuário no sistema.
+    :param user_type: Tipo de usuário a ser registrado (cliente, entregador ou empresa).
+    :return: None
+    """
     auth = Authenticator(AuthService())
     print(f"\n{Colors.BOLD}CADASTRO DE {user_type.upper()} {Colors.ENDC}")
 
@@ -27,7 +32,13 @@ def register_user(user_type):
         register_enterprise(user_id)
 
 
-def register_base_user(auth, user_type):
+def register_base_user(auth, user_type) -> int | None:
+    """
+    Função para registrar as informações básicas do usuário.
+    :param auth: Instância do autenticador para registrar o usuário.
+    :param user_type: Tipo de usuário a ser registrado (cliente, entregador ou empresa).
+    :return: ID do usuário registrado ou None em caso de erro.
+    """
     username = get_input(f"{Colors.CYAN}Nome de usuário: {Colors.ENDC}", none_word).strip()
     email = get_input(f"{Colors.CYAN}Email: {Colors.ENDC}", is_email).strip()
     password = get_input(f"{Colors.CYAN}Senha: {Colors.ENDC}").strip()
@@ -44,8 +55,12 @@ def register_base_user(auth, user_type):
         return None
     return user.id
 
-
-def register_client(user_id):
+def register_client(user_id) -> None:
+    """
+    Função para registrar um novo cliente.
+    :param user_id: ID do usuário que está sendo registrado.
+    :return: None
+    """
     print(f"\n{Colors.BOLD}INFORMAÇÕES PESSOAIS{Colors.ENDC}")
     name = get_input(f"{Colors.CYAN}Nome completo: {Colors.ENDC}").strip()
     cpf = get_input(f"{Colors.CYAN}CPF: {Colors.ENDC}", is_cpf).strip()
@@ -59,7 +74,12 @@ def register_client(user_id):
     input(f"{Colors.YELLOW}Pressione Enter para continuar...{Colors.ENDC}")
 
 
-def register_delivery_person(user_id):
+def register_delivery_person(user_id) -> None:
+    """
+    Função para registrar um novo entregador.
+    :param user_id: ID do usuário que está sendo registrado.
+    :return: None
+    """
     print(f"\n{Colors.BOLD}INFORMAÇÕES PESSOAIS{Colors.ENDC}")
     name = get_input(f"{Colors.CYAN}Nome completo: {Colors.ENDC}").strip()
     cpf = get_input(f"{Colors.CYAN}CPF: {Colors.ENDC}", is_cpf).strip()
@@ -84,7 +104,12 @@ def register_delivery_person(user_id):
     input(f"{Colors.YELLOW}Pressione Enter para continuar...{Colors.ENDC}")
 
 
-def register_enterprise(user_id):
+def register_enterprise(user_id) -> None:
+    """
+    Função para registrar uma nova empresa.
+    :param user_id: ID do usuário que está sendo registrado.
+    :return: None
+    """
     print(f"\n{Colors.BOLD}INFORMAÇÕES DA EMPRESA{Colors.ENDC}")
     name = get_input(f"{Colors.CYAN}Nome da empresa: {Colors.ENDC}").strip()
     cnpj = get_input(f"{Colors.CYAN}CNPJ: {Colors.ENDC}", is_cnpj).strip()

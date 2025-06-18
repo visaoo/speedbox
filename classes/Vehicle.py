@@ -39,7 +39,7 @@ class Vehicle:
         self._mark = mark
         self._plate = plate
         self._maximum_distance = maximum_distance
-        self.type_vehicle = type_vehicle
+        self._type_vehicle = type_vehicle
         self._can_add_load = True
 
     @property
@@ -247,3 +247,4 @@ class Vehicle:
 
     def __str__(self) -> str:
         return f"{self.type_vehicle.value} vrum vrum: {self.model} {self.mark} {self.plate} {self.maximum_distance} km"
+    

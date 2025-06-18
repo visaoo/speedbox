@@ -93,23 +93,28 @@ class Address:
         :param type_user: Tipo de usuário ('enterprise' ou 'client').
         :param id: ID do usuário (empresa ou cliente).
         :raises ValueError: Se o tipo de usuário não for válido."""
-        with get_connection() as conn:
-            cursor = conn.cursor()
-            if type_user.lower() == 'enterprise':
-                cursor.execute("""
-                    INSERT INTO addresses_enterprises (street, number, neighborhood, city, state, enterprise_id)
+        try:
+            with get_connection() as conn:
+                cursor = conn.cursor()
+                if type_user.lower() == 'enterprise':
+                    cursor.execute("""
+                        INSERT INTO addresses_enterprises (street, number, neighborhood, city, state, enterprise_id)
+                        VALUES (?, ?, ?, ?, ?, ?);
+                    """, (self.street, self.number, self.neighborhood, self.city, self.state, id))
+                    conn.commit()
+                elif type_user.lower() == 'client':
+                    cursor.execute("""
+                        INSERT INTO addresses_clients (street, number, neighborhood, city, state, client_id)
                     VALUES (?, ?, ?, ?, ?, ?);
-                """, (self.street, self.number, self.neighborhood, self.city, self.state, id))
-                conn.commit()
-            elif type_user.lower() == 'client':
-                cursor.execute("""
-                    INSERT INTO addresses_clients (street, number, neighborhood, city, state, client_id)
-                VALUES (?, ?, ?, ?, ?, ?);
-                """, (self.street, self.number, self.neighborhood, self.city, self.state, id))
-                conn.commit()
-            else:
-                raise ValueError("Invalid type_user. Must be 'enterprise' or 'client'.")
-
+                    """, (self.street, self.number, self.neighborhood, self.city, self.state, id))
+                    conn.commit()
+                else:
+                    raise ValueError("Invalid type_user. Must be 'enterprise' or 'client'.")
+        except Exception as e:
+            print(f"Error inserting address: {e}")
+            return 
+        
+        
     @staticmethod
     def get_all(type_user):
         """Obtém todos os endereços do banco de dados.
